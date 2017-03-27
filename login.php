@@ -74,11 +74,11 @@
     <div id="divMonster"><img id="monsterFoto" src="gfx/monster.png"></div>
     <div id="divMainOkno">
         <Form action='login.php' method='post'>
-			<div id="usernameLabel">Użytkownik:</div>		
-			<input id="usernameForm" type='text' name='username'><br>
-			<div id="passwordLabel">Hasło:</div>			
-			<input id="passwordForm" type='password' name='password'><br>
-			<input id="submitForm" type='submit' value='Login'>
+			<div id="usernameLabel" class='centerLabel'>Użytkownik:</div>		
+			<input id="usernameForm" class='centerForm' type='text' name='username'><br>
+			<div id="passwordLabel" class='centerLabel'>Hasło:</div>			
+			<input id="passwordForm" class='centerForm' type='password' name='password'><br>
+			<input id="submitForm" class='centerForm' type='submit' value='Logowanie'>
         </Form>
         <div id="errorLabel">		<?php	if(isset($error_msg) && $error_msg != "") { echo $error_msg; }	?>		</div>
     </div>
