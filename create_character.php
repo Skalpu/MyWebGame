@@ -45,23 +45,23 @@
 	
 	
     <div id="divMainOkno">
-		<div id="divPlec">
+		<div id="divPlec" class="centerLabel">
 			<div id="plecLeft" class="left arrow noselect">&larr;</div>
 			<div id="plecTekst" class="center noselect"></div>
 			<div id="plecRight" class="right arrow noselect">&rarr;</div>
         </div>
-		<div id="divRasa">
+		<div id="divRasa" class="centerLabel">
 			<div id="rasaLeft" class="left arrow noselect">&larr;</div>
 			<div id="rasaTekst" class="center noselect"></div>
 			<div id="rasaRight" class="right arrow noselect">&rarr;</div>
 		</div>
-		<div id="divKlasa">
+		<div id="divKlasa" class="centerLabel">
 			<div id="klasaLeft" class="left arrow noselect">&larr;</div>
 			<div id="klasaTekst" class="center noselect"></div>
 			<div id="klasaRight" class="right arrow noselect">&rarr;</div>
 		</div>
 		<div id="divFoto">
-			<div id="fotoContainer"><img id="foto"></div>
+			<div id="fotoContainer"></div>
 			<div id="fotoLeft" class="left arrow noselect">&larr;</div>
 			<div id="fotoTekst" class="center noselect">1/</div>
 			<div id="fotoRight" class="right arrow noselect">&rarr;</div>
@@ -82,6 +82,7 @@
 <script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
 <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 
+
 <script>
 
 	var iPlec = 0;
@@ -97,14 +98,14 @@
 	
 	for(i = 0; i < FotoCount; i++)
 	{
-		Foto[i] = "/gfx/portrety/" + [i] + ".jpg";
+		Foto[i] = "url(gfx/portrety/" + [i] + ".jpg?";
 	}
 	
 	$("#plecTekst").html(Plec[0]);
 	$("#rasaTekst").html(Rasa[0]);
 	$("#klasaTekst").html(Klasa[0]);
 	$("#fotoTekst").html("1/" + FotoCount);
-	$("#foto").attr("src", Foto[0]);
+	$("#fotoContainer").css("background-image", Foto[0] + new Date().getTime() + ")");
 	
 	function travelList(direction, list, pointer, onSuccess)
 	{
@@ -150,9 +151,7 @@
 		var numer = iFoto + 1;
 		var tekst = numer + "/" + FotoCount;
 		$("#fotoTekst").html(tekst);
-		
-		d = new Date();
-		$("#foto").attr("src", Foto[iFoto] + "?" + d.getTime());
+		$("#fotoContainer").css("background-image", Foto[iFoto] + new Date().getTime() + ")");
 	}
 
 	
@@ -181,6 +180,13 @@
 		travelList("right", Foto, "iFoto", updateFoto);
 	});
 	
-	
+	$("#foto").on('load',function(){
+    var css;
+    var ratio=$(this).width() / $(this).height();
+    var pratio=$(this).parent().width() / $(this).parent().height();
+    if (ratio<pratio) css={width:'auto', height:'100%'};
+    else css={width:'100%', height:'auto'};
+    $(this).css(css);
+});
 	
 </script>
