@@ -1,36 +1,96 @@
+.centerLabel
+{
+	position: fixed;
+	text-align: center;
+	
+    width: 20%;
+	left: 40%;
+	top: 40%;
+}
+
 #usernameLabel
 {
+	margin-top: 0px;
+}
+#passwordLabel
+{
+	margin-top: 50px;
+}
+#confirmLabel
+{
+	margin-top: 100px;
+}
+
+.centerForm
+{
+	text-align: center;
+    border: 1px solid black;
+	position: fixed;
+	
+	top: 40%;
+	width: 10%;
+	min-width: 100px;
+	max-width: 200px;
+	left: 50%;
+	transform: translate(-50%);
+}
+
+#usernameForm
+{
+	margin-top: 25px;
+}
+#passwordForm
+{
+	margin-top: 75px;
+}
+#submitForm
+{
+	margin-top: 125px;
+	background-color: white;
+}
+
+/*#usernameLabel
+{
     position: fixed;
-    width: 100px;
-    text-align: center;
-    top: 400px;
-    left: 910px;
+	text-align: center;
+	
+    width: 20%;
+    top: 40%;
+	left: 40%;
 }
 #usernameForm
 {
-    position: fixed;
-    width: 140px;
+	text-align: center;
     border: 1px solid black;
-    text-align: center;
-    top: 420px;
-    left: 890px;
+	position: fixed;
+	
+	top: 40%;
+	margin-top: 20px;
+	
+	width: 10%;
+	min-width: 100px;
+	max-width: 200px;
+	left: 50%;
+	transform: translate(-50%);
 }
 #passwordLabel
 {
     position: fixed;
-    width: 100px;
     text-align: center;
-    top: 443px;
-    left: 910px;
+	
+	width: 20%;
+    top: 40%;
+	left: 40%;
+	
+	margin-top: 50px;
 }
 #passwordForm
 {
     position: fixed;
-    width: 140px;
     border: 1px solid black;
     text-align: center;
-    top: 463px;
-    left: 890px;
+    
+	
 }
 #confirmLabel
 {
@@ -69,4 +129,4 @@
     width: 200px;
     top: 560px;
     left: 860px;
-}
+}*/
