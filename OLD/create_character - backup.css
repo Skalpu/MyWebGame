@@ -1,0 +1,114 @@
+#divPlec
+{
+    position: relative;
+    width: 150px;
+    top: 10px;
+    left: 10px;
+    border: 1px solid black;
+}
+#divRasa
+{
+    position: relative;
+    width: 150px;
+    top: 20px;
+    left: 10px;
+    border: 1px solid black;
+}
+#divKlasa
+{
+    position: relative;
+    width: 150px;
+    top: 30px;
+    left: 10px;
+    border: 1px solid black;
+}
+#divStatystyki
+{
+    position: fixed;
+    top: 500px;
+    left: 475px;
+    width: 300px;
+    height: 200px;
+    border: 1px solid black;
+}
+#divStatystykiBoxes
+{
+    position: fixed;
+    top: 500px;
+    left: 650px;
+    width: 100px;
+    height: 200px;
+}
+#pozostalePunktyValue
+{
+    float: left;
+}
+#errorLabel
+{
+    position: fixed;
+    text-align: center;
+    color: chocolate;
+    width: 200px;
+    top: 560px;
+    left: 860px;
+}
+#submitForm
+{
+    position: fixed;
+    top: 710px;
+    left: 475px;
+}
+
+
+
+.charCreationLabel
+{
+    font-weight: bold;
+    text-align: center;
+    margin-right: 10px;
+}
+.statLabel
+{
+    margin: 2px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+
+.buttonMinus, .buttonPlus
+{
+    border: 1px solid black;
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin: 2px;
+    font-size: 6px;
+    border-radius: 50%;
+    transition-duration: 0.3s;
+    background-color: darkorange;
+    color: white;
+    text-align: center;
+}
+.buttonPlus
+{
+    background-color: darkgreen;
+}
+.buttonMinus:hover, .buttonPlus:hover 
+{
+    color: black;
+    background-color: white;
+}
+
+
+
+
+.box 
+{
+  float: left;
+  margin: 1px;
+}
+.afterBox 
+{
+  clear: left;
+}

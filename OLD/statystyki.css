@@ -1,0 +1,28 @@
+/* ITEMY */
+.name { font-weight: bold; }
+.Normalny { color: black; }
+.Magiczny { color: blue; }
+.Rzadki { color: green; }
+.Unikalny { color: brown; }
+.rzadkosctyp { font-style: italic; font-size: 11px;}
+.armor { color: darkkhaki; }
+.damagemin { color: lightcoral; font-weight: bold;}
+.damagemax { color: indianred; font-weight: bold;}
+.damage_ogien { color: red; font-weight: bold;}
+.damage_woda { color: darkblue; font-weight: bold;}
+.damage_powietrze { color: lightblue; font-weight: bold;}
+.damage_ziemia { color: olive; font-weight: bold;}
+.attackspeed { color: darkseagreen; font-weight: bold;}
+.dps { color: MediumSlateBlue; font-weight: bold;}
+.cena { font-style: italic; font-size: 11px;}
+
+
+
+/* STATY GRACZA */
+.username { font-weight: bold; }
+.rasaklasa { font-style: italic; }
+.stat { font-weight: bold; }
+.smallstat { font-size: 11px;}
+
+
+

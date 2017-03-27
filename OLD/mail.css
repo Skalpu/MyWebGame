@@ -1,0 +1,77 @@
+#walkaOkno
+{
+    position: fixed;
+    top: 430px;
+    left: 495px;
+    width: 900px;
+    height: 270px;
+    overflow-y: auto;
+    border: 2px solid black;
+	/*border-radius: 15px;*/
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	
+	/*box-shadow:         inset 0 0 10px #000000;*/
+	box-shadow: 3px 3px 20px black;
+	background: linear-gradient(beige,burlywood);
+	font-family:Arial, Helvetica, sans-serif;
+	
+	opacity: 0;
+}
+#walkaOkno::-webkit-scrollbar {
+    width: 20px;
+}
+#walkaOkno::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	/*border-radius: 50px;*/
+}
+#walkaOkno::-webkit-scrollbar-thumb {
+	background-color: DarkGray;
+	outline: 1px solid black;
+	/*border-radius: 50px;*/
+}
+
+
+
+
+#tabelaWiadomosci
+{
+	width: 933px;
+	max-height: 200px;
+	border: 2px solid black;
+	position: fixed;
+	left: 495px;
+	top: 175px;
+	
+	/*box-shadow:         inset 0 0 10px #000000;*/
+	box-shadow: 3px 3px 20px black;
+	background: linear-gradient(beige,burlywood);
+	font-family:Arial, Helvetica, sans-serif;
+	
+	border-collapse: collapse;
+	
+}
+#titleLabel, #fromLabel, #dateLabel
+{
+	font-weight: bold;
+}
+th,td
+{
+	border: 1px solid black;
+}
+th
+{
+	font-weight: normal;
+}
+
+.msgTitle
+{
+	text-decoration: underline;
+}
+.msgTitle:hover
+{
+	color: blue;
+	cursor: pointer;
+}
