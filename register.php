@@ -24,6 +24,12 @@
             $ehPassword = $conn->real_escape_string(md5($password));
             $conn->query("INSERT INTO users(username,password) VALUES ('$eUsername','$ehPassword')");
 			
+			session_start();
+			$_SESSION['authenticated'] = true;
+            $_SESSION['username'] = $username;
+			$userID = get_value($conn, "SELECT id FROM users WHERE UPPER(username) = UPPER('$eUsername') AND password = '$ehPassword'");
+			$_SESSION['id'] = $userID;
+			
 			header('Location:create_character.php');
             exit();
         }

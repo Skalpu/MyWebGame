@@ -1,8 +1,7 @@
 .left
 {
 	position: absolute;
-	left: 10%;
-	transform: translateX(-50%);
+	left: 0%;
 }
 .center
 {
@@ -13,8 +12,7 @@
 .right
 {
 	position: absolute;
-	right: 10%;
-	transform: translateX(+50%);
+	right: 0%;
 }
 .arrow:hover
 {
@@ -44,4 +42,12 @@
 	height: 20px;
 	top: 70px;
 	left: 10px;
+}
+#divFoto
+{
+	position: fixed;
+	width: 200px;
+	height: 600px;
+	top: 200px;
+	right: 300px;
 }
