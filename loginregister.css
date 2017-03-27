@@ -24,6 +24,10 @@
 {
 	margin-top: 130px;
 }
+#errorLabelRegister
+{
+	margin-top: 180px;
+}
 
 .centerForm
 {
@@ -52,9 +56,18 @@
 {
 	margin-top: 70px;
 }
+#confirmForm
+{
+	margin-top: 120px;
+}
 #submitFormLogin
 {
 	margin-top: 100px;
+	background-color: #fff1a8;
+}
+#submitFormRegister
+{
+	margin-top: 150px;
 	background-color: #fff1a8;
 }
 
