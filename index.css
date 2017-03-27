@@ -20,7 +20,18 @@ body
     left: 50%;
     top: 5%;
 }
-
+#divWizard
+{
+    position: fixed;
+	left: 3%;
+	bottom: 3%;
+}
+#divMonster
+{
+    position: fixed;
+	right: -30%;
+	bottom: 3%;
+}
 #divMainOkno
 {
     width: 70%;
@@ -32,15 +43,6 @@ body
     background: linear-gradient(beige,burlywood);
 }
 
-#divWizard
-{
-    position: fixed;
-}
-
-#divMonster
-{
-    position: fixed;
-}
 
 /* ------------- ZDJĘCIA --------------- */
 
@@ -55,7 +57,7 @@ body
 {
     height: auto;
     width: auto;
-    max-width: 30%;
+    max-width: 60%;
 }
 #logoFoto
 {
@@ -80,4 +82,12 @@ body
 #logowanieFoto 
 { 
 	content: url(gfx/menu/logowanie_000000.png); 
+}
+#wizardFoto
+{
+	content: url(gfx/wizard.png);
+}
+#monsterFoto
+{
+	content: url(gfx/monster.png);
 }
