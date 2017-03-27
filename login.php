@@ -78,9 +78,9 @@
 			<input id="usernameForm" class='centerForm' type='text' name='username'><br>
 			<div id="passwordLabel" class='centerLabel'>Hasło:</div>			
 			<input id="passwordForm" class='centerForm' type='password' name='password'><br>
-			<input id="submitForm" class='centerForm' type='submit' value='Logowanie'>
+			<input id="submitFormLogin" class='centerForm' type='submit' value='Logowanie'>
         </Form>
-        <div id="errorLabel">		<?php	if(isset($error_msg) && $error_msg != "") { echo $error_msg; }	?>		</div>
+        <div id="errorLabelLogin" class='centerLabel'>		<?php	if(isset($error_msg) && $error_msg != "") { echo $error_msg; }	?>		</div>
     </div>
     
     
