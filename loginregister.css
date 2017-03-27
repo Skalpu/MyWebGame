@@ -20,6 +20,14 @@
 {
 	margin-top: 100px;
 }
+#errorLabelLogin
+{
+	margin-top: 130px;
+}
+#errorLabelRegister
+{
+	margin-top: 180px;
+}
 
 .centerForm
 {
@@ -29,25 +37,41 @@
 	
 	top: 40%;
 	width: 10%;
+	height: 22px;
 	min-width: 100px;
 	max-width: 200px;
 	left: 50%;
 	transform: translate(-50%);
+	
+	-webkit-box-shadow: inset 0px 0px 5px 1px rgba(0,0,0,0.75);
+	-moz-box-shadow: inset 0px 0px 5px 1px rgba(0,0,0,0.75);
+	box-shadow: inset 0px 0px 5px 1px rgba(0,0,0,0.75);
 }
 
 #usernameForm
 {
-	margin-top: 25px;
+	margin-top: 20px;
 }
 #passwordForm
 {
-	margin-top: 75px;
+	margin-top: 70px;
 }
-#submitForm
+#confirmForm
 {
-	margin-top: 125px;
-	background-color: white;
+	margin-top: 120px;
 }
+#submitFormLogin
+{
+	margin-top: 100px;
+	background-color: #fff1a8;
+}
+#submitFormRegister
+{
+	margin-top: 150px;
+	background-color: #fff1a8;
+}
+
+
 
 /*#usernameLabel
 {

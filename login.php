@@ -31,18 +31,8 @@
 			else
 			{
 				$conn->query("UPDATE users SET last_login = NOW() WHERE UPPER(username) = UPPER('$eUsername') AND password = '$ehPassword'");
-                $is_Admin = get_value($conn, "SELECT is_admin FROM users WHERE UPPER(username) = UPPER('$eUsername') AND password = '$ehPassword'"); 
-                
-                if ($is_Admin == 1)
-                {
-                    header('Location:adminer-4.2.5.php');
-                    exit();
-                }
-                else
-                {
-                    header('Location:main.php');
-                    exit();
-                }
+                header('Location:main.php');
+                exit();
 			}
 		}
 		else
@@ -70,23 +60,25 @@
 
 <Body>
     
-    <div id="divWizard"><img id="wizardFoto" src="gfx/wizard.png"></div>
-    <div id="divMonster"><img id="monsterFoto" src="gfx/monster.png"></div>
+    <div id="divWizard" class="noselect"><img id="wizardFoto"></div>
+    <div id="divMonster" class="noselect"><img id="monsterFoto"></div>
     <div id="divMainOkno">
+		<div id="usernameLabel" class='centerLabel'>Użytkownik:</div>	
+		<div id="passwordLabel" class='centerLabel'>Hasło:</div>		
+		<div id="errorLabelLogin" class='centerLabel'>		<?php	if(isset($error_msg) && $error_msg != "") { echo $error_msg; }	?>		</div>
+	
         <Form action='login.php' method='post'>
-			<div id="usernameLabel" class='centerLabel'>Użytkownik:</div>		
-			<input id="usernameForm" class='centerForm' type='text' name='username'><br>
-			<div id="passwordLabel" class='centerLabel'>Hasło:</div>			
-			<input id="passwordForm" class='centerForm' type='password' name='password'><br>
-			<input id="submitForm" class='centerForm' type='submit' value='Logowanie'>
+			<input id="usernameForm" class='centerForm' type='text' name='username'>
+			<input id="passwordForm" class='centerForm' type='password' name='password'>
+			<input id="submitFormLogin" class='centerForm' type='submit' value='Logowanie'>
         </Form>
-        <div id="errorLabel">		<?php	if(isset($error_msg) && $error_msg != "") { echo $error_msg; }	?>		</div>
+       
     </div>
     
     
-    <div id="divLogo"><a href="index.php"><img id="logoFoto"></a></div>
-    <div id="divRejestracja"><a href="register.php"><img id="rejestracjaFoto"></a></div>
-    <div id="divLogowanie"><a href="login.php"><img id="logowanieFoto"></a></div>
+    <div id="divLogo" class="noselect"><a href="index.php"><img id="logoFoto"></a></div>
+    <div id="divRejestracja" class="noselect"><a href="register.php"><img id="rejestracjaFoto"></a></div>
+    <div id="divLogowanie" class="noselect"><a href="login.php"><img id="logowanieFoto"></a></div>
     
 </Body>
 </HTML>
