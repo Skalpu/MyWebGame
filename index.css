@@ -20,18 +20,6 @@ body
     left: 50%;
     top: 5%;
 }
-#divWizard
-{
-    position: fixed;
-	left: 3%;
-	bottom: 3%;
-}
-#divMonster
-{
-    position: fixed;
-	right: -30%;
-	bottom: 3%;
-}
 #divMainOkno
 {
     width: 70%;
@@ -42,11 +30,29 @@ body
     top: 15%;
     background: linear-gradient(beige,burlywood);
 }
+#divWizard
+{
+    position: fixed;
+	left: -5%;
+	bottom: -10%;
+}
+#divMonster
+{
+    position: fixed;
+	right: -30%;
+	bottom: -15%;
+}
 
 
 /* ------------- ZDJĘCIA --------------- */
 
 /* SCALING */
+#logoFoto
+{
+    height: auto;
+    width: auto;
+    max-width: 30%;
+}
 #wizardFoto
 {
     height: auto;
@@ -57,13 +63,7 @@ body
 {
     height: auto;
     width: auto;
-    max-width: 60%;
-}
-#logoFoto
-{
-    height: auto;
-    width: auto;
-    max-width: 30%;
+    max-width: 80%;
 }
 
 /* SOURCES */
