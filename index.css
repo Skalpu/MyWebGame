@@ -1,78 +1,83 @@
 body
 {
-    background-image: url(gfx/simple-simple-background-hd-background.jpg);
 	font-family:Arial, Helvetica, sans-serif;
 }
-
-#logoFoto { content: url(gfx/logo.png); }
-#rejestracjaFoto { content: url(gfx/menu/rejestracja_000000.png); }
-#logowanieFoto { content: url(gfx/menu/logowanie_000000.png); }
-
-
 #divRejestracja
 {
     position: fixed;
-    left: 630px;
-    top: 60px;
+    left: 30%;
+    top: 5%
 }
 #divLogowanie
 {
     position: fixed;
-    right: 630px;
-    top: 60px;
+    right: 30%;
+    top: 5%;
 }
-
 #divLogo
 {
     position: fixed;
-    left: 760px;
-    top: -30px;
+    left: 50%;
+    top: 5%;
 }
-#logoFoto
-{
-    height: auto;
-    width: auto;
-    max-width: 400px;
-}
+
 #divMainOkno
 {
-    width: 1000px;
-    height: 600px;
+    width: 70%;
+    height: 70%;
     border: 3px solid black;
     position: fixed;
-    left: 460px;
-    top: 150px;
+    left: 15%;
+    top: 15%;
     background: linear-gradient(beige,burlywood);
-	font-family:Arial, Helvetica, sans-serif;
 }
+
+#divWizard
+{
+    position: fixed;
+}
+
+#divMonster
+{
+    position: fixed;
+}
+
+/* ------------- ZDJĘCIA --------------- */
+
+/* SCALING */
 #wizardFoto
 {
     height: auto;
     width: auto;
-    max-width: 600px;
-}
-#divWizard
-{
-    position: fixed;
-    bottom: -10px;
-    left: 10px;
+    max-width: 30%;
 }
 #monsterFoto
 {
     height: auto;
     width: auto;
-    max-width: 900px;
+    max-width: 30%;
 }
-#divMonster
+#logoFoto
 {
-    position: fixed;
-    bottom: -70px;
-    right: -230px;
+    height: auto;
+    width: auto;
+    max-width: 30%;
 }
 
-
-
-
-
-
-
+/* SOURCES */
+body
+{
+	background-image: url(gfx/simple-simple-background-hd-background.jpg);
+}
+#logoFoto 
+{ 
+	content: url(gfx/logo.png); 
+}
+#rejestracjaFoto 
+{ 
+	content: url(gfx/menu/rejestracja_000000.png); 
+}
+#logowanieFoto 
+{ 
+	content: url(gfx/menu/logowanie_000000.png); 
+}
