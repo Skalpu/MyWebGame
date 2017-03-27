@@ -10,12 +10,11 @@
 
 <Body>
     
-    <div id="divWizard"><img id="wizardFoto" src="gfx/wizard.png"></div>
-    <div id="divMonster"><img id="monsterFoto" src="gfx/monster.png"></div>
+    <div id="divWizard"><img id="wizardFoto"></div>
+    <div id="divMonster"><img id="monsterFoto"></div>
     <div id="divMainOkno">
-
+		Witaj w SkalpoGrze!
     </div>
-    
     
     <div id="divLogo"><a href="index.php"><img id="logoFoto"></a></div>
     <div id="divRejestracja"><a href="register.php"><img id="rejestracjaFoto"></a></div>
