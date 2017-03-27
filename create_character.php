@@ -1,13 +1,22 @@
+//TODO LAST LOGIN UPDATE ON CREATE
+
 <?php
 
     require_once('config.php');
     login_check();
-    
+	
 	if (get_stat("last_login","users",$_SESSION['id']) != null)
     {
-        //header('Location:main.php');
-        //exit();
+        header('Location:main.php');
+        exit();
     }
+	
+	//Counting portraits
+	$directory = "./gfx/portrety/";
+	$f = new FilesystemIterator($directory, FilesystemIterator::SKIP_DOTS);
+    $filecount = iterator_count($f);
+    
+	
 	
     if($_POST)
     {
@@ -38,18 +47,24 @@
     <div id="divMainOkno">
 		<div id="divPlec">
 			<div id="plecLeft" class="left arrow noselect">&larr;</div>
-			<div id="plecTekst" class="center noselect">Mężczyzna</div>
+			<div id="plecTekst" class="center noselect"></div>
 			<div id="plecRight" class="right arrow noselect">&rarr;</div>
         </div>
 		<div id="divRasa">
 			<div id="rasaLeft" class="left arrow noselect">&larr;</div>
-			<div id="rasaTekst" class="center noselect">Człowiek</div>
+			<div id="rasaTekst" class="center noselect"></div>
 			<div id="rasaRight" class="right arrow noselect">&rarr;</div>
 		</div>
 		<div id="divKlasa">
 			<div id="klasaLeft" class="left arrow noselect">&larr;</div>
-			<div id="klasaTekst" class="center noselect">Barbarzyńca</div>
+			<div id="klasaTekst" class="center noselect"></div>
 			<div id="klasaRight" class="right arrow noselect">&rarr;</div>
+		</div>
+		<div id="divFoto">
+			<div id="fotoContainer"><img id="foto"></div>
+			<div id="fotoLeft" class="left arrow noselect">&larr;</div>
+			<div id="fotoTekst" class="center noselect">1/</div>
+			<div id="fotoRight" class="right arrow noselect">&rarr;</div>
 		</div>
 	
     </div>
@@ -73,13 +88,23 @@
 	var iRasa = 0;
 	var iKlasa = 0;
 	var iFoto = 0;
+	var FotoCount = <?php echo json_encode($filecount); ?>;
+	
 	var Plec = ["Mężczyzna", "Kobieta"];
 	var Rasa = ["Człowiek", "Ork", "Leśny elf", "Krasnolud", "Wysoki elf"];
 	var Klasa = ["Barbarzyńca", "Wojownik", "Łotrzyk", "Łowca", "Mnich", "Paladyn", "Kleryk", "Bard", "Druid", "Czarodziej", "Czarnoksiężnik"];
-	var Foto = [
-		
-	];
+	var Foto = [];
 	
+	for(i = 0; i < FotoCount; i++)
+	{
+		Foto[i] = "/gfx/portrety/" + [i] + ".jpg";
+	}
+	
+	$("#plecTekst").html(Plec[0]);
+	$("#rasaTekst").html(Rasa[0]);
+	$("#klasaTekst").html(Klasa[0]);
+	$("#fotoTekst").html("1/" + FotoCount);
+	$("#foto").attr("src", Foto[0]);
 	
 	function travelList(direction, list, pointer, onSuccess)
 	{
@@ -120,7 +145,16 @@
 	{
 		$("#klasaTekst").html(Klasa[iKlasa]);
 	}
-	
+	function updateFoto()
+	{
+		var numer = iFoto + 1;
+		var tekst = numer + "/" + FotoCount;
+		$("#fotoTekst").html(tekst);
+		
+		d = new Date();
+		$("#foto").attr("src", Foto[iFoto] + "?" + d.getTime());
+	}
+
 	
 	$("#plecLeft").click(function(){
 		travelList("left", Plec, "iPlec", updatePlec);
@@ -140,6 +174,13 @@
 	$("#klasaRight").click(function(){
 		travelList("right", Klasa, "iKlasa", updateKlasa);
 	});
+	$("#fotoLeft").click(function(){
+		travelList("left", Foto, "iFoto", updateFoto);
+	});
+	$("#fotoRight").click(function(){
+		travelList("right", Foto, "iFoto", updateFoto);
+	});
+	
 	
 	
 </script>
