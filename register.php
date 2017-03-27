@@ -48,8 +48,8 @@
     
 <Body>
 
-    <div id="divWizard"><img id="wizardFoto"></div>
-    <div id="divMonster"><img id="monsterFoto"></div>
+    <div id="divWizard" class="noselect"><img id="wizardFoto"></div>
+    <div id="divMonster" class="noselect"><img id="monsterFoto"></div>
     <div id="divMainOkno">
 		<div id="usernameLabel" class='centerLabel'>Użytkownik:</div>
 		<div id="passwordLabel" class='centerLabel'>Hasło:</div>
@@ -66,9 +66,9 @@
     </div>
     
     
-    <div id="divLogo"><a href="index.php"><img id="logoFoto"></a></div>
-    <div id="divRejestracja"><a href="register.php"><img id="rejestracjaFoto"></a></div>
-    <div id="divLogowanie"><a href="login.php"><img id="logowanieFoto"></a></div>
+    <div id="divLogo" class="noselect"><a href="index.php"><img id="logoFoto"></a></div>
+    <div id="divRejestracja" class="noselect"><a href="register.php"><img id="rejestracjaFoto"></a></div>
+    <div id="divLogowanie" class="noselect"><a href="login.php"><img id="logowanieFoto"></a></div>
     
 </Body>
 </HTML>
@@ -115,12 +115,10 @@
 		
 		if(error_msg == "")
 		{
-			alert("true");
 			return true;
 		}
 		else
 		{
-			alert("false");
 			document.getElementById("errorLabelRegister").innerHTML = error_msg;
 			return false;
 		}
