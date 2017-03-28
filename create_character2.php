@@ -1,10 +1,12 @@
-//TODO LAST LOGIN UPDATE ON CREATE
-
 <?php
+//TODO LAST LOGIN UPDATE ON CREATE
+//TODO ZAPISYWANIE OSTATNIEGO STANU CHAR CREATION PRZY COFANIU
+
 
 	//Checking if logged in
     require_once('config.php');
     login_check();
+	
 	
 	//Checking if character isn't already created
 	if (get_stat("last_login","users",$_SESSION['player']->id) != null)
@@ -12,7 +14,6 @@
         header('Location:main.php');
         exit();
     }
-	
 	
 	
 	//Generation of initial stat distribution
@@ -105,6 +106,7 @@
 			$_SESSION['player']->totalStats += $value;
 		}
 		
+		
 		//Generating remaining points
 		echo "<div class='statContainer noselect'></div>";
 		echo "<div class='statContainer noselect'>";
@@ -112,6 +114,66 @@
 		echo "<div class='statValue noselect' id='pozostale'>0</div>";
 		echo "<div class='statHover noselect'>Punkty statystyk, które możesz jeszcze rozdysponować.</div>";
 		echo "</div>";
+	}
+	
+	
+	//Validating sent form, creating character
+	if($_POST)
+	{
+		$total = $_POST['sila'] + $_POST['zwinnosc'] + $_POST['celnosc'] + $_POST['kondycja'] + $_POST['inteligencja'] + $_POST['wiedza'] + $_POST['charyzma'] + $_POST['szczescie'];
+		
+		if($total == $_SESSION['player']->totalStats)
+		{
+			//Getting variables from post and saving them in session
+			unset($_SESSION['player']->totalStats);
+			$_SESSION['player']->sila = $_POST['sila'];
+			$_SESSION['player']->zwinnosc = $_POST['zwinnosc'];
+			$_SESSION['player']->celnosc = $_POST['celnosc'];
+			$_SESSION['player']->kondycja = $_POST['kondycja'];
+			$_SESSION['player']->inteligencja = $_POST['inteligencja'];
+			$_SESSION['player']->wiedza = $_POST['wiedza'];
+			$_SESSION['player']->charyzma = $_POST['charyzma'];
+			$_SESSION['player']->szczescie = $_POST['szczescie'];
+			
+			//Setting variables in short format for easier query
+			$plec = $_SESSION['player']->plec;
+			$rasa = $_SESSION['player']->rasa;
+			$klasa = $_SESSION['player']->klasa;
+			$foto = $_SESSION['player']->foto;
+			
+			$sila = $_SESSION['player']->sila;
+			$zwinnosc = $_SESSION['player']->zwinnosc;
+			$celnosc = $_SESSION['player']->celnosc;
+			$kondycja = $_SESSION['player']->kondycja;
+			$inteligencja = $_SESSION['player']->inteligencja;
+			$wiedza = $_SESSION['player']->wiedza;
+			$charyzma = $_SESSION['player']->charyzma;
+			$szczescie = $_SESSION['player']->szczescie;
+			
+			$id = $_SESSION['player']->id;
+			
+			$_SESSION['player']->updateMaxHP();
+			$_SESSION['player']->updateMaxMana();
+
+			$HP = $_SESSION['player']->HP;
+			$MaxHP = $_SESSION['player']->MaxHP;
+			$Mana = $_SESSION['player']->Mana;
+			$MaxMana = $_SESSION['player']->MaxMana;
+			
+			//Updating database
+			$conn = connectDB();
+			$conn->query("UPDATE users SET plec='$plec', rasa='$rasa', klasa='$klasa', foto=$foto, sila=$sila, zwinnosc=$zwinnosc, celnosc=$celnosc, kondycja=$kondycja, inteligencja=$inteligencja, wiedza=$wiedza, charyzma=$charyzma, szczescie=$szczescie, last_login=NOW(), last_update=NOW(), hp=$HP, maxhp=$MaxHP, mana=$Mana, maxmana=$MaxMana, level=1 WHERE id=$id");
+			$conn->close();
+			
+			//Moving the user to main game
+			header('Location:main.php');
+			exit();
+		}
+		else
+		{
+			//TODO: banowanie?
+			$error_msg = "Nie oszukuj.";
+		}
 	}
 
 ?>
@@ -152,9 +214,9 @@
 				<a href="create_character.php"><input id="backButton" class="arrow orange przycisk" name="backButton" type="button" value="Powrót"></a>
 				<input id="submitButton" class="arrow orange przycisk" name="submitButton" type="submit" value="Gotowe">
 			</Form>
-			
 		</div>
 		
+		<div id="errorLabelCreation" class='centerLabel'>		<?php	if(isset($error_msg) && $error_msg != "") { echo $error_msg; }	?>		</div>
 		
 	</div>
     
@@ -246,8 +308,36 @@
 	//Form validation before sending to php
 	function validateForm()
 	{
+		var remaining = parseInt($("#pozostale").html());
 		
-		return true;
+		if(remaining == 0)
+		{
+			var setSila = $("#silaValue").html();
+			var setZwinnosc = $("#zwinnoscValue").html();
+			var setCelnosc = $("#celnoscValue").html();
+			var setKondycja = $("#kondycjaValue").html();
+			var setInteligencja = $("#inteligencjaValue").html();
+			var setWiedza = $("#wiedzaValue").html();
+			var setCharyzma = $("#charyzmaValue").html();
+			var setSzczescie = $("#szczescieValue").html();
+			
+			$("#hiddenSila").val(setSila);
+			$("#hiddenZwinnosc").val(setZwinnosc);
+			$("#hiddenCelnosc").val(setCelnosc);
+			$("#hiddenKondycja").val(setKondycja);
+			$("#hiddenInteligencja").val(setInteligencja);
+			$("#hiddenWiedza").val(setWiedza);
+			$("#hiddenCharyzma").val(setCharyzma);
+			$("#hiddenSzczescie").val(setSzczescie);
+		
+			return true;
+		}
+		else
+		{
+			$("#errorLabelCreation").html("Musisz rozdać wszystkie punkty statystyk.");
+			
+			return false;
+		}
 	}
 
 </script>

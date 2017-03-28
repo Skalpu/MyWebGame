@@ -18,6 +18,23 @@
 		public $wiedza;
 		public $charyzma;
 		public $szczescie;
+		
+		public $HP;
+		public $MaxHP;
+		
+		public $Mana;
+		public $MaxMana;
+		
+		public function updateMaxHP()
+		{
+			$this->MaxHP = $this->kondycja * 10;
+			$this->HP = $this->MaxHP;
+		}
+		public function updateMaxMana()
+		{
+			$this->MaxMana = $this->wiedza * 10;
+			$this->Mana = $this->MaxMana;
+		}
 	}
 	
 	
