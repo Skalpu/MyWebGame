@@ -15,15 +15,7 @@
 	$directory = "./gfx/portrety/";
 	$f = new FilesystemIterator($directory, FilesystemIterator::SKIP_DOTS);
     $filecount = iterator_count($f);
-    
 	
-	
-    if($_POST)
-    {
-		header('Location:main.php');
-        exit();
-    }
-
 ?>
 
 
@@ -66,7 +58,18 @@
 			<div id="fotoTekst" class="center noselect">1/</div>
 			<div id="fotoRight" class="right arrow noselect">&rarr;</div>
 		</div>
-	
+		<div id="divOpis">
+			<div id="opisTekst"></div>
+		</div>
+		<div id="divContinue" class="centerLabel">
+			<Form onsubmit="return validateForm();" action="create_character2.php" method="post">
+				<input name="plec" type="hidden">
+				<input name="rasa" type="hidden">
+				<input name="klasa" type="hidden">
+				<input name="foto" type="hidden">
+				<input name="submitButton" type="submit" value="Kontynuuj">
+			</Form>
+		</div>
     </div>
     
 	
@@ -76,7 +79,6 @@
     
 </Body>
 </HTML>
-
 
 
 <script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
@@ -93,19 +95,25 @@
 	
 	var Plec = ["Mężczyzna", "Kobieta"];
 	var Rasa = ["Człowiek", "Ork", "Leśny elf", "Krasnolud", "Wysoki elf"];
+	var RasaOpis = ["Człowiek-opis", "Ork-opis", "Leśny elf-opis", "Krasnolud-opis", "Wysoki elf-opis"];
 	var Klasa = ["Barbarzyńca", "Wojownik", "Łotrzyk", "Łowca", "Mnich", "Paladyn", "Kleryk", "Bard", "Druid", "Czarodziej", "Czarnoksiężnik"];
+	var KlasaOpis = ["Barbarzyńca-opis", "Wojownik-opis", "Łotrzyk-opis", "Łowca-opis", "Mnich-opis", "Paladyn-opis", "Kleryk-opis", "Bard-opis", "Druid-opis", "Czarodziej-opis", "Czarnoksiężnik-opis"];
 	var Foto = [];
+	
 	
 	for(i = 0; i < FotoCount; i++)
 	{
 		Foto[i] = "url(gfx/portrety/" + [i] + ".jpg?";
 	}
 	
+	
 	$("#plecTekst").html(Plec[0]);
 	$("#rasaTekst").html(Rasa[0]);
 	$("#klasaTekst").html(Klasa[0]);
 	$("#fotoTekst").html("1/" + FotoCount);
 	$("#fotoContainer").css("background-image", Foto[0] + new Date().getTime() + ")");
+	$("#opisTekst").html(RasaOpis[0]);
+	
 	
 	function travelList(direction, list, pointer, onSuccess)
 	{
@@ -141,10 +149,12 @@
 	function updateRasa()
 	{
 		$("#rasaTekst").html(Rasa[iRasa]);
+		$("#opisTekst").html(RasaOpis[iRasa]);
 	}
 	function updateKlasa()
 	{
 		$("#klasaTekst").html(Klasa[iKlasa]);
+		$("#opisTekst").html(KlasaOpis[iKlasa]);
 	}
 	function updateFoto()
 	{
@@ -180,13 +190,11 @@
 		travelList("right", Foto, "iFoto", updateFoto);
 	});
 	
-	$("#foto").on('load',function(){
-    var css;
-    var ratio=$(this).width() / $(this).height();
-    var pratio=$(this).parent().width() / $(this).parent().height();
-    if (ratio<pratio) css={width:'auto', height:'100%'};
-    else css={width:'100%', height:'auto'};
-    $(this).css(css);
-});
+	function validateForm()
+	{
+		var setPlec = $("#plecTekst").html();
+		alert(setPlec);
+	}
+
 	
 </script>
