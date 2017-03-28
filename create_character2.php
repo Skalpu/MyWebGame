@@ -1,5 +1,4 @@
 <?php
-//TODO LAST LOGIN UPDATE ON CREATE
 //TODO ZAPISYWANIE OSTATNIEGO STANU CHAR CREATION PRZY COFANIU
 
 
@@ -155,14 +154,17 @@
 			$_SESSION['player']->updateMaxHP();
 			$_SESSION['player']->updateMaxMana();
 
-			$HP = $_SESSION['player']->HP;
-			$MaxHP = $_SESSION['player']->MaxHP;
-			$Mana = $_SESSION['player']->Mana;
-			$MaxMana = $_SESSION['player']->MaxMana;
+			$hp = $_SESSION['player']->hp;
+			$maxhp = $_SESSION['player']->maxhp;
+			$mana = $_SESSION['player']->mana;
+			$maxmana = $_SESSION['player']->maxmana;
 			
 			//Updating database
 			$conn = connectDB();
-			$conn->query("UPDATE users SET plec='$plec', rasa='$rasa', klasa='$klasa', foto=$foto, sila=$sila, zwinnosc=$zwinnosc, celnosc=$celnosc, kondycja=$kondycja, inteligencja=$inteligencja, wiedza=$wiedza, charyzma=$charyzma, szczescie=$szczescie, last_login=NOW(), last_update=NOW(), hp=$HP, maxhp=$MaxHP, mana=$Mana, maxmana=$MaxMana, level=1 WHERE id=$id");
+			$conn->query("UPDATE users SET plec='$plec', rasa='$rasa', klasa='$klasa', foto=$foto, sila=$sila, zwinnosc=$zwinnosc, celnosc=$celnosc, kondycja=$kondycja, inteligencja=$inteligencja, wiedza=$wiedza, charyzma=$charyzma, szczescie=$szczescie, last_login=NOW(), last_update=NOW(), hp=$hp, maxhp=$maxhp, mana=$mana, maxmana=$maxmana, level=1 WHERE id=$id");
+			$conn->query("INSERT INTO user_mail (id) VALUES ($id)");
+			$conn->query("INSERT INTO spellbooks (id) VALUES ($id)");
+			$conn->query("INSERT INTO equipment (id) VALUES ($id)");
 			$conn->close();
 			
 			//Moving the user to main game

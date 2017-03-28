@@ -12,8 +12,9 @@
     
     <div id="divWizard" class="noselect"><img id="wizardFoto"></div>
     <div id="divMonster" class="noselect"><img id="monsterFoto"></div>
-    <div id="divMainOkno">
-		Witaj w SkalpoGrze!
+	
+	<div id="divMainOkno">
+	
     </div>
     
     <div id="divLogo" class="noselect"><a href="index.php"><img id="logoFoto"></a></div>

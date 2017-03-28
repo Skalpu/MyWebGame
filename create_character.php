@@ -1,5 +1,4 @@
 <?php
-//TODO LAST LOGIN UPDATE ON CREATE
 //TODO ZAPISYWANIE OSTATNIEGO STANU CHAR CREATION PRZY COFANIU
 	
 	
@@ -7,12 +6,14 @@
     require_once('config.php');
     login_check();
 	
+	
 	//Checking if character isn't already created
 	if (get_stat("last_login","users",$_SESSION['player']->id) != null)
     {
         header('Location:main.php');
         exit();
     }
+	
 	
 	//Resetting variables
 	$_SESSION['plec'] = "";
@@ -25,6 +26,7 @@
 	$directory = "./gfx/portrety/";
 	$f = new FilesystemIterator($directory, FilesystemIterator::SKIP_DOTS);
     $filecount = iterator_count($f);
+	
 	
 	//Moving to character creation 2
 	if($_POST)
