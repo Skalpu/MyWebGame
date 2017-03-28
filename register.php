@@ -26,10 +26,12 @@
 			
 			session_start();
 			$_SESSION['authenticated'] = true;
-            $_SESSION['username'] = $username;
-			$userID = get_value($conn, "SELECT id FROM users WHERE UPPER(username) = UPPER('$eUsername') AND password = '$ehPassword'");
-			$_SESSION['id'] = $userID;
-			
+			$player = new Player();
+			$player->username = $username;
+			$player->id = get_value($conn, "SELECT id FROM users WHERE UPPER(username) = UPPER('$eUsername') AND password = '$ehPassword'");
+			$_SESSION['player'] = $player;
+			$conn->close();
+
 			header('Location:create_character.php');
             exit();
         }
@@ -85,13 +87,14 @@
 	
 <script>
     
+	//Focus on "username" when page loaded
     document.addEventListener('DOMContentLoaded',function()
     {
         document.getElementById('usernameForm').focus();
     });
         
         
-    //CLIENT SIDE VALIDATION
+    //Client side form validation
     function validateForm()
     {
 		var error_msg = "";

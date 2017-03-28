@@ -1,0 +1,83 @@
+/* STAT DISTRIBUTION */
+#divStatystyki
+{
+	position: fixed;
+	width: 15%;
+	
+	left: 20%;
+	top: 20%;
+}
+
+.statContainer
+{
+	width: 100%;
+	height: 20px;
+	position: relative;
+	clear: left;
+}
+.statLabel
+{
+	float: left;
+	position: relative;
+	top: 15%;
+}
+.statMinus
+{
+	float: left;
+	position: absolute;
+	left: 63%;
+	top: 15%;
+}
+.statValue
+{
+	float: left;
+	position: absolute;
+	left: 74%;
+	top: 15%;
+	text-align: center;
+	width: 30px;
+}
+.statPlus
+{
+	float: left;
+	position: absolute;
+	left: 90%;
+	top: 15%;
+}
+.buttonMinus, .buttonPlus
+{
+    border: 1px solid black;
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin: 2px;
+    font-size: 6px;
+    border-radius: 50%;
+    transition-duration: 0.3s;
+    background-color: darkorange;
+    color: white;
+    text-align: center;
+	
+	box-shadow: inset 0 0 3px black;
+	padding: 0px;
+}
+.buttonPlus
+{
+    background-color: darkgreen;
+}
+.buttonMinus:hover, .buttonPlus:hover 
+{
+    color: black;
+    background-color: white;
+}
+.statHover
+{
+	display: none;
+	background: linear-gradient(bisque, burlywood); /* Standard syntax */
+	position: fixed;
+	width: 250px;
+	padding: 7px;
+	z-index: 5;
+	border: 1px solid black;
+	box-shadow: inset 0 0 10px black;
+}

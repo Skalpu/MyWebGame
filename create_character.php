@@ -1,11 +1,11 @@
 //TODO LAST LOGIN UPDATE ON CREATE
 
 <?php
-
+	
 	//Checking if logged in
     require_once('config.php');
     login_check();
-
+	
 	//Checking if character isn't already created
 	if (get_stat("last_login","users",$_SESSION['id']) != null)
     {
@@ -26,12 +26,12 @@
 	
 	//Moving to character creation 2
 	if($_POST)
-	{
-		$_SESSION['plec'] = $_POST['plec'];
-		$_SESSION['rasa'] = $_POST['rasa'];
-		$_SESSION['klasa'] = $_POST['klasa'];
-		$_SESSION['foto'] = $_POST['foto'];
-		
+	{	
+		$_SESSION['player']->plec = $_POST['plec'];
+		$_SESSION['player']->rasa = $_POST['rasa'];
+		$_SESSION['player']->klasa = $_POST['klasa'];
+		$_SESSION['player']->foto = $_POST['foto'];
+
 		header('Location:create_character2.php');
         exit();
 	}
@@ -75,7 +75,7 @@
 		<div id="divFoto">
 			<div id="fotoContainer"></div>
 			<div id="fotoLeft" class="left arrow noselect">&larr;</div>
-			<div id="fotoTekst" class="center noselect">1/</div>
+			<div id="fotoTekst" class="center noselect"></div>
 			<div id="fotoRight" class="right arrow noselect">&rarr;</div>
 		</div>
 		<div id="divOpis">
@@ -135,6 +135,7 @@
 	$("#opisTekst").html(RasaOpis[0]);
 	
 	
+	//Function that travels the lists and loops around edges
 	function travelList(direction, list, pointer, onSuccess)
 	{
 		if(direction == "left")
@@ -210,39 +211,21 @@
 		travelList("right", Foto, "iFoto", updateFoto);
 	});
 	
+	//Form validation before passing to php
 	function validateForm()
 	{
 		var setPlec = $("#plecTekst").html();
 		var setRasa = $("#rasaTekst").html();
 		var setKlasa = $("#klasaTekst").html();
 		var setFoto = iFoto;
-		var cheating = false;
+		var valid = true;
 		
-		
-		if($.inArray(setPlec, Plec) == -1)
+		if($.inArray(setPlec, Plec) == -1 || $.inArray(setRasa, Rasa) == -1 || $.inArray(setKlasa, Klasa) == -1 || setFoto < 0 || setFoto >= FotoCount)
 		{
-			cheating = true;
-		}
-		else if($.inArray(setRasa, Rasa) == -1)
-		{
-			cheating = true;
-		}
-		else if($.inArray(setKlasa, Klasa) == -1)
-		{
-			cheating = true;
-		}
-		else if(setFoto < 0)
-		{
-			cheating = true;
-		}
-		else if(setFoto >= FotoCount)
-		{
-			cheating = true;
+			valid = false;
 		}
 		
-		alert(cheating);
-		
-		if(cheating == false)
+		if(valid == true)
 		{
 			$("#hiddenPlec").val(setPlec);
 			$("#hiddenRasa").val(setRasa);
@@ -252,7 +235,6 @@
 		}
 		else
 		{
-			alert("Nie oszukuj");
 			return false;
 		}
 		

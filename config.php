@@ -1,11 +1,23 @@
 <?php   
 	
-	abstract class Character
+	class Player
 	{
+		public $id;
 		public $username;
+		
+		public $plec;
+		public $rasa;
+		public $klasa;
+		public $foto;
 		
 		public $sila;
 		public $zwinnosc;
+		public $celnosc;
+		public $kondycja;
+		public $inteligencja;
+		public $wiedza;
+		public $charyzma;
+		public $szczescie;
 	}
 	
 	
