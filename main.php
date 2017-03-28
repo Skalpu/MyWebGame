@@ -34,14 +34,14 @@
 		- CRON JOBS NA WYPRAWY<br>
     </div>
 
-    <?php update_logic($_SESSION['id']); ?>
-	<?php echo drawWyprawa($_SESSION['id']); ?>
-	<?php echo drawMail($_SESSION['id']); ?>
-    <?php echo drawHealthBar($_SESSION['id']); ?>
-    <?php echo drawManaBar($_SESSION['id']);   ?>
-    <?php echo drawExpBar($_SESSION['id']);    ?> 
-	<?php echo drawGold($_SESSION['id']); ?>
-	<?php echo drawCrystals($_SESSION['id']); ?>
+    <?php update_logic($_SESSION['player']); ?>
+	<?php //echo drawWyprawa($_SESSION['id']); ?>
+	<?php //echo drawMail($_SESSION['id']); ?>
+    <?php drawHealthBar($_SESSION['player']); ?>
+    <?php //echo drawManaBar($_SESSION['id']);   ?>
+    <?php //echo drawExpBar($_SESSION['id']);    ?> 
+	<?php //echo drawGold($_SESSION['id']); ?>
+	<?php //echo drawCrystals($_SESSION['id']); ?>
 	
 	<nav>
     <ul>
@@ -65,10 +65,9 @@
 
 <script>	
 	
-	$(document).ready(function() {
+	/*$(document).ready(function() {
 		setTimeout(podlicz_bary, 10000);
 	});
-	
 	
 	var until = $("#wyprawaTekst").html();
 	var lokacja = $("#wyprawaContainer").attr('class');
@@ -87,7 +86,6 @@
 			$("#wyprawaContainer").css("opacity","0");
 		});
 	}
-	
 	
 	
 	function podlicz_bary()
@@ -137,6 +135,6 @@
 		
 		
 		setTimeout(podlicz_bary, 10000);
-	}
+	}*/
 	
 </script>
