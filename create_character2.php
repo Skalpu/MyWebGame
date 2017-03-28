@@ -151,7 +151,7 @@
 				<input name="szczescie" id="hiddenSzczescie" type="hidden">
 				<input class="arrow" name="submitButton" type="submit" value="Gotowe">
 			</Form>
-			<input class="arrow" name="backButton" type="button" value="Powrót">
+			<a href="create_character.php"><input class="arrow" name="backButton" type="button" value="Powrót"></a>
 		</div>
 		
 		
@@ -240,6 +240,13 @@
 			remaining++;
 			$("#pozostale").html(remaining);
 		}
+	}
+
+	//Form validation before sending to php
+	function validateForm()
+	{
+		
+		return true;
 	}
 
 </script>
