@@ -1,3 +1,21 @@
+/* BUTTONS */
+#backButton
+{
+	display: inline-block;
+}
+#submitButton
+{
+	display: inline-block;
+}
+
+/* OTHER */
+#errorLabelCreation
+{
+	margin-top: 50px;
+}
+
+
+
 /* STAT DISTRIBUTION */
 #divStatystyki
 {

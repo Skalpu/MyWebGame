@@ -1,4 +1,5 @@
 <?php
+//TODO: Max username/password length
 
     if($_POST)
     {

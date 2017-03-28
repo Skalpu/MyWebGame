@@ -1,6 +1,7 @@
-//TODO LAST LOGIN UPDATE ON CREATE
-
 <?php
+//TODO LAST LOGIN UPDATE ON CREATE
+//TODO ZAPISYWANIE OSTATNIEGO STANU CHAR CREATION PRZY COFANIU
+	
 	
 	//Checking if logged in
     require_once('config.php');
@@ -18,6 +19,7 @@
 	$_SESSION['rasa'] = "";
 	$_SESSION['klasa'] = "";
 	$_SESSION['foto'] = "";
+	
 	
 	//Counting portraits
 	$directory = "./gfx/portrety/";
@@ -87,7 +89,7 @@
 				<input name="rasa" id="hiddenRasa" type="hidden">
 				<input name="klasa" id="hiddenKlasa" type="hidden">
 				<input name="foto" id="hiddenFoto" type="hidden">
-				<input class="arrow" name="submitButton" type="submit" value="Dalej">
+				<input class="arrow orange przycisk" name="submitButton" type="submit" value="Dalej">
 			</Form>
 		</div>
     </div>
@@ -114,6 +116,7 @@
 	var iFoto = 0;
 	var FotoCount = <?php echo json_encode($filecount); ?>;
 	
+	
 	//Filing lists
 	var Plec = ["Mężczyzna", "Kobieta"];
 	var Rasa = ["Człowiek", "Ork", "Leśny elf", "Krasnolud", "Wysoki elf"];
@@ -126,6 +129,7 @@
 		Foto[i] = "url(gfx/portrety/" + [i] + ".jpg?";
 	}
 	
+	
 	//Setting initial texts/photos etc
 	$("#plecTekst").html(Plec[0]);
 	$("#rasaTekst").html(Rasa[0]);
@@ -133,6 +137,7 @@
 	$("#fotoTekst").html("1/" + FotoCount);
 	$("#fotoContainer").css("background-image", Foto[0] + new Date().getTime() + ")");
 	$("#opisTekst").html(RasaOpis[0]);
+	
 	
 	
 	//Function that travels the lists and loops around edges
@@ -210,6 +215,7 @@
 	$("#fotoRight").click(function(){
 		travelList("right", Foto, "iFoto", updateFoto);
 	});
+	
 	
 	//Form validation before passing to php
 	function validateForm()
