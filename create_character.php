@@ -87,7 +87,7 @@
 				<input name="rasa" id="hiddenRasa" type="hidden">
 				<input name="klasa" id="hiddenKlasa" type="hidden">
 				<input name="foto" id="hiddenFoto" type="hidden">
-				<input name="submitButton" type="submit" value="Kontynuuj">
+				<input class="arrow" name="submitButton" type="submit" value="Dalej">
 			</Form>
 		</div>
     </div>
