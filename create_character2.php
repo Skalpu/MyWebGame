@@ -7,7 +7,7 @@
     login_check();
 	
 	//Checking if character isn't already created
-	if (get_stat("last_login","users",$_SESSION['id']) != null)
+	if (get_stat("last_login","users",$_SESSION['player']->id) != null)
     {
         header('Location:main.php');
         exit();
