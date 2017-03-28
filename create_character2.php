@@ -13,7 +13,9 @@
         exit();
     }
 	
-	//Generating initial stat distribution
+	
+	
+	//Generation of initial stat distribution
 	function generuj_rozdawanie_statow()
 	{
 		//Resetting variables
@@ -25,6 +27,7 @@
 		$_SESSION['player']->wiedza = 10;
 		$_SESSION['player']->charyzma = 10;
 		$_SESSION['player']->szczescie = 10;
+		$_SESSION['player']->totalStats = 0;
 		
 		//Setting variables according to player race
 		switch($_SESSION['player']->rasa)
@@ -81,28 +84,34 @@
 				case 7: $stat = 'szczescie'; $label = 'Szczęście'; $hover = 'Szczęście wpływa na szansę zadania obrażeń krytycznych'; $value = $_SESSION['player']->szczescie; break;
 			}
 			
-			echo "<div class='statContainer' id='" . $stat. "Container'>";
-				echo "<div class='statLabel'>" . $label . ":</div>";
+			//Generating the view
+			echo "<div class='statContainer noselect' id='" . $stat. "Container'>";
+				echo "<div class='statLabel noselect arrow'>" . $label . ":</div>";
 				
-				echo "<div class='statMinus'>";
-					echo "<button class='buttonMinus' onclick=''>-</button>";
+				echo "<div class='statMinus noselect'>";
+					echo '<button class="buttonMinus noselect arrow" onclick="removeStat(\'' .$stat. '\')">-</button>';
 				echo "</div>";
 				
-				echo "<div class='statValue'>" . $value . "</div>";
+				echo "<div class='statValue noselect' id='" .$stat. "Value'>" . $value . "</div>";
 				
-				echo "<div class='statPlus'>";
-					echo "<button class='buttonPlus' onclick=''>+</button>";
+				echo "<div class='statPlus noselect'>";
+					echo '<button class="buttonPlus noselect arrow" onclick="addStat(\'' .$stat. '\')">-</button>';
 				echo "</div>";
 				
-				echo "<div class='statHover'>" . $hover . "</div>";
+				echo "<div class='statHover noselect'>" . $hover . "</div>";
 			echo "</div>";
+			
+			//Saving total points for future cheatproofing
+			$_SESSION['player']->totalStats += $value;
 		}
 		
 		//Generating remaining points
-		echo "<div class='statContainer'></div>";
-		echo "<div class='statContainer'>";
-		echo "<div class='statLabel'>Pozostałe punkty:</div>";
-		echo "<div class='statValue'>0</div>";
+		echo "<div class='statContainer noselect'></div>";
+		echo "<div class='statContainer noselect'>";
+		echo "<div class='statLabel noselect arrow'>Pozostałe punkty:</div>";
+		echo "<div class='statValue noselect' id='pozostale'>0</div>";
+		echo "<div class='statHover noselect'>Punkty statystyk, które możesz jeszcze rozdysponować.</div>";
+		echo "</div>";
 	}
 
 ?>
@@ -128,6 +137,16 @@
     <div id="divMainOkno">
 		<div id="divStatystyki">
 			<?php generuj_rozdawanie_statow(); ?>
+			<Form onsubmit="return validateForm();" action="create_character2.php" method="post">
+				<input name="sila" id="hiddenSila" type="hidden">
+				<input name="zwinnosc" id="hiddenZwinnosc" type="hidden">
+				<input name="celnosc" id="hiddenCelnosc" type="hidden">
+				<input name="kondycja" id="hiddenKondycja" type="hidden">
+				<input name="inteligencja" id="hiddenInteligencja" type="hidden">
+				<input name="wiedza" id="hiddenWiedza" type="hidden">
+				<input name="charyzma" id="hiddenCharyzma" type="hidden">
+				<input name="szczescie" id="hiddenSzczescie" type="hidden">
+			</Form>
 		</div>
 	</div>
     
@@ -145,5 +164,75 @@
 
 
 <script>
+
+	//Hover handling
+	$(".statLabel").hover(
+		function(){
+			$(this).parent().find('.statHover').show();
+		},
+		function(){
+			$(this).parent().find('.statHover').hide();
+		}
+	);
+	$(".statLabel").bind('mousemove', function(e){
+		var top = e.pageY + 10;
+		var left = e.pageX + 20;
+		$(this).parent().find('.statHover').css({'top': top, 'left': left});
+	});
+
+	//Increase statistic
+	function addStat(statName)
+	{
+		var remaining = parseInt($("#pozostale").html());
+		
+		if(remaining > 0)
+		{
+			var current = parseInt($("#" + statName + "Value").html());
+			current++;
+			$("#" + statName + "Value").html(current);
+			
+			remaining--;
+			$("#pozostale").html(remaining);
+		}
+	}
+	
+	//Initial statistic values for determining minimum
+	var silaInit = $("#silaValue").html();
+	var zwinnoscInit = $("#zwinnoscValue").html();
+	var celnosscInit = $("#celnoscValue").html();
+	var kondycjaInit = $("#kondycjaValue").html();
+	var inteligencjaInit = $("#inteligencjaValue").html();
+	var wiedzaInit = $("#wiedzaValue").html();
+	var charyzmaInit = $("#charyzmaValue").html();
+	var szczescieInit = $("#szczescieValue").html();
+	
+	//Decrease statistic
+	function removeStat(statName)
+	{
+		var min;
+		
+		switch(statName)
+		{
+			case 'sila': min = parseInt(silaInit) - 3; break;
+			case 'zwinnosc': min = parseInt(zwinnoscInit) - 3; break;
+			case 'celnosc': min = parseInt(celnosscInit) - 3; break;
+			case 'kondycja': min = parseInt(kondycjaInit) - 3; break;
+			case 'inteligencja': min = parseInt(inteligencjaInit) - 3; break;
+			case 'wiedza': min = parseInt(wiedzaInit) - 3; break;
+			case 'charyzma': min = parseInt(charyzmaInit) - 3; break;
+			case 'szczescie': min = parseInt(szczescieInit) - 3; break;
+		}
+		
+		var current = parseInt($("#" + statName + "Value").html());
+		if(current > min)
+		{
+			current--;
+			$("#" + statName + "Value").html(current);
+			
+			var remaining = parseInt($("#pozostale").html());
+			remaining++;
+			$("#pozostale").html(remaining);
+		}
+	}
 
 </script>

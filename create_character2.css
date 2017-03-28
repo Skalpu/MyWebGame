@@ -4,10 +4,9 @@
 	position: fixed;
 	width: 15%;
 	
-	left: 20%;
+	left: 18%;
 	top: 20%;
 }
-
 .statContainer
 {
 	width: 100%;
@@ -73,11 +72,11 @@
 .statHover
 {
 	display: none;
-	background: linear-gradient(bisque, burlywood); /* Standard syntax */
 	position: fixed;
-	width: 250px;
+	width: 15%;
 	padding: 7px;
 	z-index: 5;
 	border: 1px solid black;
 	box-shadow: inset 0 0 10px black;
+	background: linear-gradient(beige,burlywood);
 }
