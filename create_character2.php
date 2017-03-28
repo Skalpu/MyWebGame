@@ -149,9 +149,10 @@
 				<input name="wiedza" id="hiddenWiedza" type="hidden">
 				<input name="charyzma" id="hiddenCharyzma" type="hidden">
 				<input name="szczescie" id="hiddenSzczescie" type="hidden">
-				<input class="arrow" name="submitButton" type="submit" value="Gotowe">
+				<a href="create_character.php"><input id="backButton" class="arrow orange przycisk" name="backButton" type="button" value="Powrót"></a>
+				<input id="submitButton" class="arrow orange przycisk" name="submitButton" type="submit" value="Gotowe">
 			</Form>
-			<a href="create_character.php"><input class="arrow" name="backButton" type="button" value="Powrót"></a>
+			
 		</div>
 		
 		

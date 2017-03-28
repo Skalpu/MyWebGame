@@ -1,3 +1,15 @@
+/* BUTTONS */
+#backButton
+{
+	display: inline-block;
+}
+#submitButton
+{
+	display: inline-block;
+}
+
+
+
 /* STAT DISTRIBUTION */
 #divStatystyki
 {
