@@ -2,19 +2,39 @@
 
 <?php
 
+	//Checking if logged in
     require_once('config.php');
     login_check();
-	
+
+	//Checking if character isn't already created
 	if (get_stat("last_login","users",$_SESSION['id']) != null)
     {
         header('Location:main.php');
         exit();
     }
 	
+	//Resetting variables
+	$_SESSION['plec'] = "";
+	$_SESSION['rasa'] = "";
+	$_SESSION['klasa'] = "";
+	$_SESSION['foto'] = "";
+	
 	//Counting portraits
 	$directory = "./gfx/portrety/";
 	$f = new FilesystemIterator($directory, FilesystemIterator::SKIP_DOTS);
     $filecount = iterator_count($f);
+	
+	//Moving to character creation 2
+	if($_POST)
+	{
+		$_SESSION['plec'] = $_POST['plec'];
+		$_SESSION['rasa'] = $_POST['rasa'];
+		$_SESSION['klasa'] = $_POST['klasa'];
+		$_SESSION['foto'] = $_POST['foto'];
+		
+		header('Location:create_character2.php');
+        exit();
+	}
 	
 ?>
 
@@ -62,11 +82,11 @@
 			<div id="opisTekst"></div>
 		</div>
 		<div id="divContinue" class="centerLabel">
-			<Form onsubmit="return validateForm();" action="create_character2.php" method="post">
-				<input name="plec" type="hidden">
-				<input name="rasa" type="hidden">
-				<input name="klasa" type="hidden">
-				<input name="foto" type="hidden">
+			<Form onsubmit="return validateForm();" action="create_character.php" method="post">
+				<input name="plec" id="hiddenPlec" type="hidden">
+				<input name="rasa" id="hiddenRasa" type="hidden">
+				<input name="klasa" id="hiddenKlasa" type="hidden">
+				<input name="foto" id="hiddenFoto" type="hidden">
 				<input name="submitButton" type="submit" value="Kontynuuj">
 			</Form>
 		</div>
@@ -87,26 +107,26 @@
 
 <script>
 
+	//Setting pointers at 0
 	var iPlec = 0;
 	var iRasa = 0;
 	var iKlasa = 0;
 	var iFoto = 0;
 	var FotoCount = <?php echo json_encode($filecount); ?>;
 	
+	//Filing lists
 	var Plec = ["Mężczyzna", "Kobieta"];
 	var Rasa = ["Człowiek", "Ork", "Leśny elf", "Krasnolud", "Wysoki elf"];
 	var RasaOpis = ["Człowiek-opis", "Ork-opis", "Leśny elf-opis", "Krasnolud-opis", "Wysoki elf-opis"];
 	var Klasa = ["Barbarzyńca", "Wojownik", "Łotrzyk", "Łowca", "Mnich", "Paladyn", "Kleryk", "Bard", "Druid", "Czarodziej", "Czarnoksiężnik"];
 	var KlasaOpis = ["Barbarzyńca-opis", "Wojownik-opis", "Łotrzyk-opis", "Łowca-opis", "Mnich-opis", "Paladyn-opis", "Kleryk-opis", "Bard-opis", "Druid-opis", "Czarodziej-opis", "Czarnoksiężnik-opis"];
 	var Foto = [];
-	
-	
 	for(i = 0; i < FotoCount; i++)
 	{
 		Foto[i] = "url(gfx/portrety/" + [i] + ".jpg?";
 	}
 	
-	
+	//Setting initial texts/photos etc
 	$("#plecTekst").html(Plec[0]);
 	$("#rasaTekst").html(Rasa[0]);
 	$("#klasaTekst").html(Klasa[0]);
@@ -193,7 +213,49 @@
 	function validateForm()
 	{
 		var setPlec = $("#plecTekst").html();
-		alert(setPlec);
+		var setRasa = $("#rasaTekst").html();
+		var setKlasa = $("#klasaTekst").html();
+		var setFoto = iFoto;
+		var cheating = false;
+		
+		
+		if($.inArray(setPlec, Plec) == -1)
+		{
+			cheating = true;
+		}
+		else if($.inArray(setRasa, Rasa) == -1)
+		{
+			cheating = true;
+		}
+		else if($.inArray(setKlasa, Klasa) == -1)
+		{
+			cheating = true;
+		}
+		else if(setFoto < 0)
+		{
+			cheating = true;
+		}
+		else if(setFoto >= FotoCount)
+		{
+			cheating = true;
+		}
+		
+		alert(cheating);
+		
+		if(cheating == false)
+		{
+			$("#hiddenPlec").val(setPlec);
+			$("#hiddenRasa").val(setRasa);
+			$("#hiddenKlasa").val(setKlasa);
+			$("#hiddenFoto").val(setFoto);
+			return true;
+		}
+		else
+		{
+			alert("Nie oszukuj");
+			return false;
+		}
+		
 	}
 
 	
