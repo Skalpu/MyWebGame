@@ -137,6 +137,9 @@
     <div id="divMainOkno">
 		<div id="divStatystyki">
 			<?php generuj_rozdawanie_statow(); ?>
+		</div>
+		
+		<div id="divButtons" class="centerLabel">
 			<Form onsubmit="return validateForm();" action="create_character2.php" method="post">
 				<input name="sila" id="hiddenSila" type="hidden">
 				<input name="zwinnosc" id="hiddenZwinnosc" type="hidden">
@@ -146,8 +149,12 @@
 				<input name="wiedza" id="hiddenWiedza" type="hidden">
 				<input name="charyzma" id="hiddenCharyzma" type="hidden">
 				<input name="szczescie" id="hiddenSzczescie" type="hidden">
+				<input class="arrow" name="submitButton" type="submit" value="Gotowe">
 			</Form>
+			<input class="arrow" name="backButton" type="button" value="Powrót">
 		</div>
+		
+		
 	</div>
     
 	
@@ -175,7 +182,7 @@
 		}
 	);
 	$(".statLabel").bind('mousemove', function(e){
-		var top = e.pageY + 10;
+		var top = e.pageY + 3;
 		var left = e.pageX + 20;
 		$(this).parent().find('.statHover').css({'top': top, 'left': left});
 	});

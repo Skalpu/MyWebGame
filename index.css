@@ -99,3 +99,30 @@ body
 {
 	cursor: pointer;
 }
+/* UNIVERAL */
+.left
+{
+	position: absolute;
+	left: 0%;
+}
+.center
+{
+	position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.right
+{
+	position: absolute;
+	right: 0%;
+}
+
+.centerLabel
+{
+	position: fixed;
+	text-align: center;
+	
+    width: 15%;
+	left: 42.5%;
+	top: 40%;
+}
