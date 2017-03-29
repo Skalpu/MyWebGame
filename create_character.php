@@ -1,5 +1,5 @@
 <?php
-//TODO ZAPISYWANIE OSTATNIEGO STANU CHAR CREATION PRZY COFANIU
+//TODO uprościć zmienne
 	
 	
 	//Checking if logged in

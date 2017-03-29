@@ -247,6 +247,7 @@
         return "rgb(" . $red . ", " . $green . ", 00)";
     }
 
+	
 	function drawGold(Player $player)
 	{
 		$zloto = round($player->zloto);

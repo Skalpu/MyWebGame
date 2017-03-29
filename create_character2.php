@@ -1,6 +1,4 @@
 <?php
-//TODO ZAPISYWANIE OSTATNIEGO STANU CHAR CREATION PRZY COFANIU
-
 
 	//Checking if logged in
     require_once('config.php');
