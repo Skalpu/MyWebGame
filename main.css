@@ -99,7 +99,7 @@
 
 
 /* IMAGES */
-body{ background-image: url("/gfx/background-1.jpg"); }
+body{ background-image: url("/gfx/background-1.jpg"); background-repeat: no-repeat; background-position: center; background-size: fill;}
 #mainMenu { background-image: url(gfx/menu/menuglowne_000000.png); }
 #postacMenu { background-image: url(gfx/menu/postac_000000.png); }
 #equipmentMenu { background-image: url(gfx/menu/ekwipunek_000000.png); }
