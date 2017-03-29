@@ -122,7 +122,7 @@ body
 
 
 /* IMAGES */
-body{ background-image: url("/gfx/background-1.jpg"); background-repeat: no-repeat; background-position: center; background-size: fill;}
+body{ background-image: url("/gfx/background-1.jpg"); background-repeat: no-repeat; background-position: center; background-size: cover;}
 #mainMenu { background-image: url(gfx/menu/menuglowne_000000.png); }
 #postacMenu { background-image: url(gfx/menu/postac_000000.png); }
 #equipmentMenu { background-image: url(gfx/menu/ekwipunek_000000.png); }
@@ -184,7 +184,7 @@ nav .active
 }
 .menuContainer
 {
-	background-size: fill;
+	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
 	width: 100%;
