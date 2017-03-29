@@ -36,12 +36,12 @@
 
     <?php update_logic($_SESSION['player']); ?>
 	<?php //echo drawWyprawa($_SESSION['id']); ?>
-	<?php //echo drawMail($_SESSION['id']); ?>
+	<?php //drawMail($_SESSION['player']); ?>
     <?php drawHealthBar($_SESSION['player']); ?>
-    <?php //echo drawManaBar($_SESSION['id']);   ?>
-    <?php //echo drawExpBar($_SESSION['id']);    ?> 
-	<?php //echo drawGold($_SESSION['id']); ?>
-	<?php //echo drawCrystals($_SESSION['id']); ?>
+    <?php drawManaBar($_SESSION['player']);   ?>
+    <?php drawExpBar($_SESSION['player']);    ?> 
+	<?php drawGold($_SESSION['player']); ?>
+	<?php drawCrystals($_SESSION['player']); ?>
 	
 	<nav>
     <ul>
@@ -59,82 +59,12 @@
 
 </HTML>
 
+
+
 <script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
 <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 <script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
 
 <script>	
-	
-	/*$(document).ready(function() {
-		setTimeout(podlicz_bary, 10000);
-	});
-	
-	var until = $("#wyprawaTekst").html();
-	var lokacja = $("#wyprawaContainer").attr('class');
-	if(lokacja != 'false')
-	{
-		$("#wyprawaTekst").countdown(until).on('update.countdown', function(event) {
-			$(this).html(event.strftime('%M:%S'));
-			$("#wyprawaContainer").css("opacity","1.0");
-		}).on('finish.countdown', function(event) {
-			$("#divMainOkno").load('walka.php', {miejsce: lokacja, typ_walki: 'wyprawa'});
-			$("<link/>", {
-				rel: "stylesheet",
-				type: "text/css",
-				href: "walka.css"
-			}).appendTo("head");
-			$("#wyprawaContainer").css("opacity","0");
-		});
-	}
-	
-	
-	function podlicz_bary()
-	{
-		//HP
-		var str = $("#textHP").html();
-		var akt = str.substring(str.indexOf(' '),str.indexOf('/'));
-		var max = str.substring(str.indexOf('/') + 1,str.length);
-		
-		if (parseInt(akt) < parseInt(max))
-		{
-			akt++;
-			var cale = "HP: " + akt + "/" + max;
-			$("#textHP").html(cale);
-			
-			var proc = akt/max;
-			var nowaDlugosc = proc * 300;
-			$("#innerHP").css("width",nowaDlugosc);
-		}
-		
-		//Mana
-		var str = $("#textMana").html();
-		var akt = str.substring(str.indexOf(' '),str.indexOf('/'));
-		var max = str.substring(str.indexOf('/') + 1,str.length);
-		
-		if (parseInt(akt) < parseInt(max))
-		{
-			akt++;
-			var cale = "MP: " + akt + "/" + max;
-			$("#textMana").html(cale);
-			
-			var proc = akt/max;
-			var nowaDlugosc = proc * 300;
-			$("#innerMana").css("width",nowaDlugosc);
-		}
-		
-		//Gold
-		var str = $("#zlotoTekst").html();
-		str++;
-		$("#zlotoTekst").html(str);
-		
-		//Krysztaly
-		var str = $("#krysztalyTekst").html();
-		str++;
-		$("#krysztalyTekst").html(str);
-		
-		
-		
-		setTimeout(podlicz_bary, 10000);
-	}*/
 	
 </script>

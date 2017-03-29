@@ -16,10 +16,18 @@
 	
 	
 	//Resetting variables
-	$_SESSION['plec'] = "";
-	$_SESSION['rasa'] = "";
-	$_SESSION['klasa'] = "";
-	$_SESSION['foto'] = "";
+	if(!isset($_SESSION['iPlec']))
+	{
+		$_SESSION['plec'] = "";
+		$_SESSION['rasa'] = "";
+		$_SESSION['klasa'] = "";
+		$_SESSION['foto'] = "";
+		$_SESSION['iPlec'] = 0;
+		$_SESSION['iRasa'] = 0;
+		$_SESSION['iKlasa'] = 0;
+		$_SESSION['iFoto'] = 0;
+	}
+	
 	
 	
 	//Counting portraits
@@ -35,6 +43,10 @@
 		$_SESSION['player']->rasa = $_POST['rasa'];
 		$_SESSION['player']->klasa = $_POST['klasa'];
 		$_SESSION['player']->foto = $_POST['foto'];
+		$_SESSION['iPlec'] = $_POST['iplec'];
+		$_SESSION['iRasa'] = $_POST['irasa'];
+		$_SESSION['iKlasa'] = $_POST['iklasa'];
+		$_SESSION['iFoto'] = $_POST['ifoto'];
 
 		header('Location:create_character2.php');
         exit();
@@ -91,6 +103,10 @@
 				<input name="rasa" id="hiddenRasa" type="hidden">
 				<input name="klasa" id="hiddenKlasa" type="hidden">
 				<input name="foto" id="hiddenFoto" type="hidden">
+				<input name="iplec" id="hiddeniplec" type="hidden">
+				<input name="irasa" id="hiddenirasa" type="hidden">
+				<input name="iklasa" id="hiddeniklasa" type="hidden">
+				<input name="ifoto" id="hiddenifoto" type="hidden">
 				<input class="arrow orange przycisk" name="submitButton" type="submit" value="Dalej">
 			</Form>
 		</div>
@@ -110,15 +126,14 @@
 
 
 <script>
-
-	//Setting pointers at 0
-	var iPlec = 0;
-	var iRasa = 0;
-	var iKlasa = 0;
-	var iFoto = 0;
+	
+	//Setting initial pointers
+	var iPlec = parseInt(<?php echo json_encode($_SESSION['iPlec']); ?>);
+	var iRasa = parseInt(<?php echo json_encode($_SESSION['iRasa']); ?>);
+	var iKlasa = parseInt(<?php echo json_encode($_SESSION['iKlasa']); ?>);
+	var iFoto = parseInt(<?php echo json_encode($_SESSION['iFoto']); ?>);
 	var FotoCount = <?php echo json_encode($filecount); ?>;
-	
-	
+    
 	//Filing lists
 	var Plec = ["Mężczyzna", "Kobieta"];
 	var Rasa = ["Człowiek", "Ork", "Leśny elf", "Krasnolud", "Wysoki elf"];
@@ -131,15 +146,13 @@
 		Foto[i] = "url(gfx/portrety/" + [i] + ".jpg?";
 	}
 	
-	
 	//Setting initial texts/photos etc
-	$("#plecTekst").html(Plec[0]);
-	$("#rasaTekst").html(Rasa[0]);
-	$("#klasaTekst").html(Klasa[0]);
-	$("#fotoTekst").html("1/" + FotoCount);
-	$("#fotoContainer").css("background-image", Foto[0] + new Date().getTime() + ")");
-	$("#opisTekst").html(RasaOpis[0]);
-	
+	$("#plecTekst").html(Plec[iPlec]);
+	$("#rasaTekst").html(Rasa[iRasa]);
+	$("#klasaTekst").html(Klasa[iKlasa]);
+	$("#fotoTekst").html((iFoto+1) + "/" + FotoCount);
+	$("#fotoContainer").css("background-image", Foto[iFoto] + new Date().getTime() + ")");
+	$("#opisTekst").html(RasaOpis[iRasa]);
 	
 	
 	//Function that travels the lists and loops around edges
@@ -226,6 +239,7 @@
 		var setRasa = $("#rasaTekst").html();
 		var setKlasa = $("#klasaTekst").html();
 		var setFoto = iFoto;
+		
 		var valid = true;
 		
 		if($.inArray(setPlec, Plec) == -1 || $.inArray(setRasa, Rasa) == -1 || $.inArray(setKlasa, Klasa) == -1 || setFoto < 0 || setFoto >= FotoCount)
@@ -239,14 +253,16 @@
 			$("#hiddenRasa").val(setRasa);
 			$("#hiddenKlasa").val(setKlasa);
 			$("#hiddenFoto").val(setFoto);
+			$("#hiddeniplec").val(iPlec);
+			$("#hiddenirasa").val(iRasa);
+			$("#hiddeniklasa").val(iKlasa);
+			$("#hiddenifoto").val(iFoto);
 			return true;
 		}
 		else
 		{
 			return false;
-		}
-		
+		}	
 	}
-
 	
 </script>

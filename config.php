@@ -23,6 +23,10 @@
 		public $maxhp;
 		public $mana;
 		public $maxmana;
+		public $experience;
+		public $experiencenext;
+		public $remaining;
+		public $level;
 		public $zloto;
 		public $krysztaly;
 		
@@ -101,7 +105,6 @@
             header('Location:login.php');
         }
     }
-    
 	function update_logic(Player $player)
     {
 		$id = $player->id;
@@ -177,7 +180,42 @@
 	
 	
 	
-	
+	function drawExpBar(Player $player)
+	{
+		$current = round($player->experience);
+		$max = round($player->experiencenext);
+		$percent = round( ($current/$max) * 100);
+		
+		echo "<div class='exp bar'>";
+			echo "<div class='outerBar'>";
+				echo "<div class='innerBar' id='innerExp' style='width: " .$percent. "%;'>";
+				
+				echo "</div>";
+			echo "</div>";
+		echo "</div>";
+		
+		echo "<div class='exp barText'>";
+			echo "EXP: " .$current. "/" .$max;
+		echo "</div>";
+	}
+	function drawManaBar(Player $player)
+	{
+		$current = round($player->mana);
+		$max = round($player->maxmana);
+		$percent = round( ($current/$max) * 100 );
+		
+		echo "<div class='mana bar'>";
+			echo "<div class='outerBar'>";
+				echo "<div class='innerBar' id='innerMana' style='width: " .$percent. "%;'>";
+			
+				echo "</div>";
+			echo "</div>";
+		echo "</div>";
+		
+		echo "<div class='mana barText'>";
+			echo "MP: " .$current. "/" .$max;
+		echo "</div>";
+	}
 	function drawHealthBar(Player $player)
     {
 		$current = round($player->hp);
@@ -185,15 +223,15 @@
 		$percent = round( ($current/$max) * 100 );
 		$color = color($current, $max);
 		
-		echo "<div id='healthBar'>";
-			echo "<div id='outerHealthBar'>";
-				echo "<div id='innerHealthBar' style='width: " .$percent. "%; background-color: " .$color. ";'>";
+		echo "<div class='hp bar'>";
+			echo "<div class='outerBar'>";
+				echo "<div class='innerBar' style='width: " .$percent. "%; background-color: " .$color. ";'>";
 			
 				echo "</div>";
 			echo "</div>";
 		echo "</div>";
 		
-		echo "<div id='healthBarText'>";
+		echo "<div class='hp barText'>";
 			echo "HP: " . $current . "/" . "$max";
 		echo "</div>";
     }
@@ -208,4 +246,22 @@
         }
         return "rgb(" . $red . ", " . $green . ", 00)";
     }
+
+	function drawGold(Player $player)
+	{
+		$zloto = round($player->zloto);
+		echo "<div id='zlotoContainer'>";
+			echo "<img style='height: 70%' src='/gfx/gold.png'>";
+			echo "<div id='zlotoTekst'>" .$zloto. "</div>";
+		echo "</div>";
+	}
+	function drawCrystals(Player $player)
+	{
+		$krysztaly = round($player->krysztaly);
+		echo "<div id='krysztalyContainer'>";
+			echo "<img style='height: 70%' src='/gfx/crystals.png'>";
+			echo "<div id='krysztalyTekst'>" .$krysztaly. "</div>";
+		echo "</div>";
+	}
+	
 ?>

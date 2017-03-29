@@ -125,6 +125,11 @@
 		{
 			//Getting variables from post and saving them in session
 			unset($_SESSION['player']->totalStats);
+			unset($_SESSION['iPlec']);
+			unset($_SESSION['iRasa']);
+			unset($_SESSION['iKlasa']);
+			unset($_SESSION['iFoto']);
+			
 			$_SESSION['player']->sila = $_POST['sila'];
 			$_SESSION['player']->zwinnosc = $_POST['zwinnosc'];
 			$_SESSION['player']->celnosc = $_POST['celnosc'];
@@ -154,6 +159,12 @@
 			
 			$_SESSION['player']->updateMaxHP();
 			$_SESSION['player']->updateMaxMana();
+			$_SESSION['player']->experience = 0;
+			$_SESSION['player']->experiencenext = 84;
+			$_SESSION['player']->level = 1;
+			$_SESSION['player']->zloto = 100;
+			$_SESSION['player']->krysztaly = 100;
+			$_SESSION['player']->remaining = 0;
 
 			$hp = $conn->real_escape_string($_SESSION['player']->hp);
 			$maxhp = $conn->real_escape_string($_SESSION['player']->maxhp);
