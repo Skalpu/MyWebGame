@@ -1,9 +1,9 @@
 <?php
+//TODO RE-CREATE PLAYER SESSION DATA ON LOGIN
 	
     if($_POST)
     {
 		require_once("config.php");  
-		$error_msg = "";
 		
 		$conn = connectDB();
 		$username = $_POST['username'];
@@ -14,38 +14,42 @@
 		$result = $conn->query("SELECT 1 FROM users WHERE UPPER(username) = UPPER('$eUsername') AND password = '$ehPassword'");
 		$count = $result->num_rows;
 		
+		//Found a player
 		if($count == 1)
 		{
 			session_start();
 			$_SESSION['authenticated'] = true;
-            $_SESSION['username'] = $username;
-			$userID = get_value($conn, "SELECT id FROM users WHERE UPPER(username) = UPPER('$eUsername') AND password = '$ehPassword'");
-			$_SESSION['id'] = $userID;
-			
+            $userID = get_value($conn, "SELECT id FROM users WHERE UPPER(username) = UPPER('$eUsername') AND password = '$ehPassword'");
 			$last_login = get_value($conn, "SELECT last_login FROM users WHERE UPPER(username) = UPPER('$eUsername') AND password = '$ehPassword'");
+			
+			
+			//Not created yet, create character
 			if ($last_login == NULL)
             {
+				$conn->close();
                 header('Location:create_character.php');
                 exit();
             }
+			//All ok, move to main game
 			else
 			{
 				$conn->query("UPDATE users SET last_login = NOW() WHERE UPPER(username) = UPPER('$eUsername') AND password = '$ehPassword'");
+				$result = $conn->query("SELECT id,username,plec,rasa,klasa,foto,sila,zwinnosc,celnosc,kondycja,inteligencja,wiedza,charyzma,szczescie,hp,maxhp,mana,maxmana,experience,experiencenext,remaining,level,zloto,krysztaly FROM users WHERE id=$userID");
+				
+				$conn->close();
                 header('Location:main.php');
                 exit();
 			}
 		}
+		//Didn't find a player, wrong login/pw
 		else
 		{
+			$conn->close();
 			$error_msg = "Nieprawidłowy login lub hasło, spróbuj ponownie.";
 		}
-		
-		$conn->close();
 	}
 
 ?>
-
-
 
 
 <HTML>
