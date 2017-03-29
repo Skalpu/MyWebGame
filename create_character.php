@@ -1,6 +1,4 @@
 <?php
-//TODO uprościć zmienne
-	
 	
 	//Checking if logged in
     require_once('config.php');
@@ -15,19 +13,14 @@
     }
 	
 	
-	//Resetting variables
+	//Resetting pointers
 	if(!isset($_SESSION['iPlec']))
 	{
-		$_SESSION['plec'] = "";
-		$_SESSION['rasa'] = "";
-		$_SESSION['klasa'] = "";
-		$_SESSION['foto'] = "";
 		$_SESSION['iPlec'] = 0;
 		$_SESSION['iRasa'] = 0;
 		$_SESSION['iKlasa'] = 0;
 		$_SESSION['iFoto'] = 0;
 	}
-	
 	
 	
 	//Counting portraits
@@ -242,6 +235,7 @@
 		
 		var valid = true;
 		
+		//Checking validity
 		if($.inArray(setPlec, Plec) == -1 || $.inArray(setRasa, Rasa) == -1 || $.inArray(setKlasa, Klasa) == -1 || setFoto < 0 || setFoto >= FotoCount)
 		{
 			valid = false;

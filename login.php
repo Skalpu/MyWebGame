@@ -33,11 +33,13 @@
 			//All ok, move to main game
 			else
 			{
-				$conn->query("UPDATE users SET last_login = NOW() WHERE UPPER(username) = UPPER('$eUsername') AND password = '$ehPassword'");
-				$result = $conn->query("SELECT id,username,plec,rasa,klasa,foto,sila,zwinnosc,celnosc,kondycja,inteligencja,wiedza,charyzma,szczescie,hp,maxhp,mana,maxmana,experience,experiencenext,remaining,level,zloto,krysztaly FROM users WHERE id=$userID");
-				
+				$conn->query("UPDATE users SET last_login = NOW() WHERE id=$userID");
 				$conn->close();
-                header('Location:main.php');
+
+				$player = new Player($userID);
+				$_SESSION['player'] = $player;
+				
+				header('Location:main.php');
                 exit();
 			}
 		}
