@@ -29,14 +29,21 @@
 	border: 2px solid; 
 	background: SeaShell;
 	width: 100%;
+	height: 100%;
 }
 #innerHealthBar
 {
-	
+	height: 100%;
 }
 #healthBarText
 {
+	position: fixed;
+	left: 45%;
+	top: 5%;
+	
 	text-align: center;
+	width: 10%;
+	height: 2%;
 }
 /*
 #manaBar

@@ -188,11 +188,13 @@
 		echo "<div id='healthBar'>";
 			echo "<div id='outerHealthBar'>";
 				echo "<div id='innerHealthBar' style='width: " .$percent. "%; background-color: " .$color. ";'>";
-					echo "<div id='healthBarText'>";
-						echo "HP: " . $current . "/" . "$max";
-					echo "</div>";
+			
 				echo "</div>";
 			echo "</div>";
+		echo "</div>";
+		
+		echo "<div id='healthBarText'>";
+			echo "HP: " . $current . "/" . "$max";
 		echo "</div>";
     }
 	function color($current, $max)

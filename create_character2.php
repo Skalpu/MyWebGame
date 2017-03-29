@@ -135,33 +135,33 @@
 			$_SESSION['player']->szczescie = $_POST['szczescie'];
 			
 			//Setting variables in short format for easier query
-			$plec = $_SESSION['player']->plec;
-			$rasa = $_SESSION['player']->rasa;
-			$klasa = $_SESSION['player']->klasa;
-			$foto = $_SESSION['player']->foto;
+			$conn = connectDB();
+			$plec = $conn->real_escape_string($_SESSION['player']->plec);
+			$rasa = $conn->real_escape_string($_SESSION['player']->rasa);
+			$klasa = $conn->real_escape_string($_SESSION['player']->klasa);
+			$foto = $conn->real_escape_string($_SESSION['player']->foto);
 			
-			$sila = $_SESSION['player']->sila;
-			$zwinnosc = $_SESSION['player']->zwinnosc;
-			$celnosc = $_SESSION['player']->celnosc;
-			$kondycja = $_SESSION['player']->kondycja;
-			$inteligencja = $_SESSION['player']->inteligencja;
-			$wiedza = $_SESSION['player']->wiedza;
-			$charyzma = $_SESSION['player']->charyzma;
-			$szczescie = $_SESSION['player']->szczescie;
+			$sila = $conn->real_escape_string($_SESSION['player']->sila);
+			$zwinnosc = $conn->real_escape_string($_SESSION['player']->zwinnosc);
+			$celnosc = $conn->real_escape_string($_SESSION['player']->celnosc);
+			$kondycja = $conn->real_escape_string($_SESSION['player']->kondycja);
+			$inteligencja = $conn->real_escape_string($_SESSION['player']->inteligencja);
+			$wiedza = $conn->real_escape_string($_SESSION['player']->wiedza);
+			$charyzma = $conn->real_escape_string($_SESSION['player']->charyzma);
+			$szczescie = $conn->real_escape_string($_SESSION['player']->szczescie);
 			
-			$id = $_SESSION['player']->id;
+			$id = $conn->real_escape_string($_SESSION['player']->id);
 			
 			$_SESSION['player']->updateMaxHP();
 			$_SESSION['player']->updateMaxMana();
 
-			$hp = $_SESSION['player']->hp;
-			$maxhp = $_SESSION['player']->maxhp;
-			$mana = $_SESSION['player']->mana;
-			$maxmana = $_SESSION['player']->maxmana;
+			$hp = $conn->real_escape_string($_SESSION['player']->hp);
+			$maxhp = $conn->real_escape_string($_SESSION['player']->maxhp);
+			$mana = $conn->real_escape_string($_SESSION['player']->mana);
+			$maxmana = $conn->real_escape_string($_SESSION['player']->maxmana);
 			
 			//Updating database
-			$conn = connectDB();
-			$conn->query("UPDATE users SET plec='$plec', rasa='$rasa', klasa='$klasa', foto=$foto, sila=$sila, zwinnosc=$zwinnosc, celnosc=$celnosc, kondycja=$kondycja, inteligencja=$inteligencja, wiedza=$wiedza, charyzma=$charyzma, szczescie=$szczescie, last_login=NOW(), last_update=NOW(), hp=$hp, maxhp=$maxhp, mana=$mana, maxmana=$maxmana, level=1 WHERE id=$id");
+			$conn->query("UPDATE users SET plec='$plec', rasa='$rasa', klasa='$klasa', foto='$foto', sila='$sila', zwinnosc='$zwinnosc', celnosc='$celnosc', kondycja='$kondycja', inteligencja='$inteligencja', wiedza='$wiedza', charyzma='$charyzma', szczescie='$szczescie', last_login=NOW(), last_update=NOW(), hp='$hp', maxhp='$maxhp', mana='$mana', maxmana='$maxmana', level=1 WHERE id='$id'");
 			$conn->query("INSERT INTO user_mail (id) VALUES ($id)");
 			$conn->query("INSERT INTO spellbooks (id) VALUES ($id)");
 			$conn->query("INSERT INTO equipment (id) VALUES ($id)");
