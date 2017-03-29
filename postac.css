@@ -1,0 +1,32 @@
+#zdjecie
+{
+	position: fixed;
+	width: 16%;
+	height: 48%;
+	left: 24%;
+	top: 22%;
+}
+#podpis
+{
+	position: fixed;
+	width: 16%;
+	height: 8%;
+	left: 24%;
+	top: 70%;
+	
+	border: 1px solid black;
+	box-shadow: inset 0 0 10px black;
+	background: linear-gradient(beige,burlywood);
+}
+#nick
+{
+	text-align: center;
+	margin-top: 5px;
+	font-size: 3vh;
+}
+#podnick
+{
+	text-align: center;
+	margin-top: 5px;
+	font-size: 2vh;
+}

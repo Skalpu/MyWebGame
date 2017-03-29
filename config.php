@@ -1,7 +1,5 @@
 <?php   
-//TODO UPDATE LOGIC INSIDE PLAYER CLASS
-//TODO UPDATE SQL SERVER WITH PLAYER DATA IN PLAYER CLASS
-	
+
 	class Player
 	{
 		public $id;
@@ -33,6 +31,9 @@
 		public $zloto;
 		public $krysztaly;
 		
+		public $unread;
+		public $last_update;
+		
 		
 		public function updateMaxHP()
 		{
@@ -44,9 +45,108 @@
 			$this->maxmana = $this->wiedza * 10;
 			$this->mana = $this->maxmana;
 		}
-		public function updateLogic()
+		public function updateLocally()
 		{
+			$now = time();
 			
+			if(isset($this->last_update))
+			{
+				//Was saved in session
+				$last = $this->last_update;
+			}
+			else
+			{
+				//Wasn't saved, read from SQL
+				$conn = connectDB();
+				$id = $this->id;
+				$last = get_value($conn, "SELECT last_update FROM users WHERE id=$id");
+				$last = strtotime($last);
+				$this->last_update = $last;
+				$conn->close();
+				unset($id);
+			}
+			
+			$seconds = $now-$last;
+			if($seconds > 10)
+			{
+				$this->last_update = $now;
+				
+				$updates = round($seconds/10);
+				$this->hpRegen($updates);
+				$this->mpRegen($updates);
+				$this->goldRegen($updates);
+				$this->crystalsRegen($updates);
+			}
+			
+			unset($now);
+			unset($last);
+			unset($seconds);
+			unset($updates);
+		}
+		public function updateDB()
+		{
+			$this->updateLocally();
+		}
+		public function updateMail()
+		{
+			$conn = connectDB();
+			$userID = $this->id;
+			$result = $conn->query("SELECT * FROM user_mail WHERE id=$userID");
+			$row = mysqli_fetch_row($result);
+			
+			$unread = 0;
+			//Iterates through the user's message slots
+			for($i = 1; $i < 11; $i++)
+			{
+				//There is a message
+				if($row[$i] != null)
+				{
+					//Get the message ID
+					$msgID = $row[$i];
+					//Check if that message was read
+					$is_read = get_value($conn, "SELECT is_read FROM messages WHERE id=$msgID");
+					if($is_read == 0)
+					{
+						$unread++;
+					}
+					
+					unset($msgID);
+				}
+			}
+			
+			$conn->close();
+			$this->unread = $unread;
+			
+			unset($userID);
+			unset($result);
+			unset($row);
+			unset($unread);
+		}
+		
+		
+		public function hpRegen($times)
+		{
+			$this->hp += $times;
+			if($this->hp > $this->maxhp)
+			{
+				$this->hp = $this->maxhp;
+			}
+		}
+		public function mpRegen($times)
+		{
+			$this->mana += $times;
+			if($this->mana > $this->maxmana)
+			{
+				$this->mana = $this->maxmana;
+			}
+		}
+		public function goldRegen($times)
+		{
+			$this->zloto += $times;
+		}
+		public function crystalsRegen($times)
+		{
+			$this->krysztaly += $times;
 		}
 		
 		
@@ -54,10 +154,114 @@
 		{
 			$fotoPath = "url(gfx/portrety/" . $this->foto . ".jpg)";
 			echo "<div class='fotoContainer' style='background-image: " . $fotoPath . ";'></div>";
+			
+			unset($fotoPath);
+		}
+		public function drawMail()
+		{
+			$this->updateMail();
+			
+			if($this->unread > 0)
+			{
+				$color = 'red';
+			}
+			else
+			{
+				$color = 'white';
+			}
+			
+			echo "<div id='mailContainer'>";
+				echo "<img style='height: 70%' src='/gfx/mail.png'>";
+				echo "<div id='mailTekst' style='color: $color'>" .$this->unread. "</div>";
+			echo "</div>";
+			
+			unset($color);
+		}
+		public function drawGold()
+		{
+			$zloto = round($this->zloto);
+			echo "<div id='zlotoContainer'>";
+				echo "<img style='height: 70%' src='/gfx/gold.png'>";
+				echo "<div id='zlotoTekst'>" .$zloto. "</div>";
+			echo "</div>";
+			
+			unset($zloto);
+		}
+		public function drawCrystals()
+		{
+			$krysztaly = round($this->krysztaly);
+			echo "<div id='krysztalyContainer'>";
+				echo "<img style='height: 70%' src='/gfx/crystals.png'>";
+				echo "<div id='krysztalyTekst'>" .$krysztaly. "</div>";
+			echo "</div>";
+			
+			unset($krysztaly);
+		}
+		public function drawHP()
+		{
+			$current = round($this->hp);
+			$max = round($this->maxhp);
+			$percent = round( ($current/$max) * 100);
+			$color = color($current, $max);
+		
+			echo "<div class='hp bar'>";
+				echo "<div class='outerBar'>";
+					echo "<div class='innerBar' style='width: " .$percent. "%; background-color: " .$color. ";'></div>";
+				echo "</div>";
+			echo "</div>";
+		
+			echo "<div class='hp barText'>";
+				echo "HP: " . $current . "/" . "$max";
+			echo "</div>";
+			
+			unset($current);
+			unset($max);
+			unset($percent);
+			unset($color);
+		}
+		public function drawMP()
+		{
+			$current = round($this->mana);
+			$max = round($this->maxmana);
+			$percent = round( ($current/$max) * 100 );
+		
+			echo "<div class='mana bar'>";
+				echo "<div class='outerBar'>";
+					echo "<div class='innerBar' id='innerMana' style='width: " .$percent. "%;'></div>";
+				echo "</div>";
+			echo "</div>";
+		
+			echo "<div class='mana barText'>";
+				echo "MP: " .$current. "/" .$max;
+			echo "</div>";
+			
+			unset($current);
+			unset($max);
+			unset($percent);
+		}
+		public function drawEXP()
+		{
+			$current = round($this->experience);
+			$max = round($this->experiencenext);
+			$percent = round( ($current/$max) * 100);
+		
+			echo "<div class='exp bar'>";
+				echo "<div class='outerBar'>";
+					echo "<div class='innerBar' id='innerExp' style='width: " .$percent. "%;'></div>";
+				echo "</div>";
+			echo "</div>";
+		
+			echo "<div class='exp barText'>";
+				echo "EXP: " .$current. "/" .$max;
+			echo "</div>";
+			
+			unset($current);
+			unset($max);
+			unset($percent);
 		}
 		
 		
-		//Download all player data from SQL server, for existing players
+		//Sets the class object by downloadinng all player data from SQL server - use for existing players
 		public function __construct($id)
 		{
 			$conn = connectDB();
@@ -84,7 +288,7 @@
 			$this->kondycja = $row['kondycja'];
 			$this->inteligencja = $row['inteligencja'];
 			$this->wiedza = $row['wiedza'];
-			$this->charyzma = $roow['charyzma'];
+			$this->charyzma = $row['charyzma'];
 			$this->szczescie = $row['szczescie'];
 			
 			$this->hp = $row['hp'];
@@ -133,15 +337,6 @@
         return get_value($conn, "SELECT $escapedStatName FROM $escapedTable WHERE id = $escapedID");
         $conn->close();
     }
-	function get_current_time()
-    {
-        $conn = connectDB();
-        $nowSTR = get_value($conn, "SELECT NOW()"); 
-        $conn->close();
-        
-        return strtotime($nowSTR);
-    }
-	
 	
 	
 	
@@ -158,139 +353,10 @@
             header('Location:login.php');
         }
     }
-	function update_logic(Player $player)
-    {
-		$id = $player->id;
-
-		//Gets the date of last updates
-        $last_updateSTR = get_stat('last_update','users',$id); 
-        $last_update = strtotime($last_updateSTR);
-		$wyprawa_untilSTR = get_stat('wyprawa_until','users',$id);
-		$wyprawa_until = strtotime($wyprawa_untilSTR);
-        $now_date = get_current_time();
-		        
-        //Calculates due updates
-        $secs = $now_date - $last_update;
-        $iloscUpdatow = $secs/10;
-        
-		//Do an update
-        if ($iloscUpdatow >= 1)
-        {
-			//Gets current statistics
-			$conn = connectDB();
-			$result = $conn->query("SELECT hp,maxhp,mana,maxmana,zloto,krysztaly FROM users WHERE id = $id");
-			$row = mysqli_fetch_row($result);
-	
-            $hp = $row[0];
-            $maxhp = $row[1];
-			$mana = $row[2];
-			$maxMana = $row[3];
-            
-			//HP and mana regen
-            if (($hp + $iloscUpdatow) > $maxhp)			
-			{
-				$hp = $maxhp;
-			}
-            else										
-			{
-				$hp += $iloscUpdatow;
-			}
-			
-			if (($mana + $iloscUpdatow) > $maxMana)		
-			{
-				$mana = $maxMana;
-			}
-			else										
-			{
-				$mana += $iloscUpdatow;
-			}
-            
-            //Gold income
-			$zloto = $row[4];
-            $zloto += $iloscUpdatow;
-			
-            //Crystal income
-            $krysztaly = $row[5];
-            $krysztaly += $iloscUpdatow;
-			
-			//Sets new statistics in DB
-            $conn->query("UPDATE users SET hp=$hp, mana=$mana, zloto=$zloto, krysztaly=$krysztaly, last_update=NOW() WHERE id=$id");
-			$conn->close();
-			//Sets new statistics in SESSION
-			$player->hp = $hp;
-			$player->mana = $mana;
-			$player->zloto = $zloto;
-			$player->krysztaly = $krysztaly;
-			
-			if($wyprawa_until < $now_date)
-			{
-				//TODO
-				//header("Location: wyprawa.php");
-				//exit;
-			}
-        }
-    }
-	
-	
 	
 	
 	
 	/* -------------- DRAWING FUNCTIONS -------------------- */
-	function drawExpBar(Player $player)
-	{
-		$current = round($player->experience);
-		$max = round($player->experiencenext);
-		$percent = round( ($current/$max) * 100);
-		
-		echo "<div class='exp bar'>";
-			echo "<div class='outerBar'>";
-				echo "<div class='innerBar' id='innerExp' style='width: " .$percent. "%;'>";
-				
-				echo "</div>";
-			echo "</div>";
-		echo "</div>";
-		
-		echo "<div class='exp barText'>";
-			echo "EXP: " .$current. "/" .$max;
-		echo "</div>";
-	}
-	function drawManaBar(Player $player)
-	{
-		$current = round($player->mana);
-		$max = round($player->maxmana);
-		$percent = round( ($current/$max) * 100 );
-		
-		echo "<div class='mana bar'>";
-			echo "<div class='outerBar'>";
-				echo "<div class='innerBar' id='innerMana' style='width: " .$percent. "%;'>";
-			
-				echo "</div>";
-			echo "</div>";
-		echo "</div>";
-		
-		echo "<div class='mana barText'>";
-			echo "MP: " .$current. "/" .$max;
-		echo "</div>";
-	}
-	function drawHealthBar(Player $player)
-    {
-		$current = round($player->hp);
-		$max = round($player->maxhp);
-		$percent = round( ($current/$max) * 100 );
-		$color = color($current, $max);
-		
-		echo "<div class='hp bar'>";
-			echo "<div class='outerBar'>";
-				echo "<div class='innerBar' style='width: " .$percent. "%; background-color: " .$color. ";'>";
-			
-				echo "</div>";
-			echo "</div>";
-		echo "</div>";
-		
-		echo "<div class='hp barText'>";
-			echo "HP: " . $current . "/" . "$max";
-		echo "</div>";
-    }
 	function color($current, $max)
     {
         $percent = round(($current/$max)*100);
@@ -302,22 +368,13 @@
         }
         return "rgb(" . $red . ", " . $green . ", 00)";
     }
-
-	function drawGold(Player $player)
+	function drawGame(Player $player)
 	{
-		$zloto = round($player->zloto);
-		echo "<div id='zlotoContainer'>";
-			echo "<img style='height: 70%' src='/gfx/gold.png'>";
-			echo "<div id='zlotoTekst'>" .$zloto. "</div>";
-		echo "</div>";
+		$player->drawMail();
+		$player->drawGold();
+		$player->drawCrystals();
+		$player->drawHP();
+		$player->drawMP();
+		$player->drawEXP();
 	}
-	function drawCrystals(Player $player)
-	{
-		$krysztaly = round($player->krysztaly);
-		echo "<div id='krysztalyContainer'>";
-			echo "<img style='height: 70%' src='/gfx/crystals.png'>";
-			echo "<div id='krysztalyTekst'>" .$krysztaly. "</div>";
-		echo "</div>";
-	}
-	
 ?>

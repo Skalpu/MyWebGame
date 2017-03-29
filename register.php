@@ -28,7 +28,7 @@
 			$conn->close();
 			
 			session_start();
-			$player = new Player();
+			$player = new Player($userID);
 			$player->username = $username;
 			$player->id = $userID;
 			
