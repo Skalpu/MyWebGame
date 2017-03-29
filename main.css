@@ -103,10 +103,10 @@ body{ background-image: url("/gfx/background-1.jpg"); }
 #mainMenu { background-image: url(gfx/menu/menuglowne_000000.png); }
 #postacMenu { background-image: url(gfx/menu/postac_000000.png); }
 #equipmentMenu { background-image: url(gfx/menu/ekwipunek_000000.png); }
-#wyprawamenu { background-image: url(gfx/menu/wyprawa_000000.png); }
-#logoutmenu { background-image: url(gfx/menu/logout_000000.png); }
-#magiamenu { background-image: url(gfx/menu/magia_000000.png); }
-#arenamenu { background-image: url(gfx/menu/arena_000000.png); }
+#wyprawaMenu { background-image: url(gfx/menu/wyprawa_000000.png); }
+#logoutMenu { background-image: url(gfx/menu/logout_000000.png); }
+#magiaMenu { background-image: url(gfx/menu/magia_000000.png); }
+#arenaMenu { background-image: url(gfx/menu/arena_000000.png); }
 #divMainOkno { background-image: url("gfx/background1.jpg"); }
 
 
@@ -127,6 +127,7 @@ nav ul
 	left: 0%;
 	top: 15%;
 }
+/* NAVBAR ELEMENT */
 nav li a
 {
     text-align: center;
@@ -144,10 +145,6 @@ nav li a:hover
 nav .active
 {
     background-color: #9d4e15;
-}
-nav li: last-child
-{
-    border-bottom: none;
 }
 
 
