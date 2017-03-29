@@ -20,11 +20,8 @@
 
     <div id="divMainOkno">
 		- WIOSKA?<br>
-		- ZMODULARYZOWAĆ GENERACJĘ ITEMÓW<br>
-		- ZMODULARYZOWAĆ DODAWANIE ZŁOTA I EXPA<br>
-		- WALKA Z KILKOMA NARAZ<br>
+		- GENERACJA ITEMÓW<br>
 		- SUMMONY<br>
-		- POPRAWIĆ CHAR CREATION<br>
 		- KARCZMA Z QUESTAMI<br>
 		- NAPADY != ARENA<br>
 		- POPRAWIĆ EKWIPUNEK UŻYWAJĄC JSON??<br>
@@ -45,14 +42,15 @@
 	
 	<nav>
     <ul>
-        <li><a href = "main.php" class="active"><img id="mainmenu"></a></li>
-        <li><a href = "postac.php"><img id="postacmenu"></a></li>
-        <li><a href = "equipment.php"><img id="ekwipunekmenu"></a></li>
-		<li><a href = "magia.php"><img id="magiamenu"></a></li>
-        <li><a href = "wyprawa.php"><img id="wyprawamenu"></a></li>
-		<li><a href = "arena.php"><img id="arenamenu"></a></li>
-        <li><a href = "logout.php"><img id="logoutmenu"></a></li>
-        </ul>
+        <!--<li><a href = "main.php" class="active"><img id="mainmenu"></a></li>-->
+		<li><a href = "main.php" class="active"><div class='menuContainer' id='mainMenu'></div></a></li>
+        <li><a href = "postac.php"><div class='menuContainer' id='postacMenu'></div></a></li>
+        <li><a href = "equipment.php"><div class='menuContainer' id='equipmentMenu'></div></a></li>
+		<li><a href = "magia.php"><div class='menuContainer' id='magiaMenu'></div></a></li>
+        <li><a href = "wyprawa.php"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
+		<li><a href = "arena.php"><div class='menuContainer' id='arenaMenu'></div></a></li>
+        <li><a href = "logout.php"><div class='menuContainer' id='logoutMenu'></div></a></li>
+    </ul>
     </nav>
 	
 </Body>

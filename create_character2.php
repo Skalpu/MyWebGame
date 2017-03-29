@@ -121,13 +121,14 @@
 		
 		if($total == $_SESSION['player']->totalStats)
 		{
-			//Getting variables from post and saving them in session
+			//Unsetting variables from previous screen because character creation is DONE
 			unset($_SESSION['player']->totalStats);
 			unset($_SESSION['iPlec']);
 			unset($_SESSION['iRasa']);
 			unset($_SESSION['iKlasa']);
 			unset($_SESSION['iFoto']);
-			
+		
+			//Getting variables from post and saving them in session		
 			$_SESSION['player']->sila = $_POST['sila'];
 			$_SESSION['player']->zwinnosc = $_POST['zwinnosc'];
 			$_SESSION['player']->celnosc = $_POST['celnosc'];
@@ -137,8 +138,10 @@
 			$_SESSION['player']->charyzma = $_POST['charyzma'];
 			$_SESSION['player']->szczescie = $_POST['szczescie'];
 			
-			//Setting variables in short format for easier query
 			$conn = connectDB();
+			//Setting variables in short format for easier query
+			$id = $conn->real_escape_string($_SESSION['player']->id);
+			
 			$plec = $conn->real_escape_string($_SESSION['player']->plec);
 			$rasa = $conn->real_escape_string($_SESSION['player']->rasa);
 			$klasa = $conn->real_escape_string($_SESSION['player']->klasa);
@@ -153,16 +156,14 @@
 			$charyzma = $conn->real_escape_string($_SESSION['player']->charyzma);
 			$szczescie = $conn->real_escape_string($_SESSION['player']->szczescie);
 			
-			$id = $conn->real_escape_string($_SESSION['player']->id);
-			
-			$_SESSION['player']->updateMaxHP();
-			$_SESSION['player']->updateMaxMana();
+			$_SESSION['player']->level = 1;
 			$_SESSION['player']->experience = 0;
 			$_SESSION['player']->experiencenext = 84;
-			$_SESSION['player']->level = 1;
+			$_SESSION['player']->remaining = 0;
+			$_SESSION['player']->updateMaxHP();
+			$_SESSION['player']->updateMaxMana();
 			$_SESSION['player']->zloto = 100;
 			$_SESSION['player']->krysztaly = 100;
-			$_SESSION['player']->remaining = 0;
 
 			$hp = $conn->real_escape_string($_SESSION['player']->hp);
 			$maxhp = $conn->real_escape_string($_SESSION['player']->maxhp);

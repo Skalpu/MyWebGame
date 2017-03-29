@@ -39,8 +39,8 @@
 	padding-right: 10px;
 	
 	-webkit-box-shadow: inset 0px -10px 10px -5px rgba(0,0,0,0.75);
--moz-box-shadow: inset 0px -10px 10px -5px rgba(0,0,0,0.75);
-box-shadow: inset 0px -10px 10px -5px rgba(0,0,0,0.75);
+	-moz-box-shadow: inset 0px -10px 10px -5px rgba(0,0,0,0.75);
+	box-shadow: inset 0px -10px 10px -5px rgba(0,0,0,0.75);
 }
 /* IMAGE SIZE HANDLING */
 #fotoContainer
@@ -52,5 +52,4 @@ box-shadow: inset 0px -10px 10px -5px rgba(0,0,0,0.75);
 	width: 100%;
 	height: 95%;
 	box-shadow: inset 0 0 10px black;
-	
 }

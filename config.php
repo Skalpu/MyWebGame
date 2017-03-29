@@ -1,4 +1,6 @@
 <?php   
+//TODO UPDATE LOGIC INSIDE PLAYER CLASS
+//TODO UPDATE SQL SERVER WITH PLAYER DATA IN PLAYER CLASS
 	
 	class Player
 	{
@@ -9,6 +11,11 @@
 		public $rasa;
 		public $klasa;
 		public $foto;
+		
+		public $level;
+		public $experience;
+		public $experiencenext;
+		public $remaining;
 		
 		public $sila;
 		public $zwinnosc;
@@ -23,12 +30,9 @@
 		public $maxhp;
 		public $mana;
 		public $maxmana;
-		public $experience;
-		public $experiencenext;
-		public $remaining;
-		public $level;
 		public $zloto;
 		public $krysztaly;
+		
 		
 		public function updateMaxHP()
 		{
@@ -40,8 +44,60 @@
 			$this->maxmana = $this->wiedza * 10;
 			$this->mana = $this->maxmana;
 		}
+		public function updateLogic()
+		{
+			
+		}
+		
+		
+		public function drawFoto()
+		{
+			$fotoPath = "url(gfx/portrety/" . $this->foto . ".jpg)";
+			echo "<div class='fotoContainer' style='background-image: " . $fotoPath . ";'></div>";
+		}
+		
+		
+		//Download all player data from SQL server, for existing players
+		public function __construct($id)
+		{
+			$conn = connectDB();
+			$result = $conn->query("SELECT * FROM users WHERE id='$id'");
+			$row = mysqli_fetch_assoc($result);
+			$conn->close();
+			
+			$this->id = $id;
+			$this->username = $row['username'];
+			
+			$this->plec = $row['plec'];
+			$this->rasa = $row['rasa'];
+			$this->klasa = $row['klasa'];
+			$this->foto = $row['foto'];
+			
+			$this->level = $row['level'];
+			$this->experience = $row['experience'];
+			$this->experiencenext = $row['experiencenext'];
+			$this->remaining = $row['remaining'];
+			
+			$this->sila = $row['sila'];
+			$this->zwinnosc = $row['zwinnosc'];
+			$this->celnosc = $row['celnosc'];
+			$this->kondycja = $row['kondycja'];
+			$this->inteligencja = $row['inteligencja'];
+			$this->wiedza = $row['wiedza'];
+			$this->charyzma = $roow['charyzma'];
+			$this->szczescie = $row['szczescie'];
+			
+			$this->hp = $row['hp'];
+			$this->maxhp = $row['maxhp'];
+			$this->mana = $row['mana'];
+			$this->maxmana = $row['maxmana'];
+			$this->zloto = $row['zloto'];
+			$this->krysztaly = $row['krysztaly'];
+		}
 	}
 	
+	
+	/* ------------- DATABASE FUNCTIONS ----------------- */
     function connectDB()
     {
         $dbhost = '127.0.0.1';
@@ -59,7 +115,6 @@
         
         return $conn;
     }
-	
     function get_value($my_SQLI_Connection, $SQL_code)
     {
         $result = $my_SQLI_Connection->query($SQL_code);
@@ -67,7 +122,6 @@
 		
         return is_array($value) ? $value[0] : "";
     }
-	
 	function get_stat($statName, $table, $ID)
     {
         $conn = connectDB();
@@ -79,7 +133,6 @@
         return get_value($conn, "SELECT $escapedStatName FROM $escapedTable WHERE id = $escapedID");
         $conn->close();
     }
-	
 	function get_current_time()
     {
         $conn = connectDB();
@@ -180,6 +233,9 @@
 	
 	
 	
+	
+	
+	/* -------------- DRAWING FUNCTIONS -------------------- */
 	function drawExpBar(Player $player)
 	{
 		$current = round($player->experience);
@@ -247,7 +303,6 @@
         return "rgb(" . $red . ", " . $green . ", 00)";
     }
 
-	
 	function drawGold(Player $player)
 	{
 		$zloto = round($player->zloto);
