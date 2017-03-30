@@ -130,7 +130,11 @@
 	//Filing lists
 	var Plec = ["Mężczyzna", "Kobieta"];
 	var Rasa = ["Człowiek", "Ork", "Leśny elf", "Krasnolud", "Wysoki elf"];
-	var RasaOpis = ["Człowiek-opis", "Ork-opis", "Leśny elf-opis", "Krasnolud-opis", "Wysoki elf-opis"];
+	var czlowiekOpis = "Ludzie są najbardziej wszechstronną spośród ras Vangardu.";
+	var orkOpis = "Silni, zwinni i niebywale wytrzymali - orkowie to rasa naturalnych wojowników, którym nie straszny jest żaden konflikt. Wojaczkowy tryb życia nie sprzyja jednak edukacji, dlatego z niektórymi przedstawicielami tej rasy trudno się czasem dogadać.";
+	var RasaOpis = [czlowiekOpis, orkOpis, "Leśny elf-opis", "Krasnolud-opis", "Wysoki elf-opis"];
+	
+	
 	var Klasa = ["Barbarzyńca", "Wojownik", "Łotrzyk", "Łowca", "Mnich", "Paladyn", "Kleryk", "Bard", "Druid", "Czarodziej", "Czarnoksiężnik"];
 	var KlasaOpis = ["Barbarzyńca-opis", "Wojownik-opis", "Łotrzyk-opis", "Łowca-opis", "Mnich-opis", "Paladyn-opis", "Kleryk-opis", "Bard-opis", "Druid-opis", "Czarodziej-opis", "Czarnoksiężnik-opis"];
 	var Foto = [];
