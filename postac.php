@@ -47,14 +47,14 @@
 				echo "<div class='statContainer noselect' id='" . $stat. "Container'>";
 					echo "<div class='statLabel noselect arrow'>" . $label . ":</div>";
 				
-					echo "<div class='statMinus noselect'>";
-						echo '<button class="buttonMinus noselect arrow" onclick="removeStat(\'' .$stat. '\')">-</button>';
-					echo "</div>";
-				
-					echo "<div class='statValue noselect' id='" .$stat. "Value'>" . $value . "</div>";
-				
 					echo "<div class='statPlus noselect'>";
 						echo '<button class="buttonPlus noselect arrow" onclick="addStat(\'' .$stat. '\')">-</button>';
+					echo "</div>";
+					
+					echo "<div class='statValue noselect' id='" .$stat. "Value'>" . $value . "</div>";
+				
+					echo "<div class='statMinus noselect'>";
+						echo '<button class="buttonMinus noselect arrow" onclick="removeStat(\'' .$stat. '\')">-</button>';
 					echo "</div>";
 				
 					echo "<div class='statHover noselect'>" . $hover . "</div>";
@@ -220,6 +220,10 @@
 		var wiedzaInit = $("#wiedzaValue").html();
 		var charyzmaInit = $("#charyzmaValue").html();
 		var szczescieInit = $("#szczescieValue").html();
+	}
+	else
+	{
+		$(".statValue").css("width","auto");
 	}
 	
 	//Increase statistic
