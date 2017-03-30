@@ -134,7 +134,7 @@ body{ background-image: url("/gfx/Fantasy-Background-Wallpapers.jpg"); backgroun
 #logoutMenu { background-image: url(gfx/menu/logout_000000.png); }
 #magiaMenu { background-image: url(gfx/menu/magia_000000.png); }
 #arenaMenu { background-image: url(gfx/menu/arena_000000.png); }
-#divMainOkno { background-image: url("gfx/background2.jpg"); background-repeat: no-repeat; background-position: center; background-size: cover;}
+#divMainOkno { background-image: url("gfx/background.png"); background-repeat: no-repeat; background-position: center; background-size: cover;}
 
 
 
@@ -145,7 +145,7 @@ nav ul
     list-style-type: none;
     margin: 0;
     padding: 0;
-    background-color: #8A5B39; /*#724B2F; /*#805E3C; /*#5a2d0c;*/
+    background-color: #B8813D;/*#8A5B39; /*#724B2F; /*#805E3C; /*#5a2d0c;*/
     overflow: auto;
     border: 3px solid black;
 	
