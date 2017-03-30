@@ -562,4 +562,9 @@
 		$player->drawMP();
 		$player->drawEXP();
 	}
+	function drawDivider()
+	{
+		echo "<div class='splitter'></div>";
+	}
+	
 ?>
