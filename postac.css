@@ -46,7 +46,7 @@
 	position: fixed;
 	width: 15%;
 	
-	left: 42%;
+	left: 42.5%;
 	top: 22%;
 	
 	border: 2px solid black; 
@@ -55,6 +55,10 @@
 	background: beige;
 	padding: 8px;
 	padding-right: 10px;
+	
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 	
 }
 #buttonStats
@@ -83,7 +87,7 @@
 .statMinus
 {
 	float: right;
-	margin-right: 7%;
+	margin-right: 5%;
 }
 .statValue
 {
@@ -93,7 +97,7 @@
 }
 .statPlus
 {
-	margin-left: 7%;
+	margin-left: 5%;
 	float: right;
 }
 .buttonMinus, .buttonPlus

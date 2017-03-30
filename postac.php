@@ -4,6 +4,7 @@
     login_check();
 	$_SESSION['player']->updateLocally();
 	drawGame($_SESSION['player']);
+	$_SESSION['player']->remaining = 1;
 	
 	
 	function drawStatystyki()
@@ -45,13 +46,13 @@
 					echo "<div class='statLabel noselect nocursor'>" . $label . ":</div>";
 				
 					echo "<div class='statPlus noselect'>";
-						echo '<button class="buttonPlus noselect nocursor" onclick="addStat(\'' .$stat. '\')">-</button>';
+						echo '<button class="buttonPlus noselect arrow" onclick="addStat(\'' .$stat. '\')">-</button>';
 					echo "</div>";
 					
 					echo "<div class='statValue noselect' id='" .$stat. "Value'>" . $value . "</div>";
 				
 					echo "<div class='statMinus noselect'>";
-						echo '<button class="buttonMinus noselect nocursor" onclick="removeStat(\'' .$stat. '\')">-</button>';
+						echo '<button class="buttonMinus noselect arrow" onclick="removeStat(\'' .$stat. '\')">-</button>';
 					echo "</div>";
 				
 					echo "<div class='statHover noselect'>" . $hover . "</div>";
