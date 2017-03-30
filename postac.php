@@ -4,6 +4,9 @@
     login_check();
 	$_SESSION['player']->updateLocally();
 	drawGame($_SESSION['player']);
+	$_SESSION['player']->remaining = 1;
+	
+	
 	
 	function drawStatystyki()
 	{
@@ -12,7 +15,13 @@
 			$_SESSION['totalStats'] = 0;
 		}
 		
-		//Generating the statistics for user
+		//Statystyki Label
+		echo "<div class='center noselect' id='statystykiLabel'>Statystyki</div>";
+		echo "<div class='statContainer noselect'></div>";
+		echo "<div class='statContainer noselect'></div>";
+		
+		
+		//Generacja
 		for ($i = 0; $i <= 7; $i++)
 		{
 			$stat = '';
@@ -55,7 +64,7 @@
 			}
 			else
 			{
-				//Just statistics
+				//Just statistics values
 				echo "<div class='statContainer noselect' id='" . $stat. "Container'>";
 					echo "<div class='statLabel noselect arrow'>" . $label . ":</div>";
 					echo "<div class='statValue noselect' id='" .$stat. "Value'>" . $value . "</div>";
@@ -64,21 +73,21 @@
 			}
 		}
 		
+		//Remaining points
 		if($_SESSION['player']->remaining > 0)
 		{
-			//Generating remaining points
 			echo "<div class='statContainer noselect'></div>";
-			echo "<div class='statContainer noselect'>";
-				echo "<div class='statLabel noselect arrow'>Pozostałe punkty:</div>";
-				echo "<div class='statValue noselect' id='pozostale'>" .$_SESSION['player']->remaining. "</div>";
-				echo "<div class='statHover noselect'>Punkty statystyk, które możesz jeszcze rozdysponować.</div>";
-			echo "</div>";
+			echo "<div class='statContainer noselect center centerText'>Pozostałe punkty: <div id='pozostale'>" .$_SESSION['player']->remaining. "</div></div>";
+			echo "<div class='statContainer noselect'></div>";
+			drawButton();
 			
 			$_SESSION['totalStats'] += $_SESSION['player']->remaining;
 		}	
 	}
 	
-	function drawButtons()
+	
+	
+	function drawButton()
 	{
 		if($_SESSION['player']->remaining > 0)
 		{
@@ -93,7 +102,7 @@
 				echo '<input name="charyzma" type="hidden" id="hiddenCharyzma">';
 				echo '<input name="szczescie" type="hidden" id="hiddenSzczescie">';
 				echo '<input name="remaining" type="hidden" id="hiddenRemaining">';
-				echo '<input class="orange przycisk" type="submit" value="Zapisz" id="buttonStats">';
+				echo '<input class="orange przycisk center" type="submit" value="Zapisz" id="buttonStats">';
 			echo '</Form>';	
 		}
 	}
@@ -154,7 +163,6 @@
 		<div id='statystyki'>
 			<?php drawStatystyki(); ?>
 		</div>
-		<?php drawButtons(); ?>
     </div>
 
 	
@@ -198,12 +206,11 @@
 		$(this).parent().find('.statHover').css({'top': top, 'left': left});
 	});
 
-	//Checking if there are unassigned, remaining points
 	var remaining = <?php echo json_encode($_SESSION['player']->remaining); ?>;
+	
+	//Checking if there are unassigned, remaining points
 	if(remaining > 0)
 	{
-		$("#pozostale").css("left", "87%");
-		
 		//Initial statistic values for determining minimum
 		var silaInit = $("#silaValue").html();
 		var zwinnoscInit = $("#zwinnoscValue").html();
@@ -213,11 +220,6 @@
 		var wiedzaInit = $("#wiedzaValue").html();
 		var charyzmaInit = $("#charyzmaValue").html();
 		var szczescieInit = $("#szczescieValue").html();
-	}
-	else
-	{
-		$(".statValue").css("left", "84%");
-		$(".statValue").css("text-align", "right");
 	}
 	
 	//Increase statistic

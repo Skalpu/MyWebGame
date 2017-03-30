@@ -30,7 +30,6 @@
 <Body>
 
     <div id="divMainOkno">
-	
     </div>
 
 	

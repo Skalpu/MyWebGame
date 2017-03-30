@@ -30,6 +30,10 @@
 	margin-top: 5px;
 	font-size: 2vh;
 }
+#statystykiLabel
+{
+	text-decoration: underline;
+}
 /* STAT DISTRIBUTION */
 #statystyki
 {
@@ -46,11 +50,13 @@
 }
 #buttonStats
 {
-	padding: 3px;
-	position: fixed;
-	width: 5%;
-	left: 54.2%;
-	top: 57%;
+	padding: 5px;
+	bottom: 5%;
+	width: 100%;
+}
+#pozostale
+{
+	display: inline-block;
 }
 .statContainer
 {
@@ -62,31 +68,21 @@
 .statLabel
 {
 	float: left;
-	position: relative;
-	top: 15%;
+	font-weight: bold;
 }
 .statMinus
 {
-	float: left;
-	position: absolute;
-	left: 63%;
-	top: 15%;
+	float: right;
 }
 .statValue
 {
-	float: left;
-	position: absolute;
-	left: 74%;
-	top: 15%;
+	float: right;
+	width: 15%;
 	text-align: center;
-	width: 30px;
 }
 .statPlus
 {
-	float: left;
-	position: absolute;
-	left: 90%;
-	top: 15%;
+	float: right;
 }
 .buttonMinus, .buttonPlus
 {
@@ -101,7 +97,6 @@
     background-color: darkorange;
     color: white;
     text-align: center;
-	
 	box-shadow: inset 0 0 3px black;
 	padding: 0px;
 }
@@ -124,4 +119,8 @@
 	border: 1px solid black;
 	box-shadow: inset 0 0 10px black;
 	background: linear-gradient(beige,burlywood);
+}
+.centerText
+{
+	text-align: center;
 }

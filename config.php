@@ -526,9 +526,6 @@
         return get_value($conn, "SELECT $escapedStatName FROM $escapedTable WHERE id = $escapedID");
         $conn->close();
     }
-	
-	
-	
     function login_check()
     {   
         session_start();
@@ -542,7 +539,6 @@
             header('Location:login.php');
         }
     }
-	
 	
 	
 	/* -------------- DRAWING FUNCTIONS -------------------- */
