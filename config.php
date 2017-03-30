@@ -407,7 +407,7 @@
 			echo "</div>";
 		
 			echo "<div class='hp barText'>";
-				echo "HP: " . $current . "/" . "$max";
+				echo "HP: " . $current . " / " . "$max";
 			echo "</div>";
 			
 			unset($current);
@@ -428,7 +428,7 @@
 			echo "</div>";
 		
 			echo "<div class='mana barText'>";
-				echo "MP: " .$current. "/" .$max;
+				echo "MP: " .$current. " / " .$max;
 			echo "</div>";
 			
 			unset($current);
@@ -448,7 +448,7 @@
 			echo "</div>";
 		
 			echo "<div class='exp barText'>";
-				echo "EXP: " .$current. "/" .$max;
+				echo "EXP: " .$current. " / " .$max;
 			echo "</div>";
 			
 			unset($current);
