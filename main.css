@@ -37,9 +37,8 @@ body
 .barText
 {
 	text-align: center;
-	font-size: 1.5vh;
-	margin-top: 0.25vh;
-	margin-bottom: 0.25vh;
+	font-size: 1.8vh;
+	margin-top: 0.35vh;
 }
 
 
@@ -48,25 +47,25 @@ body
 {
 	position: fixed;
     left: 42.5%;
-    top: 3%;
+    top: 2.5%;
 	width: 15%;
-	height: 2%;
+	height: 2.5%;
 }
 .mana
 {
 	position: fixed;
 	left: 42.5%;
-	top: 6%;
+	top: 5.5%;
 	width: 15%;
-	height: 2%;
+	height: 2.5%;
 }
 .exp
 {
 	position: fixed;
 	left: 42.5%;
-	top: 9%;
+	top: 8.5%;
 	width: 15%;
-	height: 2%;
+	height: 2.5%;
 }
 #innerMana
 {
