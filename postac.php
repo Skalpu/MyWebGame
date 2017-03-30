@@ -4,8 +4,6 @@
     login_check();
 	$_SESSION['player']->updateLocally();
 	drawGame($_SESSION['player']);
-	$_SESSION['player']->remaining = 1;
-	
 	
 	
 	function drawStatystyki()
