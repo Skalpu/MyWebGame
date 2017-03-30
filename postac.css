@@ -3,18 +3,20 @@
 	position: fixed;
 	width: 16%;
 	height: 48%;
-	left: 24%;
+	left: 23%;
 	top: 22%;
+	
+	border: 2px solid black;
 }
 #podpis
 {
 	position: fixed;
 	width: 16%;
 	height: 8%;
-	left: 24%;
+	left: 23%;
 	top: 70%;
 	
-	border: 1px solid black;
+	border: 2px solid black;
 	box-shadow: inset 0 0 10px black;
 	background: linear-gradient(beige,burlywood);
 }
@@ -42,19 +44,21 @@
 	position: fixed;
 	width: 15%;
 	
-	left: 43%;
+	left: 42%;
 	top: 22%;
 	
-	border: 1px solid black; 
+	border: 2px solid black; 
 	box-shadow: inset 0 0 10px black;
 	background: linear-gradient(beige,burlywood);
 	padding: 8px;
+	padding-right: 10px;
 }
 #buttonStats
 {
 	padding: 5px;
 	bottom: 5%;
 	width: 100%;
+	border-radius: 0px;
 }
 #pozostale
 {
@@ -75,15 +79,17 @@
 .statMinus
 {
 	float: right;
+	margin-right: 7%;
 }
 .statValue
 {
 	float: right;
-	width: 15%;
+	/*width: 15%;*/
 	text-align: center;
 }
 .statPlus
 {
+	margin-left: 7%;
 	float: right;
 }
 .buttonMinus, .buttonPlus

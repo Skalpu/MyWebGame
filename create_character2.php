@@ -84,16 +84,16 @@
 			
 			//Generating the view
 			echo "<div class='statContainer noselect' id='" . $stat. "Container'>";
-				echo "<div class='statLabel noselect arrow'>" . $label . ":</div>";
+				echo "<div class='statLabel noselect nocursor'>" . $label . ":</div>";
 				
 				echo "<div class='statMinus noselect'>";
-					echo '<button class="buttonMinus noselect arrow" onclick="removeStat(\'' .$stat. '\')">-</button>';
+					echo '<button class="buttonMinus noselect nocursor" onclick="removeStat(\'' .$stat. '\')">-</button>';
 				echo "</div>";
 				
 				echo "<div class='statValue noselect' id='" .$stat. "Value'>" . $value . "</div>";
 				
 				echo "<div class='statPlus noselect'>";
-					echo '<button class="buttonPlus noselect arrow" onclick="addStat(\'' .$stat. '\')">-</button>';
+					echo '<button class="buttonPlus noselect nocursor" onclick="addStat(\'' .$stat. '\')">-</button>';
 				echo "</div>";
 				
 				echo "<div class='statHover noselect'>" . $hover . "</div>";
@@ -107,7 +107,7 @@
 		//Generating remaining points
 		echo "<div class='statContainer noselect'></div>";
 		echo "<div class='statContainer noselect'>";
-		echo "<div class='statLabel noselect arrow'>Pozostałe punkty:</div>";
+		echo "<div class='statLabel noselect nocursor'>Pozostałe punkty:</div>";
 		echo "<div class='statValue noselect' id='pozostale'>0</div>";
 		echo "<div class='statHover noselect'>Punkty statystyk, które możesz jeszcze rozdysponować.</div>";
 		echo "</div>";

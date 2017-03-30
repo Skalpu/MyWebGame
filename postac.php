@@ -42,16 +42,16 @@
 			{
 				//Statistics with + and - buttons
 				echo "<div class='statContainer noselect' id='" . $stat. "Container'>";
-					echo "<div class='statLabel noselect arrow'>" . $label . ":</div>";
+					echo "<div class='statLabel noselect nocursor'>" . $label . ":</div>";
 				
 					echo "<div class='statPlus noselect'>";
-						echo '<button class="buttonPlus noselect arrow" onclick="addStat(\'' .$stat. '\')">-</button>';
+						echo '<button class="buttonPlus noselect nocursor" onclick="addStat(\'' .$stat. '\')">-</button>';
 					echo "</div>";
 					
 					echo "<div class='statValue noselect' id='" .$stat. "Value'>" . $value . "</div>";
 				
 					echo "<div class='statMinus noselect'>";
-						echo '<button class="buttonMinus noselect arrow" onclick="removeStat(\'' .$stat. '\')">-</button>';
+						echo '<button class="buttonMinus noselect nocursor" onclick="removeStat(\'' .$stat. '\')">-</button>';
 					echo "</div>";
 				
 					echo "<div class='statHover noselect'>" . $hover . "</div>";
@@ -63,7 +63,7 @@
 			{
 				//Just statistics values
 				echo "<div class='statContainer noselect' id='" . $stat. "Container'>";
-					echo "<div class='statLabel noselect arrow'>" . $label . ":</div>";
+					echo "<div class='statLabel noselect nocursor'>" . $label . ":</div>";
 					echo "<div class='statValue noselect' id='" .$stat. "Value'>" . $value . "</div>";
 					echo "<div class='statHover noselect'>" . $hover . "</div>";
 				echo "</div>";
@@ -99,7 +99,7 @@
 				echo '<input name="charyzma" type="hidden" id="hiddenCharyzma">';
 				echo '<input name="szczescie" type="hidden" id="hiddenSzczescie">';
 				echo '<input name="remaining" type="hidden" id="hiddenRemaining">';
-				echo '<input class="orange przycisk center" type="submit" value="Zapisz" id="buttonStats">';
+				echo '<input class="orange przycisk center arrow" type="submit" value="Zapisz" id="buttonStats">';
 			echo '</Form>';	
 		}
 	}
@@ -198,8 +198,8 @@
 		}
 	);
 	$(".statLabel").bind('mousemove', function(e){
-		var top = e.pageY + 3;
-		var left = e.pageX + 20;
+		var top = e.pageY + 2;
+		var left = e.pageX + 2;
 		$(this).parent().find('.statHover').css({'top': top, 'left': left});
 	});
 
@@ -220,7 +220,7 @@
 	}
 	else
 	{
-		$(".statValue").css("width","auto");
+		//$(".statValue").css("width","auto");
 	}
 	
 	//Increase statistic
