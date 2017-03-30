@@ -7,6 +7,11 @@
 	
 	function drawStatystyki()
 	{
+		if($_SESSION['player']->remaining > 0)
+		{
+			$_SESSION['totalStats'] = 0;
+		}
+		
 		//Generating the statistics for user
 		for ($i = 0; $i <= 7; $i++)
 		{
@@ -45,6 +50,8 @@
 				
 					echo "<div class='statHover noselect'>" . $hover . "</div>";
 				echo "</div>";
+				
+				$_SESSION['totalStats'] += $value;
 			}
 			else
 			{
@@ -66,6 +73,8 @@
 				echo "<div class='statValue noselect' id='pozostale'>" .$_SESSION['player']->remaining. "</div>";
 				echo "<div class='statHover noselect'>Punkty statystyk, które możesz jeszcze rozdysponować.</div>";
 			echo "</div>";
+			
+			$_SESSION['totalStats'] += $_SESSION['player']->remaining;
 		}	
 	}
 	
@@ -103,36 +112,23 @@
 		$_SESSION['player']->szczescie = $_POST['szczescie'];
 		$_SESSION['player']->remaining = $_POST['remaining'];
 		
-		//Setting values in short form for easier query
-		$id = $_SESSION['player']->id;
-		$sila = $_SESSION['player']->sila;
-		$zwinnosc = $_SESSION['player']->zwinnosc;
-		$celnosc = $_SESSION['player']->celnosc;
-		$kondycja = $_SESSION['player']->kondycja;
-		$inteligencja = $_SESSION['player']->inteligencja;
-		$wiedza = $_SESSION['player']->wiedza;
-		$charyzma = $_SESSION['player']->charyzma;
-		$szczescie = $_SESSION['player']->szczescie;
-		$remaining = $_SESSION['player']->remaining;
-
-		//TODO: HP/Mana handling when wiedza/kondycja increased
-		//TODO: TotalStats check for naughty users
+		$total = $_POST['sila'] + $_POST['zwinnosc'] + $_POST['celnosc'] + $_POST['kondycja'] + $_POST['inteligencja'] + $_POST['wiedza'] + $_POST['charyzma'] + $_POST['szczescie'] + $_POST['remaining'];
 		
-		//Updating in DB
-		$conn = connectDB();
-		$conn->query("UPDATE users SET sila=$sila, zwinnosc=$zwinnosc, celnosc=$celnosc, kondycja=$kondycja, inteligencja=$inteligencja, wiedza=$wiedza, charyzma=$charyzma, szczescie=$szczescie, remaining=$remaining WHERE id=$id");
-		$conn->close();
-		
-		unset($id);
-		unset($sila);
-		unset($zwinnosc);
-		unset($celnosc);
-		unset($kondycja);
-		unset($inteligencja);
-		unset($wiedza);
-		unset($charyzma);
-		unset($szczescie);
-		unset($remaining);
+		if($total == $_SESSION['totalStats'])
+		{
+			unset($_SESSION['totalStats']);
+			unset($total);
+			
+			//Updating max hp and max mana
+			$_SESSION['player']->updateHP();
+			$_SESSION['player']->updateMana();
+			//Sending the update to SQL server
+			$_SESSION['player']->updateGlobally();
+		}
+		else
+		{
+			//TODO: Ban za cheating?
+		}
 	}
 ?>
 

@@ -1,5 +1,48 @@
 <?php   
 
+	class Item
+	{
+		public $id;
+		public $name;
+		public $equipped = false;
+		public $owner;
+		
+		public $rarity;
+		public $tier;
+		public $type;
+		public $subtype;
+		public $photo;
+		
+		public $dmgmin = 0;
+		public $dmgmax = 0;
+		public $attackspeed = 0;
+		public $critchance = 0;
+		
+		public $armor = 0;
+		
+		public $dmgogien = 0;
+		public $dmgwoda = 0;
+		public $dmgpowietrze = 0;
+		public $dmgziemia = 0;
+		
+		public $sila = 0;
+		public $zwinnosc = 0;
+		public $celnosc = 0;
+		public $kondycja = 0;
+		public $inteligencja = 0;
+		public $wiedza = 0;
+		public $charyzma = 0;
+		public $szczescie = 0;
+		
+		//TODO
+		public function saveToDB()
+		{
+			$conn = connectDB();
+			//INSERT INTO while saving ID
+			//$this->id = last_id
+			$conn->close();
+		}
+	}
 	class Player
 	{
 		public $id;
@@ -34,6 +77,76 @@
 		public $unread;
 		public $last_update;
 		
+		public $inventory = [
+			0 => "",
+			1 => "",
+			2 => "",
+			3 => "",
+			4 => "",
+			5 => "",
+			6 => "",
+			7 => "",
+			8 => "",
+			9 => "",
+			10 => "",
+			11 => "",
+			12 => "",
+			13 => "",
+			14 => "",
+		];
+		//TODO: finish
+		public $equipment = [
+			'helmet' => "",
+			'amulet' => "",
+		];
+		
+		public function equipItem(Item $item)
+		{
+			$this->sila += $item->sila;
+			$this->zwinnosc += $item->zwinnosc;
+			$this->celnosc += $item->celnosc;
+			$this->kondycja += $item->kondycja;
+			$this->inteligencja += $item->inteligencja;
+			$this->wiedza += $item->wiedza;
+			$this->charyzma += $item->charyzma;
+			$this->szczescie += $item->szczescie;
+			
+			$this->updateHP();
+			$this->updateMana();
+			$this->updateGlobally();
+			
+			$item->equipped = true;
+		}
+		public function unequipItem(Item $item)
+		{
+			$this->sila -= $item->sila;
+			$this->zwinnosc -= $item->zwinnosc;
+			$this->celnosc -= $item->celnosc;
+			$this->kondycja -= $item->kondycja;
+			$this->inteligencja -= $item->inteligencja;
+			$this->wiedza -= $item->wiedza;
+			$this->charyzma -= $item->charyzma;
+			$this->szczescie -= $item->szczescie;
+			
+			$this->updateHP();
+			$this->updateMana();
+			$this->updateGlobally();
+			
+			$item->equipped = false;
+		}
+		public function addToInventory(Item $item)
+		{
+			for($i = 0; $i < 15; $i++)
+			{
+				if($this->inventory[$i] == "")
+				{
+					$this->inventory[$i] = $item;
+					$item->saveToDB();
+					break;
+				}
+			}
+		}
+		
 		
 		public function updateMaxHP()
 		{
@@ -45,6 +158,27 @@
 			$this->maxmana = $this->wiedza * 10;
 			$this->mana = $this->maxmana;
 		}
+		public function updateHP()
+		{
+			$this->maxhp = $this->kondycja * 10;
+			
+			if($this->hp > $this->maxhp)
+			{
+				$this->hp = $this->maxhp;
+			}
+		}
+		public function updateMana()
+		{
+			$this->maxmana = $this->wiedza * 10;
+			
+			if($this->mana > $this->maxmana)
+			{
+				$this->mana = $this->maxmana;
+			}
+		}
+		
+		//UPDATES THE OBJECT WITHIN SESSION (hp regen, gold income etc), BASED ON LAST DATABASE UPDATE
+		//USE ON EVERY RELOAD, BEFORE FIGHTS (TO HAVE THE LATEST GOLD AMOUNT)
 		public function updateLocally()
 		{
 			$now = time();
@@ -83,10 +217,61 @@
 			unset($seconds);
 			unset($updates);
 		}
-		public function updateDB()
+		
+		//UPDATES EVERYTHING AND SAVES IT INTO DATABASE
+		//USE AFTER EVENTS(ATTACKS, STAT INCREASES ETC), THAT PERMANENTLY CHANGE THE CHARACTER
+		public function updateGlobally()
 		{
 			$this->updateLocally();
+			
+			$id = $this->id;
+			$level = $this->level;
+			$experience = $this->experience;
+			$experiencenext = $this->experiencenext;
+			$remaining = $this->remaining;
+		
+			$sila = $this->sila;
+			$zwinnosc = $this->zwinnosc;
+			$celnosc = $this->celnosc;
+			$kondycja = $this->kondycja;
+			$inteligencja = $this->inteligencja;
+			$wiedza = $this->wiedza;
+			$charyzma = $this->charyzma;
+			$szczescie = $this->szczescie;
+		
+			$hp = $this->hp;
+			$maxhp = $this->maxhp;
+			$mana = $this->mana;
+			$maxmana = $this->maxmana;
+			$zloto = $this->zloto;
+			$krysztaly = $this->krysztaly;
+			
+			$conn=connectDB();
+			$conn->query("UPDATE users SET level=$level, experience=$experience, experiencenext=$experiencenext, remaining=$remaining, sila=$sila, zwinnosc=$zwinnosc, celnosc=$celnosc, kondycja=$kondycja, inteligencja=$inteligencja, wiedza=$wiedza, charyzma=$charyzma, szczescie=$szczescie, hp=$hp, maxhp=$maxhp, mana=$mana, maxmana=$maxmana, zloto=$zloto, krysztaly=$krysztaly, last_update=NOW() WHERE id=$id");
+			$conn->close();
+			
+			unset($id);
+			unset($level);
+			unset($experience);
+			unset($experiencenext);
+			unset($remaining);
+			unset($sila);
+			unset($zwinnosc);
+			unset($celnosc);
+			unset($kondycja);
+			unset($inteligencja);
+			unset($wiedza);
+			unset($charyzma);
+			unset($szczescie);
+			unset($hp);
+			unset($maxhp);
+			unset($mana);
+			unset($maxmana);
+			unset($zloto);
+			unset($krysztaly);
 		}
+		
+		//TODO: WATCH VIDEO FROM PHONE
 		public function updateMail()
 		{
 			$conn = connectDB();
@@ -261,7 +446,9 @@
 		}
 		
 		
-		//Sets the class object by downloadinng all player data from SQL server - use for existing players
+		
+		
+		//Sets the class object by downloading all player data from SQL server - use for existing players
 		public function __construct($id)
 		{
 			$conn = connectDB();
@@ -297,6 +484,8 @@
 			$this->maxmana = $row['maxmana'];
 			$this->zloto = $row['zloto'];
 			$this->krysztaly = $row['krysztaly'];
+			
+			$this->last_update = $row['last_update'];
 		}
 	}
 	
