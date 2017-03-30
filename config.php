@@ -177,6 +177,10 @@
 			}
 		}
 		
+		//HOW TO USE UPDATES
+		//BEFORE FIGHT USE updateLocally - to count the user's gold, have him regen hp etc
+		//AFTER FIGHT USE updateGlobally - to save his new hp, increased/decreased gold etc in database.
+		
 		//UPDATES THE OBJECT WITHIN SESSION (hp regen, gold income etc), BASED ON LAST DATABASE UPDATE
 		//USE ON EVERY RELOAD, BEFORE FIGHTS (TO HAVE THE LATEST GOLD AMOUNT)
 		public function updateLocally()
@@ -186,7 +190,14 @@
 			if(isset($this->last_update))
 			{
 				//Was saved in session
-				$last = $this->last_update;
+				if(is_int($this->last_update))
+				{
+					$last = $this->last_update;
+				}
+				else
+				{
+					$last = strtotime($this->last_update);
+				}
 			}
 			else
 			{
@@ -222,7 +233,7 @@
 		//USE AFTER EVENTS(ATTACKS, STAT INCREASES ETC), THAT PERMANENTLY CHANGE THE CHARACTER
 		public function updateGlobally()
 		{
-			$this->updateLocally();
+			//$this->updateLocally();
 			
 			$id = $this->id;
 			$level = $this->level;

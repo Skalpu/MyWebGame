@@ -21,7 +21,7 @@
 <Body>
 
     <div id="divMainOkno">
-		- WIOSKA?<br>
+		<!--- WIOSKA?<br>
 		- GENERACJA ITEMÓW<br>
 		- SUMMONY<br>
 		- KARCZMA Z QUESTAMI<br>
@@ -30,7 +30,7 @@
 		- RACIALE I KLASOWE<br>
 		- HANDLARZ<br>
 		- PODLICZANIE MAX HP I MAX MANY PRZY ZAŁOŻENIU ITEMU<br>
-		- CRON JOBS NA WYPRAWY<br>
+		- CRON JOBS NA WYPRAWY<br>-->
     </div>
 
 	

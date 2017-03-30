@@ -129,6 +129,7 @@
 			$_SESSION['player']->updateHP();
 			$_SESSION['player']->updateMana();
 			//Sending the update to SQL server
+			$_SESSION['player']->updateLocally();
 			$_SESSION['player']->updateGlobally();
 		}
 		else
