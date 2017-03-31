@@ -3,36 +3,42 @@
 	position: fixed;
 	width: 16%;
 	height: 48%;
-	left: 23%;
+	left: 24%;
 	top: 22%;
 	
 	border: 2px solid black;
+	
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
 }
 #podpis
 {
 	position: fixed;
 	width: 16%;
 	height: 8%;
-	left: 23%;
+	left: 24%;
 	top: 70%;
 	
 	border: 2px solid black;
 	box-shadow: inset 0 0 10px black;
-	/*background: linear-gradient(beige,burlywood);*/
-	/*background-image: url("gfx/scroll.jpg"); background-repeat: no-repeat; background-position: center; background-size: fill;*/
 	background: beige;
+	
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	
+	padding: 5px;
 }
 #nick
 {
 	text-align: center;
 	font-weight: bold;
-	margin-top: 5px;
 	font-size: 3vh;
 }
 #podnick
 {
 	text-align: center;
-	margin-top: 5px;
 	font-size: 2vh;
 }
 #statystykiLabel
@@ -51,15 +57,12 @@
 	
 	border: 2px solid black; 
 	box-shadow: inset 0 0 10px black;
-	/*background-image: url("gfx/scroll.jpg"); background-repeat: no-repeat; background-position: center; background-size: fill;*/
 	background: beige;
 	padding: 8px;
-	padding-right: 10px;
-	
+
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	
 }
 #buttonStats
 {
@@ -92,8 +95,8 @@
 .statValue
 {
 	float: right;
-	/*width: 15%;*/
-	text-align: center;
+	width: 10%;
+	text-align: right;
 }
 .statPlus
 {

@@ -71,7 +71,7 @@
 				<input type='text' class='centerForm' name='username' id='usernameForm'>
 				<input type='password' class='centerForm' name='password' id='passwordForm'>
 				<input type='password' class='centerForm' name='confirm' id='confirmForm'>
-				<input type='submit' class='centerForm' value='Rejestracja' id='submitFormRegister'>
+				<input type='submit' class='centerForm orange przycisk' value='Rejestracja' id='submitFormRegister'>
 			</Form>
         
     </div>

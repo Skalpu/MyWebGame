@@ -171,7 +171,7 @@
 			$maxmana = $conn->real_escape_string($_SESSION['player']->maxmana);
 			
 			//Updating database
-			$conn->query("UPDATE users SET plec='$plec', rasa='$rasa', klasa='$klasa', foto='$foto', sila='$sila', zwinnosc='$zwinnosc', celnosc='$celnosc', kondycja='$kondycja', inteligencja='$inteligencja', wiedza='$wiedza', charyzma='$charyzma', szczescie='$szczescie', last_login=NOW(), last_update=NOW(), hp='$hp', maxhp='$maxhp', mana='$mana', maxmana='$maxmana', level=1 WHERE id='$id'");
+			$conn->query("UPDATE users SET plec='$plec', rasa='$rasa', klasa='$klasa', foto='$foto', sila='$sila', zwinnosc='$zwinnosc', celnosc='$celnosc', kondycja='$kondycja', inteligencja='$inteligencja', wiedza='$wiedza', charyzma='$charyzma', szczescie='$szczescie', last_login=NOW(), last_update=NOW(), protected_until=NOW(), hp='$hp', maxhp='$maxhp', mana='$mana', maxmana='$maxmana', level=1 WHERE id='$id'");
 			$conn->query("INSERT INTO user_mail (id) VALUES ($id)");
 			$conn->query("INSERT INTO spellbooks (id) VALUES ($id)");
 			$conn->query("INSERT INTO equipment (id) VALUES ($id)");

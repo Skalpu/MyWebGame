@@ -76,7 +76,7 @@
         <Form action='login.php' method='post'>
 			<input id="usernameForm" class='centerForm' type='text' name='username'>
 			<input id="passwordForm" class='centerForm' type='password' name='password'>
-			<input id="submitFormLogin" class='centerForm' type='submit' value='Logowanie'>
+			<input id="submitFormLogin" class='centerForm orange przycisk' type='submit' value='Logowanie'>
         </Form>
        
     </div>

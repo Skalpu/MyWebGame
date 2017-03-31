@@ -46,7 +46,7 @@
 					echo "<div class='statLabel noselect nocursor'>" . $label . ":</div>";
 				
 					echo "<div class='statPlus noselect'>";
-						echo '<button class="buttonPlus noselect arrow" onclick="addStat(\'' .$stat. '\')">-</button>';
+						echo '<button class="buttonPlus noselect arrow" onclick="addStat(\'' .$stat. '\')">+</button>';
 					echo "</div>";
 					
 					echo "<div class='statValue noselect' id='" .$stat. "Value'>" . $value . "</div>";
@@ -69,6 +69,11 @@
 					echo "<div class='statHover noselect'>" . $hover . "</div>";
 				echo "</div>";
 			}
+			
+			unset($stat);
+			unset($label);
+			unset($hover);
+			unset($value);
 		}
 		
 		//Remaining points

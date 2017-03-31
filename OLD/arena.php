@@ -58,7 +58,6 @@
 			echo "<th>" . $row['last_update'] . "</th>";
 			echo "<th> <button onclick='atakuj(" . $row['id'] . ")'>Atak</button></th>";
 			echo "</tr>";
-
 		}
 		
 		echo "</table>";
