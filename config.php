@@ -349,8 +349,8 @@
 		public function drawFoto()
 		{
 			$fotoPath = "url(gfx/portrety/" . $this->foto . ".jpg)";
-			echo "<div class='fotoContainer' style='background-image: " . $fotoPath . ";'></div>";
-			
+			echo "<div class='fotoContainer' id='" .$this->id. "' style='background-image: " . $fotoPath . ";'></div>";
+		
 			unset($fotoPath);
 		}
 		public function drawMail()
@@ -393,20 +393,20 @@
 			
 			unset($krysztaly);
 		}
-		public function drawHP()
+		public function drawHP($nazwa, $style)
 		{
 			$current = round($this->hp);
 			$max = round($this->maxhp);
 			$percent = round( ($current/$max) * 100);
 			$color = color($current, $max);
 		
-			echo "<div class='hp bar'>";
+			echo "<div class='bar " .$nazwa. "' style='" .$style. "'>";
 				echo "<div class='outerBar'>";
 					echo "<div class='innerBar' style='width: " .$percent. "%; background-color: " .$color. ";'></div>";
 				echo "</div>";
 			echo "</div>";
 		
-			echo "<div class='hp barText'>";
+			echo "<div class='barText " .$nazwa. "' style='" .$style. "'>";
 				echo "HP: " . $current . " / " . "$max";
 			echo "</div>";
 			
@@ -414,46 +414,52 @@
 			unset($max);
 			unset($percent);
 			unset($color);
+			unset($nazwa);
+			unset($style);
 		}
-		public function drawMP()
+		public function drawMP($nazwa, $style)
 		{
 			$current = round($this->mana);
 			$max = round($this->maxmana);
 			$percent = round( ($current/$max) * 100 );
 		
-			echo "<div class='mana bar'>";
+			echo "<div class='bar " .$nazwa. "' style='" .$style. "'>";
 				echo "<div class='outerBar'>";
 					echo "<div class='innerBar' id='innerMana' style='width: " .$percent. "%;'></div>";
 				echo "</div>";
 			echo "</div>";
 		
-			echo "<div class='mana barText'>";
+			echo "<div class='barText " .$nazwa. "' style='" .$style. "'>";
 				echo "MP: " .$current. " / " .$max;
 			echo "</div>";
 			
 			unset($current);
 			unset($max);
 			unset($percent);
+			unset($nazwa);
+			unset($style);
 		}
-		public function drawEXP()
+		public function drawEXP($nazwa, $style)
 		{
 			$current = round($this->experience);
 			$max = round($this->experiencenext);
 			$percent = round( ($current/$max) * 100);
 		
-			echo "<div class='exp bar'>";
+			echo "<div class='bar " .$nazwa. "' style='" .$style. "'>";
 				echo "<div class='outerBar'>";
 					echo "<div class='innerBar' id='innerExp' style='width: " .$percent. "%;'></div>";
 				echo "</div>";
 			echo "</div>";
 		
-			echo "<div class='exp barText'>";
+			echo "<div class='barText " .$nazwa. "' style='" .$style. "'>";
 				echo "EXP: " .$current. " / " .$max;
 			echo "</div>";
 			
 			unset($current);
 			unset($max);
 			unset($percent);
+			unset($nazwa);
+			unset($style);
 		}
 		
 		
@@ -569,9 +575,9 @@
 		$player->drawMail();
 		$player->drawGold();
 		$player->drawCrystals();
-		$player->drawHP();
-		$player->drawMP();
-		$player->drawEXP();
+		$player->drawHP("mainHP", "");
+		$player->drawMP("mainMP", "");
+		$player->drawEXP("mainEXP", "");
 	}
 	function drawDivider()
 	{
