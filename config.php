@@ -233,8 +233,6 @@
 		//USE AFTER EVENTS(ATTACKS, STAT INCREASES ETC), THAT PERMANENTLY CHANGE THE CHARACTER
 		public function updateGlobally()
 		{
-			//$this->updateLocally();
-			
 			$id = $this->id;
 			$level = $this->level;
 			$experience = $this->experience;

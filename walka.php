@@ -29,32 +29,49 @@
 	{
 		if($_POST['type'] == 'arena')
 		{
-			$ataker = $_SESSION['player'];
-			$obronca = new Player($_POST['opponent']);
-			drawArena($ataker, $obronca);
+			//Creating Player objects used for the fight
+			$attackers = [];
+			$defenders = [];
+			array_push($attackers, $_SESSION['player']);
+			array_push($defenders, new Player($_POST['opponent']));
+			//Getting them ready for the fight(hp regen, gold income etc)
+			$attackers[0]->updateLocally();
+			$defenders[0]->updateLocally();
+			//Drawing HP bars etc
+			drawArena($attackers[0], $defenders[0]);
+			//Drawing the fight
+			drawCombat($attackers, $defenders);
+			//Save the results of the fight
+			$attackers[0]->updateGlobally();
+			$defenders[0]->updateGlobally();
+			
+			unset($attackers);
+			unset($defenders);
 		}
 	}
 	
 	function drawArena(Player $ataker, Player $obronca)
 	{
 		$atakerFotoW = "10%";
-		$atakerFotoH = "30%";		
 		$obroncaFotoW = "10%";
+		$atakerFotoH = "30%";
 		$obroncaFotoH = "30%";
-		$atakerFotoTop = "22%";
-		$atakerFotoLeft = "21%";
-		$obroncaFotoTop = "22%";
-		$obroncaFotoRight = "21%";
+		$atakerFotoTop = "18%";
+		$obroncaFotoTop = "18%";
+		$atakerFotoLeft = "21.5%";
+		$obroncaFotoRight = "21.5%";
 		$barH = "2.5%";
+		$bar1Top = "48%";
+		$bar2Top = "50.5%";
+
 		
+		$stylAtakerHP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $barH; top: $bar1Top; left: $atakerFotoLeft;";
+		$stylAtakerMP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $barH; top: $bar2Top; left: $atakerFotoLeft;";
+
 		
-		$stylAtakerHP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $barH; top: 52%; left: $atakerFotoLeft;";
-		$stylAtakerMP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $barH; top: 54.5%; left: $atakerFotoLeft;";
-		
-		$stylObroncaHP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $barH; top: 52%; right: $obroncaFotoRight;";
-		$stylObroncaMP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $barH; top: 54.5%; right: $obroncaFotoRight;";
-		
-		
+		$stylObroncaHP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $barH; top: $bar1Top; right: $obroncaFotoRight;";
+		$stylObroncaMP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $barH; top: $bar2Top; right: $obroncaFotoRight;";
+
 		
 		echo "<div style='position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $atakerFotoH; top: $atakerFotoTop; left: $atakerFotoLeft;'>";
 			$ataker->drawFoto();
@@ -67,8 +84,41 @@
 			$obronca->drawFoto();
 		echo "</div>";
 		$obronca->drawHP("obroncaHP", $stylObroncaHP);
-		$obronca->drawMP("obroncaMP", $stylObroncaMP);
-
-		
+		$obronca->drawMP("obroncaMP", $stylObroncaMP);		
 	}
+
+	function drawCombat($attackers, $defenders)
+	{
+		$dead_attackers = [];
+		$dead_defenders = [];
+		
+		while(count($attackers) > 0 and count($defenders) > 0)
+		{
+			echo $attackers[0]->hp . "<br>";
+			
+			$attackers[0]->hp -= 10;
+			$defenders[0]->hp -= 10;
+			
+			foreach($attackers as $attKey => $att)
+			{
+				if($att->hp < 0)
+				{
+					$att->hp = 0;
+					array_push($dead_attackers, $att);
+					unset($attackers[$attKey]);
+				}
+			}
+			foreach($defenders as $defKey => $def)
+			{
+				if($def->hp < 0)
+				{
+					$def->hp = 0;
+					array_push($dead_defenders, $def);
+					unset($defenders[$defKey]);
+				}
+			}
+		}
+	}
+	
+	
 ?>

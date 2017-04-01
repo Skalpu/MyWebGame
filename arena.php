@@ -12,6 +12,15 @@
 		$level_brackets_used = 0;
 		$players_amount = 10;
 		
+		//Generating labels on top of the table
+		echo "<table id='tabelaGracze'>";
+		echo "<tr>";
+		echo "<th id='graczLabel'>Gracz</th>";
+		echo "<th id='levelLabel'>Poziom</th>";
+		echo "<th id='ostatnioLabel'>Ostatnia aktywność</th>";
+		echo "<th id='akcjaLabel'>Akcja</th>";
+		echo "</tr>";
+		
 		//Checking if player has enough HP (20%)
 		if($_SESSION['player']->hp / $_SESSION['player']->maxhp > 0.2)
 		{
@@ -41,43 +50,35 @@
 				$level_brackets_used++;
 			}
 			
+			//Generating table content
+			for($i = 0; $i < $num_rows; $i++)
+			{
+				$row = mysqli_fetch_assoc($result);
+				echo "<tr>";
+				echo "<th>" . $row['username'] . "</th>";
+				echo "<th>" . $row['level'] . "</th>";
+				echo "<th>" . $row['last_update'] . "</th>";
+				echo "<th> <button class='orange przycisk	' onclick='attack(" . $row['id'] . ")'>Atak</button></th>";
+				echo "</tr>";
+			}
+		
+			//Unsetting variables to save memory
 			$conn->close();
 			unset($level);
 			unset($levelMin);
 			unset($levelMax);
 			unset($id);
+			unset($row);
+			unset($num_rows);
+			unset($result);
+			unset($level_brackets);
+			unset($level_brackets_used);
+			unset($players_amount);
 		}
-		
-		//Generating labels on top of the table
-		echo "<table id='tabelaGracze'>";
-		echo "<tr>";
-		echo "<th id='graczLabel'>Gracz</th>";
-		echo "<th id='levelLabel'>Poziom</th>";
-		echo "<th id='ostatnioLabel'>Ostatnia aktywność</th>";
-		echo "<th id='akcjaLabel'>Akcja</th>";
-		echo "</tr>";
-		
-		//Generating table content
-		for($i = 0; $i < $num_rows; $i++)
-		{
-			$row = mysqli_fetch_assoc($result);
-			echo "<tr>";
-			echo "<th>" . $row['username'] . "</th>";
-			echo "<th>" . $row['level'] . "</th>";
-			echo "<th>" . $row['last_update'] . "</th>";
-			echo "<th> <button class='orange przycisk	' onclick='attack(" . $row['id'] . ")'>Atak</button></th>";
-			echo "</tr>";
-		}
-		
+
 		echo "</table>";
-		//Unsetting variables to save memory
-		unset($row);
-		unset($num_rows);
-		unset($result);
-		unset($level_brackets);
-		unset($level_brackets_used);
-		unset($players_amount);
 	}
+	
 	
 ?>
 
