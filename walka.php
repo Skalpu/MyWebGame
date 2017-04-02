@@ -50,7 +50,7 @@
 		}
 	}
 	
-	function drawArena(Player $ataker, Player $obronca)
+	function drawArena(Player $attacker, Player $defender)
 	{
 		$atakerFotoW = "10%";
 		$obroncaFotoW = "10%";
@@ -74,51 +74,288 @@
 
 		
 		echo "<div style='position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $atakerFotoH; top: $atakerFotoTop; left: $atakerFotoLeft;'>";
-			$ataker->drawFoto();
+		$attacker->drawFoto();
 		echo "</div>";
-		$ataker->drawHP("atakerHP", $stylAtakerHP);
-		$ataker->drawMP("atakerMP", $stylAtakerMP);
+		$attacker->drawHP("atakerHP", $stylAtakerHP);
+		$attacker->drawMP("atakerMP", $stylAtakerMP);
 		
 		
 		echo "<div style='position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $obroncaFotoH; top: $obroncaFotoTop; right: $obroncaFotoRight;'>";
-			$obronca->drawFoto();
+		$defender->drawFoto();
 		echo "</div>";
-		$obronca->drawHP("obroncaHP", $stylObroncaHP);
-		$obronca->drawMP("obroncaMP", $stylObroncaMP);		
+		$defender->drawHP("obroncaHP", $stylObroncaHP);
+		$defender->drawMP("obroncaMP", $stylObroncaMP);		
 	}
 
 	function drawCombat($attackers, $defenders)
 	{
-		$dead_attackers = [];
-		$dead_defenders = [];
+		$dead = [];
+		$round = 0;
+		$round_time = 5;
 		
+		//Initial settings
+		$result = initializeFighters($attackers, $defenders);
+		$attackers = $result["attackers"];
+		$defenders = $result["defenders"];
+		
+		echo "<div id='combatWindow'>";
+		
+		//Fight loop
 		while(count($attackers) > 0 and count($defenders) > 0)
 		{
-			echo $attackers[0]->hp . "<br>";
+			//Checking for new round
+			$result = endRound($attackers, $defenders, $round, $round_time);
+			$attackers = $result["attackers"];
+			$defenders = $result["defenders"];
+			$round = $result["round"];
 			
-			$attackers[0]->hp -= 10;
-			$defenders[0]->hp -= 10;
-			
-			foreach($attackers as $attKey => $att)
-			{
-				if($att->hp < 0)
-				{
-					$att->hp = 0;
-					array_push($dead_attackers, $att);
-					unset($attackers[$attKey]);
-				}
-			}
-			foreach($defenders as $defKey => $def)
-			{
-				if($def->hp < 0)
-				{
-					$def->hp = 0;
-					array_push($dead_defenders, $def);
-					unset($defenders[$defKey]);
-				}
-			}
+			//Melee fight
+			$result = meleeFight($attackers, $defenders, $dead);
+			$attackers = $result["attackers"];
+			$defenders = $result["defenders"];
+			$dead = $result["dead"];	
 		}
+		
+		echo "</div>";
+		
+		//Aftermath
+		$result = aftermath($attackers, $defenders);
+		$attackers = $result["attackers"];
+		$defenders = $result["defenders"];
 	}
 	
 	
+	function initializeFighters($attackers, $defenders)
+	{
+		$fists = new Item();
+		$fists->name = "Pięści";
+		$fists->slot = "lefthand";
+		$fists->type = "melee";
+		$fists->subtype = "none";
+		$fists->dmgmin = 3;
+		$fists->dmgmax = 5;
+		$fists->attackspeed = 1;
+		$fists->critchance = 3;
+		
+		
+		foreach($attackers as $att)
+		{
+			$att->did_move = false;
+			$att->side = "attacker";
+			$att->spells_only = false;
+			
+			if($att->equipment["lefthand"] == "")
+			{
+				$att->equipItem($fists, false);
+			}
+		}
+		foreach($defenders as $def)
+		{
+			$def->did_move = false;
+			$def->side = "defender";
+			$def->spells_only = false;
+			
+			if($def->equipment["lefthand"] == "")
+			{
+				$def->equipItem($fists, false);
+			}
+		}
+		
+		
+		return [
+			"attackers" => $attackers,
+			"defenders" => $defenders
+		];
+	}
+	
+	function endRound($attackers, $defenders, $round, $round_time)
+	{
+		//Checking if attackers moved
+		$attackers_moved = false;
+		foreach($attackers as $att)
+		{
+			if ($att->did_move == true)
+			{
+				$attackers_moved = true;
+			}
+		}
+		
+		//Checking if defenders moved
+		$defenders_moved = false;
+		foreach($defenders as $def)
+		{
+			if ($def->did_move == true)
+			{
+				$defenders_moved = true;
+			}
+		}
+		
+		
+		//Nobody moved -> new turn
+		if($attackers_moved == false and $defenders_moved == false)
+		{
+			$round++;
+			
+			foreach($attackers as $att)
+			{
+				$att->time_remaining = $round_time;
+			}
+			foreach($defenders as $def)
+			{
+				$def->time_remaining = $round_time;
+			}
+		}
+		
+	
+		return [
+			"attackers" => $attackers,
+			"defenders" => $defenders,
+			"round" => $round
+		];
+	}
+	
+	function meleeFight($attackers, $defenders, $dead)
+	{
+		$fighters = [];
+		
+		//Randomising the attack order
+		foreach($attackers as $att)
+		{
+			array_push($fighters, $att);
+		}
+		foreach($defenders as $def)
+		{
+			array_push($fighters, $def);
+		}
+		
+		shuffle($fighters);
+		foreach($fighters as $k => $fig)
+		{
+			//Checking if player isn't a mage
+			if($fig->spells_only == false)
+			{
+				//Check if the player is still alive
+				if($fig->hp <= 0)
+				{
+					array_push($dead, $fig);
+					unset($fighters[$k]);
+				}
+				else
+				{
+					//Looking for an opponent
+					if($fig->side == "attacker")
+					{
+						for($i = 0; $i < count($fighters); $i++)
+						{
+							if($fighters[$i]->side == "defender")
+							{
+								break;
+							}
+						}
+					}
+					else if($fig->side == "defender")
+					{
+						for($i = 0; $i < count($fighters); $i++)
+						{
+							if($fighters[$i]->side == "attacker")
+							{
+								break;
+							}
+						}
+					}
+				
+					//Found an opponent, do melee hit
+					$result = hit($fig, $fighters[$i]);
+					$fig = $result["attacker"];
+					$fighters[$i] = $result["defender"];
+				
+				}
+			}
+		}
+		
+		unset($attackers);
+		unset($defenders);
+		$attackers = [];
+		$defenders = [];
+		
+		foreach($fighters as $fig)
+		{
+			if($fig->side == "attacker")
+			{
+				array_push($attackers, $fig);
+			}
+			else if($fig->side == "defender")
+			{
+				array_push($defenders, $fig);
+			}
+		}
+		
+		return [
+			"attackers" => $attackers,
+			"defenders" => $defenders,
+			"dead" => $dead
+		];
+	}
+	
+	function hit(Player $attacker, Player $defender)
+	{
+		//echo $attacker->equipment["lefthand"]->name . "<br>";
+		//$defender->hp -= 5;
+		//echo "$attacker->username atakuje $defender->username za 5. Pozostało $defender->hp <br>";
+		
+		//Checking if player has enough movement
+		if($attacker->time_remaining >= 1/$attacker->attackspeed)
+		{
+			$attacker->time_remaining -= 1/$attacker->attackspeed;
+			$attacker->did_move = true;
+			
+			//Randomising base damage
+			$dmg = rand($attacker->dmgmin, $attacker->dmgmax);
+			
+			
+		}
+		
+		
+		return [
+			"attacker" => $attacker,
+			"defender" => $defender
+		];
+	}
+
+	function aftermath($attackers, $defenders)
+	{
+		//Unequipping fists
+		foreach($attackers as $att)
+		{
+			if($att->equipment["lefthand"] != "")
+			{
+				if($att->equipment["lefthand"]->name == "Pięści")
+				{
+					$att->unequipItem($att->equipment["lefthand"], false);
+				}
+			}
+		}
+		foreach($defenders as $def)
+		{
+			if($def->equipment["lefthand"] != "")
+			{
+				if($def->equipment["lefthand"]->name == "Pięści")
+				{
+					$def->unequipItem($def->equipment["lefthand"], false);
+				}
+			}
+		}
+		
+		return [
+			"attackers" => $attackers,
+			"defenders" => $defenders
+		];
+	}
+
 ?>
+
+<HTML>
+<Head>
+	<link rel="stylesheet" type="text/css" href="walka.css">
+</Head>
+</HTML>

@@ -9,6 +9,7 @@
 		
 		public $rarity;
 		public $tier;
+		public $slot;
 		public $type;
 		public $subtype;
 		public $photo;
@@ -39,6 +40,7 @@
 		{
 			$conn = connectDB();
 			//INSERT INTO while saving ID
+			//SET OWNER
 			//$this->id = last_id
 			$conn->close();
 		}
@@ -67,15 +69,28 @@
 		public $charyzma;
 		public $szczescie;
 		
+		//DB stats
 		public $hp;
 		public $maxhp;
 		public $mana;
 		public $maxmana;
 		public $zloto;
-		public $krysztaly;
-		
+		public $krysztaly;		
 		public $unread;
 		public $last_update;
+		
+		//Combat settings
+		public $side;
+		public $did_move;
+		public $time_remaining;
+		public $spells_only;
+		
+		//Combat stats
+		public $dmgmin;
+		public $dmgmax;
+		public $attackspeed;
+		public $critchance;		
+		public $armor;
 		
 		public $inventory = [
 			0 => "",
@@ -94,13 +109,14 @@
 			13 => "",
 			14 => "",
 		];
-		//TODO: finish
 		public $equipment = [
 			'helmet' => "",
 			'amulet' => "",
+			'lefthand' => "",
+			'righthand' => "",
 		];
 		
-		public function equipItem(Item $item)
+		public function equipItem(Item $item, $update)
 		{
 			$this->sila += $item->sila;
 			$this->zwinnosc += $item->zwinnosc;
@@ -111,13 +127,24 @@
 			$this->charyzma += $item->charyzma;
 			$this->szczescie += $item->szczescie;
 			
+			$this->dmgmin += $item->dmgmin;
+			$this->dmgmax += $item->dmgmax;
+			$this->attackspeed += $item->attackspeed;
+			$this->critchance += $item->critchance;
+			$this->armor += $item->armor;
+			
 			$this->updateHP();
 			$this->updateMana();
-			$this->updateGlobally();
 			
+			$this->equipment[$item->slot] = $item;
 			$item->equipped = true;
+			
+			if($update == true)
+			{
+				$this->updateGlobally();
+			}
 		}
-		public function unequipItem(Item $item)
+		public function unequipItem(Item $item, $update)
 		{
 			$this->sila -= $item->sila;
 			$this->zwinnosc -= $item->zwinnosc;
@@ -128,11 +155,22 @@
 			$this->charyzma -= $item->charyzma;
 			$this->szczescie -= $item->szczescie;
 			
+			$this->dmgmin -= $item->dmgmin;
+			$this->dmgmax -= $item->dmgmax;
+			$this->attackspeed -= $item->attackspeed;
+			$this->critchance -= $item->critchance;
+			$this->armor -= $item->armor;
+			
 			$this->updateHP();
 			$this->updateMana();
-			$this->updateGlobally();
 			
+			$this->equipment[$item->slot] = "";
 			$item->equipped = false;
+			
+			if($update == true)
+			{
+				$this->updateGlobally();
+			}
 		}
 		public function addToInventory(Item $item)
 		{
@@ -177,12 +215,7 @@
 			}
 		}
 		
-		//HOW TO USE UPDATES
-		//BEFORE FIGHT USE updateLocally - to count the user's gold, have him regen hp etc
-		//AFTER FIGHT USE updateGlobally - to save his new hp, increased/decreased gold etc in database.
-		
-		//UPDATES THE OBJECT WITHIN SESSION (hp regen, gold income etc), BASED ON LAST DATABASE UPDATE
-		//USE ON EVERY RELOAD, BEFORE FIGHTS (TO HAVE THE LATEST GOLD AMOUNT)
+		//HP regen, gold income etc. Use before fights and on every reload
 		public function updateLocally()
 		{
 			$now = time();
@@ -229,8 +262,7 @@
 			unset($updates);
 		}
 		
-		//UPDATES EVERYTHING AND SAVES IT INTO DATABASE
-		//USE AFTER EVENTS(ATTACKS, STAT INCREASES ETC), THAT PERMANENTLY CHANGE THE CHARACTER
+		//Saves to DB, use after permanent stat updates (fights, equipping, level up etc)
 		public function updateGlobally()
 		{
 			$id = $this->id;
@@ -320,7 +352,7 @@
 		
 		public function hpRegen($times)
 		{
-			$this->hp += $times;
+			$this->hp += 100*$times;
 			if($this->hp > $this->maxhp)
 			{
 				$this->hp = $this->maxhp;
@@ -459,8 +491,6 @@
 			unset($nazwa);
 			unset($style);
 		}
-		
-		
 		
 		
 		//Sets the class object by downloading all player data from SQL server - use for existing players
