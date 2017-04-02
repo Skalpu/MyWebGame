@@ -58,8 +58,8 @@
 		$obroncaFotoH = "30%";
 		$atakerFotoTop = "18%";
 		$obroncaFotoTop = "18%";
-		$atakerFotoLeft = "21.5%";
-		$obroncaFotoRight = "21.5%";
+		$atakerFotoLeft = "21.75%";
+		$obroncaFotoRight = "21.75%";
 		$barH = "2.5%";
 		$bar1Top = "48%";
 		$bar2Top = "50.5%";
@@ -92,6 +92,7 @@
 		$dead = [];
 		$round = 0;
 		$round_time = 5;
+		$iterator = 0;
 		
 		//Initial settings
 		$result = initializeFighters($attackers, $defenders);
@@ -104,16 +105,18 @@
 		while(count($attackers) > 0 and count($defenders) > 0)
 		{
 			//Checking for new round
-			$result = endRound($attackers, $defenders, $round, $round_time);
+			$result = endRound($attackers, $defenders, $round, $round_time, $iterator);
 			$attackers = $result["attackers"];
 			$defenders = $result["defenders"];
 			$round = $result["round"];
+			$iterator = $result["iterator"];
 			
 			//Melee fight
-			$result = meleeFight($attackers, $defenders, $dead);
+			$result = meleeFight($attackers, $defenders, $dead, $iterator);
 			$attackers = $result["attackers"];
 			$defenders = $result["defenders"];
 			$dead = $result["dead"];	
+			$iterator = $result["iterator"];
 		}
 		
 		echo "</div>";
@@ -168,7 +171,7 @@
 		];
 	}
 	
-	function endRound($attackers, $defenders, $round, $round_time)
+	function endRound($attackers, $defenders, $round, $round_time, $iterator)
 	{
 		//Checking if attackers moved
 		$attackers_moved = false;
@@ -195,6 +198,13 @@
 		if($attackers_moved == false and $defenders_moved == false)
 		{
 			$round++;
+			$iterator++; 
+			
+			if($round != 1)
+			{
+				echo "<br>";
+			}
+			echo "$iterator Runda: $round<br>";
 			
 			foreach($attackers as $att)
 			{
@@ -210,11 +220,12 @@
 		return [
 			"attackers" => $attackers,
 			"defenders" => $defenders,
-			"round" => $round
+			"round" => $round,
+			"iterator" => $iterator
 		];
 	}
 	
-	function meleeFight($attackers, $defenders, $dead)
+	function meleeFight($attackers, $defenders, $dead, $iterator)
 	{
 		$fighters = [];
 		
@@ -231,10 +242,10 @@
 		shuffle($fighters);
 		foreach($fighters as $k => $fig)
 		{
-			//Checking if player isn't a mage
+			//Checking if attacker isn't a mage
 			if($fig->spells_only == false)
 			{
-				//Check if the player is still alive
+				//Check if the attacker is still alive
 				if($fig->hp <= 0)
 				{
 					array_push($dead, $fig);
@@ -265,14 +276,22 @@
 					}
 				
 					//Found an opponent, do melee hit
-					$result = hit($fig, $fighters[$i]);
+					$result = hit($fig, $fighters[$i], $iterator);
 					$fig = $result["attacker"];
 					$fighters[$i] = $result["defender"];
+					$iterator = $result["iterator"];
 				
+					//Checking if opponent survived
+					if($fighters[$i]->hp <= 0)
+					{
+						array_push($dead, $fighters[$i]);
+						unset($fighters[$i]);
+					}
 				}
 			}
 		}
 		
+		//Rearranging the arrays
 		unset($attackers);
 		unset($defenders);
 		$attackers = [];
@@ -293,32 +312,69 @@
 		return [
 			"attackers" => $attackers,
 			"defenders" => $defenders,
-			"dead" => $dead
+			"dead" => $dead,
+			"iterator" => $iterator
 		];
 	}
 	
-	function hit(Player $attacker, Player $defender)
+	function hit(Player $attacker, Player $defender, $iterator)
 	{
-		//echo $attacker->equipment["lefthand"]->name . "<br>";
-		//$defender->hp -= 5;
-		//echo "$attacker->username atakuje $defender->username za 5. Pozostało $defender->hp <br>";
-		
-		//Checking if player has enough movement
+		//Checking if attacker has enough movement
 		if($attacker->time_remaining >= 1/$attacker->attackspeed)
 		{
+			$iterator++;
 			$attacker->time_remaining -= 1/$attacker->attackspeed;
 			$attacker->did_move = true;
 			
+			
 			//Randomising base damage
 			$dmg = rand($attacker->dmgmin, $attacker->dmgmax);
+			//Adding basestats to damage
+			if($attacker->equipment["lefthand"]->type == "melee")
+			{
+				$dmg = $dmg * ( ($attacker->sila + 100) / 100 );
+			}
+			else if($attacker->equipment["lefthand"]->type == "ranged")
+			{
+				$dmg = $dmg * ( ($attacker->celnosc + 100) / 100 );
+			}
+			//Accounting for armor
+			if($defender->armor != 0)
+			{
+				$mitigation = ($defender->armor / ($defender->armor + (10*$dmg)));
+				$dmg -= ($dmg * $mitigation);
+			}
 			
 			
+			
+			$dmg = round($dmg);
+			$defender->hp -= $dmg;
+			
+			//Generating text
+			echo "$iterator $attacker->username uderza $defender->username zadając $dmg obrażeń!";
+			if($defender->hp > 0)
+			{
+				echo " Pozostało $defender->hp życia!<br>";
+			}
+			else
+			{
+				$defender->hp = 0;
+				echo " $defender->username umiera!<br>";
+			}
+			
+			unset($dmg);
+			unset($mitigation);
+		}
+		else
+		{
+			$attacker->did_move = false;
 		}
 		
 		
 		return [
 			"attacker" => $attacker,
-			"defender" => $defender
+			"defender" => $defender,
+			"iterator" => $iterator
 		];
 	}
 

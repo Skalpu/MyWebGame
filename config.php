@@ -529,8 +529,14 @@
 			$this->maxmana = $row['maxmana'];
 			$this->zloto = $row['zloto'];
 			$this->krysztaly = $row['krysztaly'];
-			
 			$this->last_update = $row['last_update'];
+			
+			$this->dmgmin = $row['dmgmin'];
+			$this->dmgmax = $row['dmgmax'];
+			$this->attackspeed = $row['attackspeed'];
+			$this->critchance = $row['critchance'];
+			$this->armor = $row['armor'];
+			
 		}
 	}
 	
@@ -607,9 +613,5 @@
 		$player->drawMP("mainMP", "");
 		$player->drawEXP("mainEXP", "");
 	}
-	function drawDivider()
-	{
-		echo "<div class='splitter'></div>";
-	}
-	
+
 ?>
