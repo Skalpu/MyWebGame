@@ -40,7 +40,7 @@
 			//Drawing HP bars etc
 			drawArena($attackers[0], $defenders[0]);
 			//Drawing the fight
-			drawCombat($attackers, $defenders);
+			$iterator = drawCombat($attackers, $defenders);
 			//Save the results of the fight
 			$attackers[0]->updateGlobally();
 			$defenders[0]->updateGlobally();
@@ -76,15 +76,15 @@
 		echo "<div style='position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $atakerFotoH; top: $atakerFotoTop; left: $atakerFotoLeft;'>";
 		$attacker->drawFoto();
 		echo "</div>";
-		$attacker->drawHP("atakerHP", $stylAtakerHP);
-		$attacker->drawMP("atakerMP", $stylAtakerMP);
+		$attacker->drawHP("HP" . $attacker->id, $stylAtakerHP);
+		$attacker->drawMP("MP" . $attacker->id, $stylAtakerMP);
 		
 		
 		echo "<div style='position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $obroncaFotoH; top: $obroncaFotoTop; right: $obroncaFotoRight;'>";
 		$defender->drawFoto();
 		echo "</div>";
-		$defender->drawHP("obroncaHP", $stylObroncaHP);
-		$defender->drawMP("obroncaMP", $stylObroncaMP);		
+		$defender->drawHP("HP" . $defender->id, $stylObroncaHP);
+		$defender->drawMP("MP" . $defender->id, $stylObroncaMP);		
 	}
 
 	function drawCombat($attackers, $defenders)
@@ -125,7 +125,10 @@
 		$result = aftermath($attackers, $defenders);
 		$attackers = $result["attackers"];
 		$defenders = $result["defenders"];
+		
+		return $iterator;
 	}
+	
 	
 	
 	function initializeFighters($attackers, $defenders)
@@ -199,12 +202,18 @@
 		{
 			$round++;
 			$iterator++; 
+			$tekst = "";
 			
 			if($round != 1)
 			{
-				echo "<br>";
+				$tekst = $tekst . "<br>";
 			}
-			echo "$iterator Runda: $round<br>";
+			
+			
+			//Generating hidden fields for jquery
+			$tekst = $tekst . "Runda: $round<br><br>";
+			echo "<div style='display: none;' class='$iterator' id='tekst$iterator'>" .$tekst. "</div>";
+
 			
 			foreach($attackers as $att)
 			{
@@ -214,7 +223,10 @@
 			{
 				$def->time_remaining = $round_time;
 			}
+			
+			unset($tekst);
 		}
+		
 		
 	
 		return [
@@ -346,24 +358,26 @@
 			}
 			
 			
-			
 			$dmg = round($dmg);
 			$defender->hp -= $dmg;
-			
-			//Generating text
-			echo "$iterator $attacker->username uderza $defender->username zadając $dmg obrażeń!";
-			if($defender->hp > 0)
-			{
-				echo " Pozostało $defender->hp życia!<br>";
-			}
-			else
+			if($defender->hp < 0)
 			{
 				$defender->hp = 0;
-				echo " $defender->username umiera!<br>";
 			}
+			
+			
+			$tekst = $attacker->username . " uderza " . $defender->username . " za pomocą " . $attacker->equipment["lefthand"]->name . " zadając " . $dmg . " obrażeń!<br>";
+			
+			//Generating hidden fields for jquery
+			echo "<div style='display: none;' class='$iterator' id='co$iterator'>hit</div>";
+			echo "<div style='display: none;' class='$iterator' id='kogo$iterator'>" .$defender->id. "</div>";
+			echo "<div style='display: none;' class='$iterator' id='pozostalo$iterator'>" .$defender->hp. "</div>";
+			echo "<div style='display: none;' class='$iterator' id='max$iterator'>" .$defender->maxhp. "</div>";
+			echo "<div style='display: none;' class='$iterator' id='tekst$iterator'>" .$tekst. "</div>";
 			
 			unset($dmg);
 			unset($mitigation);
+			unset($tekst);
 		}
 		else
 		{
@@ -410,8 +424,59 @@
 
 ?>
 
+
 <HTML>
 <Head>
 	<link rel="stylesheet" type="text/css" href="walka.css">
 </Head>
 </HTML>
+
+
+
+<script>
+	var iterator = <?php echo json_encode($iterator); ?>;
+	iterate(0);
+	
+	function iterate(i)
+	{
+		var co = $("#co" + i).html();
+		
+		if(co == "hit")
+		{
+			var pozostalo = $("#pozostalo" + i).html();
+			var max = $("#max" + i).html();
+			var tekst = "HP: " + pozostalo + " / " + max;
+			var kogo = $("#kogo" + i).html();
+			var procent = pozostalo/max * 100;
+			var kolor = color(pozostalo, max);
+			
+			$(".barText.HP" + kogo).html(tekst);
+			$(".bar.HP" + kogo).find($(".innerBar")).css("width", procent + "%");
+			$(".bar.HP" + kogo).find($(".innerBar")).css("background-color", kolor);
+			
+			var plik = Math.floor(Math.random() * 3) + 1;			
+			var audio = new Audio('/sounds/hit' + plik + '.mp3');
+			audio.play();
+		}
+		
+		$("#tekst" + i).show();
+		
+		if(i < iterator)
+		{
+			i++;
+			
+			setTimeout(function(){
+				iterate(i);
+			}, 300);
+		}
+	}
+	
+	function color(current, max)
+    {
+        var percent = Math.round((current/max)*100);
+        var green = Math.round((percent*255)/100);
+        var red = 255-green;
+        return "rgb(" + red + ", " + green + ", 00)";
+    }
+	
+</script>

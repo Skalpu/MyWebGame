@@ -125,6 +125,6 @@
 	function attack(opponentID)
 	{
 		$("#tabelaGracze").fadeOut();
-		$("#divMainOkno").load('walka.php', {type: 'arena', opponent: opponentID});
+		$("#divMainOkno").load('walka.php', {type: 'arena', opponent: opponentID});		
 	}
 </script>
