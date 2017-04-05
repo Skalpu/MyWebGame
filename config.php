@@ -113,7 +113,12 @@
 			'helmet' => "",
 			'amulet' => "",
 			'lefthand' => "",
+			'chest' => "",
 			'righthand' => "",
+			'belt' => "",
+			'gloves' => "",
+			'ring' => "",
+			'boots' => ""
 		];
 		
 		public function equipItem(Item $item, $update)

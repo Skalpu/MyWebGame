@@ -50,6 +50,8 @@
 		}
 	}
 	
+	
+	
 	function drawArena(Player $attacker, Player $defender)
 	{
 		$atakerFotoW = "10%";
@@ -131,6 +133,7 @@
 	
 	
 	
+	
 	function initializeFighters($attackers, $defenders)
 	{
 		$fists = new Item();
@@ -202,6 +205,7 @@
 		{
 			$round++;
 			$iterator++; 
+			//$tekst = generateTekst("round",
 			$tekst = "";
 			
 			if($round != 1)
@@ -211,7 +215,7 @@
 			
 			
 			//Generating hidden fields for jquery
-			$tekst = $tekst . "Runda: $round<br><br>";
+			$tekst = $tekst . "<span style='text-decoration: underline;'>Runda: $round</span><br><br>";
 			echo "<div style='display: none;' class='$iterator' id='tekst$iterator'>" .$tekst. "</div>";
 
 			
@@ -384,7 +388,6 @@
 			$attacker->did_move = false;
 		}
 		
-		
 		return [
 			"attacker" => $attacker,
 			"defender" => $defender,
@@ -392,6 +395,9 @@
 		];
 	}
 
+	
+	
+	
 	function aftermath($attackers, $defenders)
 	{
 		//Unequipping fists
@@ -422,6 +428,97 @@
 		];
 	}
 
+	function generateItem(Player $player, $tier)
+	{
+		Item $item = new Item();
+		
+		// RARITY GENERATION
+		$normalMin = 0;
+		$normalMax = 70;
+		$magicMin = 71;
+		$magicMax = 94;
+		$rareMin = 95;
+		$rareMax = 98;
+		$legendaryMin = 99;
+		$legendaryMax = 100;
+		
+		$rarityRoll = rand(0, 100);
+		if($rarityRoll >= $normalMin and $rarityRoll <= $normalMax)
+		{
+			$item->rarity = "normal";
+		}
+		else if($rarityRoll >= $magicMin and $rarityRoll <= $magicMax)
+		{
+			$item->rarity = "magic";
+		}
+		else if($rarityRoll >= $rareMin and $rarityRoll <= $rareMax)
+		{
+			$item->rarity = "rare";
+		}
+		else if($rarityRoll >= $legendaryMin and $rarityRoll <= $legendaryMax)
+		{
+			$item->rarity = "legendary";
+		}
+		
+		// SLOT GENERATION
+		$itemSlots = ['helmet', 'amulet', 'lefthand', 'chest', 'righthand', 'belt', 'gloves', 'ring', 'boots'];
+		$slotRoll = rand(0, count($itemSlots) - 1);
+		$item->slot = $itemSlots[$slotRoll];
+
+		// TYPE GENERATION
+		switch($item->slot)
+		{
+			case 'helmet': $itemTypes = ['strHelmet', 'dexHelmet', 'intHelmet'];//$itemSubtypes = ['Hełm','Kaptur','Kapelusz'];
+				break;
+			case 'amulet': $itemTypes = ['strAmulet', 'dexAmulet', 'intAmulet'];
+				break;
+			case 'lefthand': $itemTypes = ['str1H', 'str2H', 'dex1H', 'dex2H', 'int1H', 'int2H'];
+				break;
+			case 'chest': $itemTypes = ['strChest', 'dexChest', 'intChest'];
+				break;
+			case 'righthand': $itemTypes = ['strShield', 'dexShield', 'intShield'];
+				break;
+			case 'belt': $itemTypes = ['strBelt', 'dexBelt', 'intBelt'];
+				break;
+			case 'gloves': $itemTypes = ['strGloves', 'dexGloves', 'intGloves'];
+				break;
+			case 'ring': $itemTypes = ['strRing', 'dexRing', 'intRing'];
+				break;
+			case 'boots': $itemTypes = ['strBoots', 'dexBoots', 'intBoots'];
+				break;
+			default:
+				break;
+		}
+		$typeRoll = rand(0, count($itemTypes) - 1);
+		$item->type = $itemTypes[$typeRoll];
+		
+		// SUBTYPE GENERATION
+		if($item->slot == 'lefthand')
+		{
+			switch($item->type)
+			{
+				case 'str1H': $itemSubtypes = ['Miecz', 'Buława', 'Topór', 'Morgensztern', 'Glewia'];
+					break;
+				case 'str2H': $itemSubtypes = ['Miecz dwuręczny', 'Topór dwuręczny', 'Halabarda', 'Berdysz'];
+					break;
+				case 'dex1H': $itemSubtypes = ['Sztylet', 'Proca', 'Rzutki'];
+					break;
+				case 'dex2H': $itemSubtypes = ['Krótki łuk', 'Długi łuk', 'Kusza'];
+					break;
+				case 'int1H': $itemSubtypes = ['Kostur', 'Różdżka', 'Berło'];
+					break;
+				case 'int2H': $itemSubtypes = ['Laska'];
+			}
+		}
+		else 
+		{
+			$itemSubtypes = [$item->type];
+		}
+		$subtypeRoll = rand(0, count($itemSubtypes) - 1);
+		$item->subtype = $itemSubtypes[$subtypeRoll];
+		
+		
+	}
 ?>
 
 
@@ -432,9 +529,9 @@
 </HTML>
 
 
-
 <script>
 	var iterator = <?php echo json_encode($iterator); ?>;
+	
 	iterate(0);
 	
 	function iterate(i)
@@ -460,11 +557,12 @@
 		}
 		
 		$("#tekst" + i).show();
+		$("#combatWindow").animate({
+			scrollTop: $("#combatWindow").get(0).scrollHeight}, 300);
 		
 		if(i < iterator)
 		{
 			i++;
-			
 			setTimeout(function(){
 				iterate(i);
 			}, 300);
