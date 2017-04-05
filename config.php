@@ -12,7 +12,8 @@
 		public $slot;
 		public $type;
 		public $subtype;
-		public $photo;
+		public $foto;
+		public $bgColor;
 		
 		public $dmgmin = 0;
 		public $dmgmax = 0;
@@ -43,6 +44,13 @@
 			//SET OWNER
 			//$this->id = last_id
 			$conn->close();
+		}
+		
+		public function drawFoto($divID)
+		{
+			$fotoPath = "url(gfx/itemy/" . $this->foto . ".png)";
+			echo "<div class='fotoContainer2' id='" .$divID. "' style='background-image: " . $fotoPath . ";'></div>";
+			unset($fotoPath);
 		}
 	}
 	class Player
@@ -92,7 +100,7 @@
 		public $critchance;		
 		public $armor;
 		
-		public $inventory = [
+		public $backpack = [
 			0 => "",
 			1 => "",
 			2 => "",
@@ -177,13 +185,13 @@
 				$this->updateGlobally();
 			}
 		}
-		public function addToInventory(Item $item)
+		public function addToBackpack(Item $item)
 		{
 			for($i = 0; $i < 15; $i++)
 			{
-				if($this->inventory[$i] == "")
+				if($this->backpack[$i] == "")
 				{
-					$this->inventory[$i] = $item;
+					$this->backpack[$i] = $item;
 					$item->saveToDB();
 					break;
 				}
@@ -611,12 +619,271 @@
     }
 	function drawGame(Player $player)
 	{
+		echo "<div id='bary'>";
 		$player->drawMail();
 		$player->drawGold();
 		$player->drawCrystals();
 		$player->drawHP("mainHP", "");
 		$player->drawMP("mainMP", "");
 		$player->drawEXP("mainEXP", "");
+		echo "</div>";
 	}
 
+	
+	function generateItem()
+	{
+		$item = new Item();
+		
+		// RARITY GENERATION
+		$normalMin = 0;
+		$normalMax = 70;
+		$magicMin = 71;
+		$magicMax = 94;
+		$rareMin = 95;
+		$rareMax = 98;
+		$legendaryMin = 99;
+		$legendaryMax = 100;
+		
+		$rarityRoll = rand(0, 100);
+		if($rarityRoll >= $normalMin and $rarityRoll <= $normalMax)
+		{
+			$item->rarity = "normal";
+		}
+		else if($rarityRoll >= $magicMin and $rarityRoll <= $magicMax)
+		{
+			$item->rarity = "magic";
+		}
+		else if($rarityRoll >= $rareMin and $rarityRoll <= $rareMax)
+		{
+			$item->rarity = "rare";
+		}
+		else if($rarityRoll >= $legendaryMin and $rarityRoll <= $legendaryMax)
+		{
+			$item->rarity = "legendary";
+		}
+		
+		// SLOT GENERATION
+		$itemSlots = ['helmet', 'amulet', 'lefthand', 'chest', 'righthand', 'belt', 'gloves', 'ring', 'boots'];
+		$slotRoll = rand(0, count($itemSlots) - 1);
+		$item->slot = $itemSlots[$slotRoll];
+
+		// TYPE GENERATION
+		switch($item->slot)
+		{
+			case 'helmet': $itemTypes = ['strHelmet', 'dexHelmet', 'intHelmet'];
+				break;
+			case 'amulet': $itemTypes = ['strAmulet', 'dexAmulet', 'intAmulet'];
+				break;
+			case 'lefthand': $itemTypes = ['str1H', 'str2H', 'dex1H', 'dex2H', 'int1H', 'int2H'];
+				break;
+			case 'chest': $itemTypes = ['strChest', 'dexChest', 'intChest'];
+				break;
+			case 'righthand': $itemTypes = ['strShield', 'dexShield', 'intShield'];
+				break;
+			case 'belt': $itemTypes = ['strBelt', 'dexBelt', 'intBelt'];
+				break;
+			case 'gloves': $itemTypes = ['strGloves', 'dexGloves', 'intGloves'];
+				break;
+			case 'ring': $itemTypes = ['strRing', 'dexRing', 'intRing'];
+				break;
+			case 'boots': $itemTypes = ['strBoots', 'dexBoots', 'intBoots'];
+				break;
+			default:
+				break;
+		}
+		$typeRoll = rand(0, count($itemTypes) - 1);
+		$item->type = $itemTypes[$typeRoll];
+		
+		// SUBTYPE GENERATION
+		if($item->slot == 'lefthand')
+		{
+			switch($item->type)
+			{
+				case 'str1H': $itemSubtypes = ['sword','mace','axe'];
+					break;
+				case 'str2H': $itemSubtypes = ['sword2H','mace2H','axe2H'];
+					break;
+				case 'dex1H': $itemSubtypes = ['dagger', 'sling', 'throwing'];
+					break;
+				case 'dex2H': $itemSubtypes = ['shortbow', 'longbow', 'crossbow'];
+					break;
+				case 'int1H': $itemSubtypes = ['scepter', 'wand'];
+					break;
+				case 'int2H': $itemSubtypes = ['staff'];
+					break;
+				default: 
+					break;
+			}
+		}
+		else 
+		{
+			$itemSubtypes = [$item->type];
+		}
+		$subtypeRoll = rand(0, count($itemSubtypes) - 1);
+		$item->subtype = $itemSubtypes[$subtypeRoll];
+		
+		// NAME GENERATION
+		switch($item->subtype)
+		{
+			case 'strHelmet': $itemNames = ["Hełm żołdaka", "Gladiatorski hełm", "Zamknięty hełm", "Rogaty hełm"];
+				break;
+			case 'dexHelmet': $itemNames = ["Kaptur", "Bandana", "Przepaska"];
+				break;
+			case 'intHelmet': $itemNames = ["Diadem", "Obręcz"];
+				break;
+			case 'strAmulet': $itemNames = ["Amulet"];
+				break;
+			case 'dexAmulet': $itemNames = ["Amulet"];
+				break;
+			case 'intAmulet': $itemNames = ["Amulet"];
+				break;
+			case 'sword': $itemNames = ["Krótki miecz", "Miecz półtoraręczny", "Rapier", "Szabla"];
+				break;
+			case 'mace': $itemNames = ["Morgensztern", "Pałka", "Młot", "Młot bitewny", "Buława ceremonialna", "Skałołamacz"];
+				break;
+			case 'axe': $itemNames = ["Siekierka", "Topór", "Tasak", "Topór bojowy", "Tomahawk"];
+				break;
+			case 'sword2H': $itemNames = ["Długi miecz", "Wielki miecz", "Dwuręczny miecz"];
+				break;
+			case 'mace2H': $itemNames = ["Berdysz", "Pika", "Halabarda", "Glewia"];
+				break;
+			case 'axe2H': $itemNames = ["Wielki topór", "Topór dwuręczny"];
+				break;
+			case 'dagger': $itemNames = ["Nożyk", "Nóż", "Sztylet", "Kolec"];
+				break;
+			case 'sling': $itemNames = ["Proca"];
+				break;
+			case 'throwing': $itemNames = ["Rzutki", "Wyważony nóż"];
+				break;
+			case 'shortbow': $itemNames = ["Krótki łuk", "Łuk myśliwski"];
+				break;
+			case 'longbow': $itemNames = ["Długi łuk"];
+				break;
+			case 'crossbow': $itemNames = ["Arbalest", "Kusza"];
+				break;
+			case 'scepter': $itemNames = ["Kostur", "Berło"];
+				break;
+			case 'wand': $itemNames = ["Różdżka"];
+				break;
+			case 'staff': $itemNames = ["Laska"];
+				break;
+			case 'strChest': $itemNames = ["Kolczuga", "Zbroja płytowa", "Ciężka zbroja"];
+				break;
+			case 'dexChest': $itemNames = ["Płaszcz", "Płaszcz myśliwski", "Lekki pancerz"];
+				break;
+			case 'intChest': $itemNames = ["Szaty maga", "Szata", "Koszula"];
+				break;
+			case 'strShield': $itemNames = ["Tarcza prostokątna", "Puklerz"];
+				break;
+			case 'dexShield': $itemNames = ["Strzały", "Bełty"];
+				break;
+			case 'intShield': $itemNames = ["Księga magii", "Grymuar", "Kryształowa kula", "Trupia czaszka", "Źródło"];
+				break;
+			case 'strBelt': $itemNames = ["Wzmacniany pas"];
+				break;
+			case 'dexBelt': $itemNames = ["Skórzany pas"];
+				break;
+			case 'intBelt': $itemNames = ["Pas alchemika"];
+				break;
+			case 'strGloves': $itemNames = ["Rękawice płytowe"];
+				break;
+			case 'dexGloves': $itemNames = ["Rękawiczki", "Skórzane rękawice"];
+				break;
+			case 'intGloves': $itemNames = ["Aksamitne rękawice", "Rękawice maga"];
+				break;
+			case 'strRing': $itemNames = ["Pierścień"];
+				break;
+			case 'dexRing': $itemNames = ["Pierścień"];
+				break;
+			case 'intRing': $itemNames = ["Pierścień"];
+				break;
+			case 'strBoots': $itemNames = ["Wzmacniane buty", "Nogawice płytowe"];
+				break;
+			case 'dexBoots': $itemNames = ["Skórzane buty"];
+				break;
+			case 'intBoots': $itemNames = ["Trzewiczki", "Inkrustrowane buty"];
+				break;
+			default: 
+				break;
+		}
+		$nameRoll = rand(0, count($itemNames) - 1);
+		$item->name = $itemNames[$nameRoll];
+		
+		// STAT GENERATION
+		
+		// RANDOM MODS GENERATION
+		
+		// FOTO GENERATION
+		$item->foto = "miecz_1";
+		
+		// END
+		return $item;
+	}
+	function drawBlankItem($slot, $divID)
+	{
+		if($slot != "backpack")
+		{
+			$fotoPath = "url(gfx/eq_slots/" . $slot . "_slot_000000.png)";
+			echo "<div class='fotoContainer2' id='" .$divID. "' style='background-image: " . $fotoPath . ";'></div>";
+			unset($fotoPath); 
+		}
+		else
+		{
+			echo "<div class='fotoContainer2' id='" .$divID. "'></div>";
+		}
+	}
+	function drawEquipment(Player $player)
+	{
+		//Iterates through all the player equipment slots
+		foreach($player->equipment as $slot => $item)
+		{
+			//There is no item in that slot, we draw a blank image
+			if($item == "")
+			{
+				//Echoes out a div with the slot name, e.g. helmet, chest
+				echo "<div class='itemSlot' id='$slot'>";
+				drawBlankItem($slot, $slot);
+				echo "</div>";
+			}
+			//We draw the item depending on rarity
+			else 
+			{
+				//Echoes out a div with that slot name, e.g. 1, 2
+				$rarity = $item->rarity;
+				echo "<div class='itemSlot $rarity' id='$slot'>";
+				$item->drawFoto($slot);
+				echo "</div>";
+				unset($rarity);
+			}
+		}
+	}
+	function drawBackpack(Player $player)
+	{
+		echo "<div id='backpack'>";
+		
+		//Iterates throught all the player backpack slots
+		foreach($player->backpack as $slot => $item)
+		{
+			//There is no item at that backpack slot, we draw a blank image
+			if($item == "")
+			{
+				//Echoes out a div with that slot name (EMPTY), e.g. bp1, bp2
+				echo "<div class='itemSlot' id='bp$slot'>";
+				drawBlankItem("backpack", $slot);
+				echo "</div>";
+			}
+			//We draw the item depending on rarity
+			else 
+			{
+				//Echoes out a div with that slot name WITH AN ITEM INSIDE, e.g. bp1, bp2
+				$rarity = $item->rarity;
+				echo "<div class='itemSlot $rarity' id='bp$slot'>";
+				$item->drawFoto($slot);
+				echo "</div>";
+				unset($rarity);
+			}
+		}
+		echo "</div>";
+	}
+	
 ?>

@@ -4,11 +4,10 @@
     login_check();
 	$_SESSION['player']->updateLocally();
 	drawGame($_SESSION['player']);
-	
-	$zbroja = new Item();
-	$zbroja->kondycja = 10;
-	//$_SESSION['player']->equipItem($zbroja);
-	//$_SESSION['player']->unequipItem($zbroja);
+
+	$item = generateItem();
+	$item->rarity = "legendary";
+	$_SESSION['player']->backpack[3] = $item;
 	
 	//STATY SĄ ZAPISANE PRZY ZAŁOŻENIU
 	//PRZY WYWOŁANIU WALKI NIE TRZEBA POBIERAĆ CAŁEGO EKWIPUNKU
@@ -23,6 +22,7 @@
     
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" type="text/css" href="equipment.css">
     <Title>SkalpoGra</Title>
 	
 </Head>
@@ -30,7 +30,11 @@
 <Body>
 
     <div id="divMainOkno">
-	
+		<?php 
+		//var_dump($_SESSION['player']->equipment);
+		//drawEquipment($_SESSION['player']); 
+		drawBackpack($_SESSION['player']);
+		?>
     </div>
 
 	
