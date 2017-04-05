@@ -32,7 +32,7 @@
     <div id="divMainOkno">
 		<?php 
 		//var_dump($_SESSION['player']->equipment);
-		//drawEquipment($_SESSION['player']); 
+		drawEquipment($_SESSION['player']); 
 		drawBackpack($_SESSION['player']);
 		?>
     </div>

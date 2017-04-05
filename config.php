@@ -834,6 +834,8 @@
 	}
 	function drawEquipment(Player $player)
 	{
+		echo "<div id='equipment'>";
+		
 		//Iterates through all the player equipment slots
 		foreach($player->equipment as $slot => $item)
 		{
@@ -856,6 +858,8 @@
 				unset($rarity);
 			}
 		}
+		
+		echo "</div>";
 	}
 	function drawBackpack(Player $player)
 	{
