@@ -4,15 +4,6 @@
     login_check();
 	$_SESSION['player']->updateLocally();
 	drawGame($_SESSION['player']);
-
-	$item = generateItem();
-	$item->rarity = "legendary";
-	$_SESSION['player']->backpack[3] = $item;
-	
-	//STATY SĄ ZAPISANE PRZY ZAŁOŻENIU
-	//PRZY WYWOŁANIU WALKI NIE TRZEBA POBIERAĆ CAŁEGO EKWIPUNKU
-	//STATYSTYKI SŁUŻĄCE DO WALKI POWINNY BYĆ ZAPISANE W UŻYTKOWNIKU (DMG, ARMOR, A_S, CRIT)
-	
 ?>
 
 
@@ -31,7 +22,6 @@
 
     <div id="divMainOkno">
 		<?php 
-		//var_dump($_SESSION['player']->equipment);
 		drawEquipment($_SESSION['player']); 
 		drawBackpack($_SESSION['player']);
 		?>

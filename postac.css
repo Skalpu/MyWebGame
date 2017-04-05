@@ -3,8 +3,8 @@
 	position: fixed;
 	width: 16%;
 	height: 48%;
-	left: 24%;
-	top: 22%;
+	left: 23.5%;
+	top: 21%;
 	
 	border: 2px solid black;
 	
@@ -17,8 +17,8 @@
 	position: fixed;
 	width: 16%;
 	height: 8%;
-	left: 24%;
-	top: 70%;
+	left: 23.5%;
+	top: 69%;
 	
 	border: 2px solid black;
 	box-shadow: inset 0 0 10px black;
@@ -52,8 +52,8 @@
 	position: fixed;
 	width: 15%;
 	
-	left: 42.5%;
-	top: 22%;
+	left: 41.5%;
+	top: 21%;
 	
 	border: 2px solid black; 
 	box-shadow: inset 0 0 10px black;

@@ -13,7 +13,6 @@
 		public $type;
 		public $subtype;
 		public $foto;
-		public $bgColor;
 		
 		public $dmgmin = 0;
 		public $dmgmax = 0;
@@ -118,14 +117,14 @@
 			14 => "",
 		];
 		public $equipment = [
-			'helmet' => "",
 			'amulet' => "",
+			'helmet' => "",
+			'ring' => "",
 			'lefthand' => "",
 			'chest' => "",
 			'righthand' => "",
-			'belt' => "",
 			'gloves' => "",
-			'ring' => "",
+			'belt' => "",
 			'boots' => ""
 		];
 		
@@ -187,7 +186,7 @@
 		}
 		public function addToBackpack(Item $item)
 		{
-			for($i = 0; $i < 15; $i++)
+			for($i = 0; $i < count($this->backpack); $i++)
 			{
 				if($this->backpack[$i] == "")
 				{
@@ -365,7 +364,7 @@
 		
 		public function hpRegen($times)
 		{
-			$this->hp += 100*$times;
+			$this->hp += $times;
 			if($this->hp > $this->maxhp)
 			{
 				$this->hp = $this->maxhp;
@@ -838,12 +837,12 @@
 		
 		//Iterates through all the player equipment slots
 		foreach($player->equipment as $slot => $item)
-		{
+		{			
 			//There is no item in that slot, we draw a blank image
 			if($item == "")
 			{
 				//Echoes out a div with the slot name, e.g. helmet, chest
-				echo "<div class='itemSlot' id='$slot'>";
+				echo "<div class='itemSlot equipment blank' id='$slot'>";
 				drawBlankItem($slot, $slot);
 				echo "</div>";
 			}
@@ -852,13 +851,13 @@
 			{
 				//Echoes out a div with that slot name, e.g. 1, 2
 				$rarity = $item->rarity;
-				echo "<div class='itemSlot $rarity' id='$slot'>";
+				echo "<div class='itemSlot $rarity equipment' id='$slot'>";
 				$item->drawFoto($slot);
 				echo "</div>";
 				unset($rarity);
 			}
-		}
-		
+		}		
+			
 		echo "</div>";
 	}
 	function drawBackpack(Player $player)
@@ -872,7 +871,7 @@
 			if($item == "")
 			{
 				//Echoes out a div with that slot name (EMPTY), e.g. bp1, bp2
-				echo "<div class='itemSlot' id='bp$slot'>";
+				echo "<div class='itemSlot backpack blank' id='bp$slot'>";
 				drawBlankItem("backpack", $slot);
 				echo "</div>";
 			}
@@ -881,12 +880,13 @@
 			{
 				//Echoes out a div with that slot name WITH AN ITEM INSIDE, e.g. bp1, bp2
 				$rarity = $item->rarity;
-				echo "<div class='itemSlot $rarity' id='bp$slot'>";
+				echo "<div class='itemSlot $rarity backpack' id='bp$slot'>";
 				$item->drawFoto($slot);
 				echo "</div>";
 				unset($rarity);
 			}
 		}
+		
 		echo "</div>";
 	}
 	

@@ -17,6 +17,7 @@
 		//Statystyki Label
 		echo "<div class='center noselect' id='statystykiLabel'>Statystyki</div>";
 		echo "<div class='statContainer noselect'></div>";
+		echo "<div class='statContainer noselect'></div>";
 		
 		
 		//Generacja
@@ -224,6 +225,8 @@
 		var wiedzaInit = $("#wiedzaValue").html();
 		var charyzmaInit = $("#charyzmaValue").html();
 		var szczescieInit = $("#szczescieValue").html();
+		
+		$(".statValue").css("text-align","center");
 	}
 	else
 	{

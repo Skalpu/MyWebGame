@@ -4,26 +4,6 @@
     login_check();
 	$_SESSION['player']->updateLocally();
 	
-	/*HIDDEN DIVY NUMEROWANE PO KOLEI KTO KOGO ATAKUJE, W TYM TEKST DANEJ RUNDY, PRZETWARZANY DOPIERO PRZEZ JQUERY I APPENDOWANY DO DIVA
-	SCHOWANE DO JAKIEGOŚ JEDNEGO CONTAINER DIVA z display:none
-	
-	NP KTO_1 = 124(id skalpa)
-	KOGO_1 = 130(id kogos)
-	HIT_1 = FINAL DMG (ktory mozna odjac od hp bara)
-	MANA_COST_1 = KOSZT MANY(ktory mozna odjac od mana bara)
-	CRIT_1 = true/false(krytnal czy nie)
-	
-	MONSTERY TO NOWE OBIEKTY KLASY PLAYER
-	dodać zmienną type="player" albo type="monster"
-	ID PRZYDZIELANE PODCZAS ALOKACJI POTWORA DO DANEJ WALKI, TAK ZEBY NIE DUBLOWAŁY SIĘ
-	CZYLI MAMY LISTĘ NP LAS
-	Las = [
-		0=>new Player(...)
-		1=>new Player(...)
-	];
-	W NIEJ POTWORY, JAKAŚ ILOŚĆ JEST PRZYDZIELANA DO LISTY "OBROŃCY"
-	DOPIERO WTEDY USTAWIAMY OBROŃCY[0]->id = 0
-	UWAGA: MOŻE BYĆ GRACZ Z ID=0 I CO WTEDY?*/
 	
 	if($_POST)
 	{
@@ -35,21 +15,48 @@
 			array_push($attackers, $_SESSION['player']);
 			array_push($defenders, new Player($_POST['opponent']));
 			//Getting them ready for the fight(hp regen, gold income etc)
-			$attackers[0]->updateLocally();
-			$defenders[0]->updateLocally();
+			foreach($attackers as $att)
+			{
+				$att->updateLocally();
+			}
+			foreach($defenders as $def)
+			{
+				$def->updateLocally();
+			}
 			//Drawing HP bars etc
 			drawArena($attackers[0], $defenders[0]);
 			//Drawing the fight
-			$iterator = drawCombat($attackers, $defenders);
+			$result = drawCombat($attackers, $defenders, "arena");
+			$attackers = $result["attackers"];
+			$defenders = $result["defenders"];
+			$iterator = $result["iterator"];
 			//Save the results of the fight
-			$attackers[0]->updateGlobally();
-			$defenders[0]->updateGlobally();
+			foreach($attackers as $att)
+			{
+				$att->updateGlobally();
+				
+				if($att->id == $_SESSION['player']->id and $att->username == $_SESSION['player']->username)
+				{
+					$_SESSION['player'] = $att;
+				}
+			}
+			foreach($defenders as $def)
+			{
+				$def->updateGlobally();
+			}
+			
 			
 			unset($attackers);
 			unset($defenders);
 		}
+		else if($_POST['type'] == 'wyprawa')
+		{
+			//Creating Player objects used for the fight
+			$attackers = [];
+			$defenders = [];
+			array_push($attackers, $_SESSION['player']);
+		}
 	}
-	
 	
 	
 	function drawArena(Player $attacker, Player $defender)
@@ -89,7 +96,7 @@
 		$defender->drawMP("MP" . $defender->id, $stylObroncaMP);		
 	}
 
-	function drawCombat($attackers, $defenders)
+	function drawCombat($attackers, $defenders, $fightType)
 	{
 		$dead = [];
 		$round = 0;
@@ -123,12 +130,31 @@
 		
 		echo "</div>";
 		
-		//Aftermath
-		$result = aftermath($attackers, $defenders);
+		
+		if(count($attackers) == 0)
+		{
+			$winner = "defenders";
+		}
+		else if(count($defenders) == 0)
+		{
+			$winner = "attackers";
+		}
+		
+		//Aftermath (unequipping fists etc), readding dead to original lists, granting gold/items
+		$result = aftermath($attackers, $defenders, $dead, $winner, $fightType);
 		$attackers = $result["attackers"];
 		$defenders = $result["defenders"];
+		unset($dead);
+		unset($winner);
+		unset($round);
+		unset($round_time);
 		
-		return $iterator;
+		
+		return [
+			"iterator" => $iterator,
+			"attackers" => $attackers,
+			"defenders" => $defenders,
+		];
 	}
 	
 	
@@ -397,8 +423,21 @@
 	
 	
 	
-	function aftermath($attackers, $defenders)
+	function aftermath($attackers, $defenders, $dead, $winner, $fightType)
 	{
+		//Readding dead to original lists
+		foreach($dead as $d)
+		{
+			if($d->side == "attacker")
+			{
+				array_push($attackers, $d);
+			}
+			else if($d->side == "defender")
+			{
+				array_push($defenders, $d);
+			}
+		}
+		
 		//Unequipping fists
 		foreach($attackers as $att)
 		{
@@ -421,9 +460,36 @@
 			}
 		}
 		
+		
+		
+		
+		//Granting items
+		if($fightType == "arena" or $fightType == "wyprawa")
+		{
+			if($winner == "attackers")
+			{
+				foreach($attackers as $att)
+				{
+					$item = generateItem();
+					$att->addToBackpack($item);
+					unset($item);
+				}
+			}
+			else if($winner == "defenders")
+			{
+				foreach($defenders as $def)
+				{
+					$item = generateItem();
+					$def->addToBackpack($item);
+					unset($item);
+				}
+			}
+		}
+		
+		
 		return [
 			"attackers" => $attackers,
-			"defenders" => $defenders
+			"defenders" => $defenders,
 		];
 	}
 
@@ -438,6 +504,7 @@
 
 
 <script>
+
 	var iterator = <?php echo json_encode($iterator); ?>;
 	
 	iterate(0);

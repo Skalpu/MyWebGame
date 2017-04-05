@@ -11,7 +11,7 @@
 }
 .normal
 {
-	background: linear-gradient(beige, beige);
+	background: linear-gradient(lavenderblush, beige);
 }
 .magic
 {
@@ -25,17 +25,36 @@
 {
 	background: linear-gradient(darkorange, beige);
 }
-#backpack div
+.blank
+{
+	background: linear-gradient(beige, beige);
+}
+
+
+#equipment
+{
+	margin-top: 13vh;
+	float: left;
+}
+#backpack
 {
 	float: right;
 }
-#equipment div
+.equipment
 {
 	float: left;
 }
-#helmet, #lefthand, #belt, #ring 
+.backpack
 {
-	clear: both;
+	float: right;
+}
+#amulet, #lefthand, #gloves
+{
+	clear: left;
+}
+#bp0, #bp3, #bp6, #bp9, #bp12
+{
+	clear: right;
 }
 
 
