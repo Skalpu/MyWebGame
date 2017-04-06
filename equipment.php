@@ -4,6 +4,12 @@
     login_check();
 	$_SESSION['player']->updateLocally();
 	drawGame($_SESSION['player']);
+	
+	if($_POST)
+	{
+		echo $_POST['name'];
+		echo $_POST['time'];
+	}
 ?>
 
 
@@ -22,8 +28,8 @@
 
     <div id="divMainOkno">
 		<?php 
-		drawEquipment($_SESSION['player']); 
-		drawBackpack($_SESSION['player']);
+			drawEquipment($_SESSION['player']); 
+			drawBackpack($_SESSION['player']);
 		?>
     </div>
 
@@ -46,6 +52,43 @@
 
 
 
-<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
+<!--<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>-->
+<script src="jquery-ui-1.12.1/jquery-3.2.0.min.js"></script>
 <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 <script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
+
+
+<script>
+
+	var poczatkowySlot = "";
+	var koncowySlot = "";
+
+	$(".fotoContainer2").draggable({
+        start: function(event, ui)
+        {
+			poczatkowySlot = $(this).parent().attr('id');
+        },
+		
+        opacity: 0.5,
+        zIndex: 100,
+		snap: true
+    });
+	
+	
+	$(".itemSlot").droppable({
+        accept: ".fotoContainer2",
+        tolerance: "intersect",
+		
+        drop: function(event, ui)
+        {
+			koncowySlot = $(this).attr('id');
+			moveItem(poczatkowySlot, koncowySlot);
+        }
+    });
+	
+	function moveItem(poczSlot, konSlot)
+	{
+		$.post("equipment.php", { name: "John", time: "2pm" });
+	}
+
+</script>
