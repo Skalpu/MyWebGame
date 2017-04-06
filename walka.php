@@ -438,6 +438,7 @@
 			}
 		}
 		
+		
 		//Unequipping fists
 		foreach($attackers as $att)
 		{
@@ -461,8 +462,6 @@
 		}
 		
 		
-		
-		
 		//Granting items
 		if($fightType == "arena" or $fightType == "wyprawa")
 		{
@@ -470,7 +469,7 @@
 			{
 				foreach($attackers as $att)
 				{
-					$item = generateItem();
+					$item = generateItem(1);
 					$att->addToBackpack($item);
 					unset($item);
 				}
@@ -479,7 +478,7 @@
 			{
 				foreach($defenders as $def)
 				{
-					$item = generateItem();
+					$item = generateItem(1);
 					$def->addToBackpack($item);
 					unset($item);
 				}

@@ -809,11 +809,11 @@
 		// FOTO GENERATION
 		if($item->rarity != "legendary")
 		{
-			$item->foto = $item->subtype + $tier;
+			$item->foto = "" . $item->subtype . $tier;
 		}
 		else
 		{
-			$item->foto = "legendary/" + $item->subtype + $tier;
+			$item->foto = "legendary/" . $item->subtype . $tier;
 		}
 		
 		return $item;
