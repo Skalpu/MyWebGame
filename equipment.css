@@ -35,11 +35,12 @@
 
 #equipment
 {
-	margin-top: 13.7vh;
+	margin-top: 13.6vh;
 	float: left;
 }
 #backpack
 {
+	margin-top: -0.2vh;
 	float: right;
 }
 .equipment

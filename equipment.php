@@ -7,9 +7,19 @@
 	
 	if($_POST)
 	{
-		echo $_POST['name'];
-		echo $_POST['time'];
+		$eldo = $_POST['poczatek'];
+		debug_to_console($eldo);
 	}
+	
+	function debug_to_console( $data ) 
+    {
+        if ( is_array( $data ) )
+        $output = "<script>console.log( 'Debug Objects: " . implode( ',', $data) . "' );</script>";
+        else
+        $output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
+
+        echo $output;
+    }
 ?>
 
 
@@ -51,9 +61,7 @@
 </HTML>
 
 
-
-<!--<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>-->
-<script src="jquery-ui-1.12.1/jquery-3.2.0.min.js"></script>
+<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
 <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 <script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
 
@@ -88,7 +96,10 @@
 	
 	function moveItem(poczSlot, konSlot)
 	{
-		$.post("equipment.php", { name: "John", time: "2pm" });
+		alert(poczSlot);
+		alert(konSlot);
+		$.post('equipment.php', {poczatek: poczSlot});
+		alert("done");	
 	}
 
 </script>
