@@ -5,21 +5,6 @@
 	$_SESSION['player']->updateLocally();
 	drawGame($_SESSION['player']);
 	
-	if($_POST)
-	{
-		$eldo = $_POST['poczatek'];
-		debug_to_console($eldo);
-	}
-	
-	function debug_to_console( $data ) 
-    {
-        if ( is_array( $data ) )
-        $output = "<script>console.log( 'Debug Objects: " . implode( ',', $data) . "' );</script>";
-        else
-        $output = "<script>console.log( 'Debug Objects: " . $data . "' );</script>";
-
-        echo $output;
-    }
 ?>
 
 
@@ -37,13 +22,9 @@
 <Body>
 
     <div id="divMainOkno">
-		<?php 
-			drawEquipment($_SESSION['player']); 
-			drawBackpack($_SESSION['player']);
-		?>
+		
     </div>
 
-	
 	<nav>
     <ul>
 		<li><a href = "main.php"><div class='menuContainer' id='mainMenu'></div></a></li>
@@ -61,7 +42,8 @@
 </HTML>
 
 
-<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
+<!--<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>-->
+<script src="jquery-3.2.0.js"></script>
 <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 <script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
 
@@ -70,36 +52,40 @@
 
 	var poczatkowySlot = "";
 	var koncowySlot = "";
-
-	$(".fotoContainer2").draggable({
-        start: function(event, ui)
-        {
-			poczatkowySlot = $(this).parent().attr('id');
-        },
-		
-        opacity: 0.5,
-        zIndex: 100,
-		snap: true
-    });
 	
+	$("#divMainOkno").load('load_equipment.php', function() {
+		initializeDragDrop();
+	});
 	
-	$(".itemSlot").droppable({
-        accept: ".fotoContainer2",
-        tolerance: "intersect",
-		
-        drop: function(event, ui)
-        {
-			koncowySlot = $(this).attr('id');
-			moveItem(poczatkowySlot, koncowySlot);
-        }
-    });
-	
-	function moveItem(poczSlot, konSlot)
+	function initializeDragDrop()
 	{
-		alert(poczSlot);
-		alert(konSlot);
-		$.post('equipment.php', {poczatek: poczSlot});
-		alert("done");	
+		$(".fotoContainer2").draggable({
+			start: function(event, ui)
+			{
+				poczatkowySlot = $(this).parent().attr('id');
+			},
+			opacity: 0.5,
+			zIndex: 100,
+			snap: true
+		});
+	
+		$(".itemSlot").droppable({
+			accept: ".fotoContainer2",
+			tolerance: "intersect",
+		
+			drop: function(event, ui)
+			{
+				koncowySlot = $(this).attr('id');
+				moveItem(poczatkowySlot, koncowySlot);
+			}
+		});
+	}
+	
+	function moveItem(poczatkowySlot, koncowySlot)
+	{
+		$("#divMainOkno").load('load_equipment.php', {poczatek: poczatkowySlot, koniec: koncowySlot}, function() {
+			initializeDragDrop();
+		});
 	}
 
 </script>
