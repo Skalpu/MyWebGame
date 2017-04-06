@@ -629,7 +629,7 @@
 	}
 
 	
-	function generateItem()
+	function generateItem($tier)
 	{
 		$item = new Item();
 		
@@ -677,7 +677,7 @@
 				break;
 			case 'chest': $itemTypes = ['strChest', 'dexChest', 'intChest'];
 				break;
-			case 'righthand': $itemTypes = ['strShield', 'dexShield', 'intShield'];
+			case 'righthand': $itemTypes = ['strShield', 'dexShield', 'intShield', 'dexOff'];
 				break;
 			case 'belt': $itemTypes = ['strBelt', 'dexBelt', 'intBelt'];
 				break;
@@ -698,13 +698,13 @@
 		{
 			switch($item->type)
 			{
-				case 'str1H': $itemSubtypes = ['sword','mace','axe'];
+				case 'str1H': $itemSubtypes = ['mace','axe'];
 					break;
 				case 'str2H': $itemSubtypes = ['sword2H','mace2H','axe2H'];
 					break;
-				case 'dex1H': $itemSubtypes = ['dagger', 'sling', 'throwing'];
+				case 'dex1H': $itemSubtypes = ['sword','dagger'];
 					break;
-				case 'dex2H': $itemSubtypes = ['shortbow', 'longbow', 'crossbow'];
+				case 'dex2H': $itemSubtypes = ['bow'];
 					break;
 				case 'int1H': $itemSubtypes = ['scepter', 'wand'];
 					break;
@@ -748,17 +748,9 @@
 				break;
 			case 'axe2H': $itemNames = ["Wielki topór", "Topór dwuręczny"];
 				break;
-			case 'dagger': $itemNames = ["Nożyk", "Nóż", "Sztylet", "Kolec"];
+			case 'dagger': $itemNames = ["Kozik", "Nożyk", "Nóż", "Sztylet", "Kolec"];
 				break;
-			case 'sling': $itemNames = ["Proca"];
-				break;
-			case 'throwing': $itemNames = ["Rzutki", "Wyważony nóż"];
-				break;
-			case 'shortbow': $itemNames = ["Krótki łuk", "Łuk myśliwski"];
-				break;
-			case 'longbow': $itemNames = ["Długi łuk"];
-				break;
-			case 'crossbow': $itemNames = ["Arbalest", "Kusza"];
+			case 'bow': $itemNames = ["Krótki łuk", "Łuk myśliwski", "Długi łuk"];
 				break;
 			case 'scepter': $itemNames = ["Kostur", "Berło"];
 				break;
@@ -772,11 +764,13 @@
 				break;
 			case 'intChest': $itemNames = ["Szaty maga", "Szata", "Koszula"];
 				break;
-			case 'strShield': $itemNames = ["Tarcza prostokątna", "Puklerz"];
+			case 'strShield': $itemNames = ["Tarcza"];
 				break;
-			case 'dexShield': $itemNames = ["Strzały", "Bełty"];
+			case 'dexShield': $itemNames = ["Puklerz"];
 				break;
-			case 'intShield': $itemNames = ["Księga magii", "Grymuar", "Kryształowa kula", "Trupia czaszka", "Źródło"];
+			case 'intShield': $itemNames = ["Puklerz"];
+				break;
+			case 'dexOff': $itemNames = ["Strzały", "Kołczan"];
 				break;
 			case 'strBelt': $itemNames = ["Wzmacniany pas"];
 				break;
@@ -813,9 +807,15 @@
 		// RANDOM MODS GENERATION
 		
 		// FOTO GENERATION
-		$item->foto = "miecz_1";
+		if($item->rarity != "legendary")
+		{
+			$item->foto = $item->subtype + $tier;
+		}
+		else
+		{
+			$item->foto = "legendary/" + $item->subtype + $tier;
+		}
 		
-		// END
 		return $item;
 	}
 	function drawBlankItem($slot, $divID)

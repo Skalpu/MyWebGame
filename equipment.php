@@ -21,9 +21,7 @@
 
 <Body>
 
-    <div id="divMainOkno">
-		
-    </div>
+    <div id="divMainOkno"></div>
 
 	<nav>
     <ul>
@@ -42,8 +40,7 @@
 </HTML>
 
 
-<!--<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>-->
-<script src="jquery-3.2.0.js"></script>
+<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
 <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 <script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
 
@@ -53,7 +50,7 @@
 	var poczatkowySlot = "";
 	var koncowySlot = "";
 	
-	$("#divMainOkno").load('load_equipment.php', function() {
+	$("#divMainOkno").load('update_equipment.php', function() {
 		initializeDragDrop();
 	});
 	
@@ -83,7 +80,7 @@
 	
 	function moveItem(poczatkowySlot, koncowySlot)
 	{
-		$("#divMainOkno").load('load_equipment.php', {poczatek: poczatkowySlot, koniec: koncowySlot}, function() {
+		$("#divMainOkno").load('update_equipment.php', {poczatek: poczatkowySlot, koniec: koncowySlot}, function() {
 			initializeDragDrop();
 		});
 	}
