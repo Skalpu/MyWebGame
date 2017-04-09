@@ -128,7 +128,7 @@
 			'boots' => ""
 		];
 		
-		public function equipItem(Item $item, $update)
+		public function equipItem(Item $item)
 		{
 			$this->sila += $item->sila;
 			$this->zwinnosc += $item->zwinnosc;
@@ -150,13 +150,12 @@
 			
 			$this->equipment[$item->slot] = $item;
 			$item->equipped = true;
-			
-			if($update == true)
-			{
-				$this->updateGlobally();
-			}
 		}
-		public function unequipItem(Item $item, $update)
+		public function equipFromSlot($slot)
+		{
+			$this->equipItem($this->backpack[$slot]);
+		}
+		public function unequipItem(Item $item)
 		{
 			$this->sila -= $item->sila;
 			$this->zwinnosc -= $item->zwinnosc;
@@ -178,10 +177,12 @@
 			
 			$this->equipment[$item->slot] = "";
 			$item->equipped = false;
-			
-			if($update == true)
+		}
+		public function unequipFromSlot($slot)
+		{
+			if($this->equipment[$slot] != "")
 			{
-				$this->updateGlobally();
+				$this->unequipItem($this->equipment[$slot]);
 			}
 		}
 		public function addToBackpack(Item $item)
@@ -273,9 +274,8 @@
 			unset($seconds);
 			unset($updates);
 		}
-		
 		//Saves to DB, use after permanent stat updates (fights, equipping, level up etc)
-		public function updateGlobally()
+		public function updateStatsGlobally()
 		{
 			$id = $this->id;
 			$level = $this->level;

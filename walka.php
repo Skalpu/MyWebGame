@@ -33,7 +33,7 @@
 			//Save the results of the fight
 			foreach($attackers as $att)
 			{
-				$att->updateGlobally();
+				$att->updateStatsGlobally();
 				
 				if($att->id == $_SESSION['player']->id and $att->username == $_SESSION['player']->username)
 				{
@@ -42,7 +42,7 @@
 			}
 			foreach($defenders as $def)
 			{
-				$def->updateGlobally();
+				$def->updateStatsGlobally();
 			}
 			
 			
