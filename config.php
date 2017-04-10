@@ -31,8 +31,9 @@
 		
 		public function drawHover()
 		{
-			echo "<div id='hoverlol'>";
-				echo "lololol";
+			echo "<div class='itemHover'>";
+				echo "<div class='itemName'>" .$this->name. "</div>";
+				echo "<div class='divider'></div>";
 			echo "</div>";
 		}
 		public function drawFoto($divID)

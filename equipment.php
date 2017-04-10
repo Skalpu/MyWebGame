@@ -52,6 +52,7 @@
 	
 	$("#divMainOkno").load('update_equipment.php', function() {
 		initializeDragDrop();
+		initializeHover();
 	});
 	
 	function initializeDragDrop()
@@ -60,12 +61,12 @@
 			start: function(event, ui)
 			{
 				poczatkowySlot = $(this).parent().attr('id');
+				$(this).parent().find('.itemHover').hide();
 			},
 			revert: true,
-			revertDuration: 100,
+			revertDuration: 0,
 			opacity: 0.5,
 			zIndex: 100,
-			snap: true
 		});
 	
 		$(".itemSlot").droppable({
@@ -80,10 +81,29 @@
 		});
 	}
 	
+	function initializeHover()
+	{
+		$(".fotoContainer2").hover(
+			function(){
+				$(this).parent().find('.itemHover').show();
+			},
+			function(){
+				$(this).parent().find('.itemHover').hide();
+			}
+		);
+		
+		$(".fotoContainer2").bind('mousemove', function(e){
+			var top = e.pageY + 15;
+			var left = e.pageX + 8;
+			$(this).parent().find('.itemHover').css({'top': top, 'left': left});
+		});
+	}
+	
 	function moveItem(poczatkowySlot, koncowySlot)
 	{
 		$("#divMainOkno").load('update_equipment.php', {poczatek: poczatkowySlot, koniec: koncowySlot}, function() {
 			initializeDragDrop();
+			initializeHover();
 		});
 	}
 </script>

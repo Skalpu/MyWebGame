@@ -227,11 +227,7 @@
 		
 		$(".statValue").css("text-align","center");
 	}
-	else
-	{
-		//$(".statValue").css("width","auto");
-	}
-	
+
 	//Increase statistic
 	function addStat(statName)
 	{
