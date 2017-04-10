@@ -4,9 +4,6 @@
 	{
 		public $id;
 		public $name;
-		public $equipped = false;
-		public $owner;
-		
 		public $rarity;
 		public $tier;
 		public $slot;
@@ -18,7 +15,6 @@
 		public $dmgmax = 0;
 		public $attackspeed = 0;
 		public $critchance = 0;
-		
 		public $armor = 0;
 		
 		public $dmgogien = 0;
@@ -35,16 +31,107 @@
 		public $charyzma = 0;
 		public $szczescie = 0;
 		
-		//TODO
+		public static function withID($id)
+		{
+			$instance = new self();
+			$instance->loadByID($id);
+			return $instance;
+		}
+		protected function loadByID($id)
+		{
+			$conn = connectDB();
+			$result = $conn->query("SELECT * FROM items WHERE id='$id'");
+			$row = mysqli_fetch_assoc($result);
+			$conn->close();
+			unset($conn);
+			
+			$this->id = $id;
+			$this->name = $row['name'];
+			$this->rarity = $row['rarity'];
+			$this->tier = $row['tier'];
+			$this->slot = $row['slot'];
+			$this->type = $row['type'];
+			$this->subtype = $row['subtype'];
+			$this->dmgmin = $row['dmgmin'];
+			$this->dmgmax = $row['dmgmax'];
+			$this->attackspeed = $row['attackspeed'];
+			$this->critchance = $row['critchance'];
+			$this->armor = $row['armor'];
+			$this->dmgogien = $row['dmgogien'];
+			$this->dmgwoda = $row['dmgwoda'];
+			$this->dmgpowietrze = $row['dmgpowietrze'];
+			$this->dmgziemia = $row['dmgziemia'];
+			$this->sila = $row['sila'];
+			$this->zwinnosc = $row['zwinnosc'];
+			$this->celnosc = $row['celnosc'];
+			$this->kondycja = $row['kondycja'];
+			$this->inteligencja = $row['inteligencja'];
+			$this->wiedza = $row['wiedza'];
+			$this->charyzma = $row['charyzma'];
+			$this->szczescie = $row['szczescie'];
+		}
+		
 		public function saveToDB()
 		{
 			$conn = connectDB();
-			//INSERT INTO while saving ID
-			//SET OWNER
-			//$this->id = last_id
+			
+			$name = $conn->real_escape_string($this->name);
+			$rarity = $conn->real_escape_string($this->rarity);
+			$tier = $conn->real_escape_string($this->tier);
+			$slot = $conn->real_escape_string($this->slot);
+			$type = $conn->real_escape_string($this->type);
+			$subtype = $conn->real_escape_string($this->subtype);
+			
+			$dmgmin = $conn->real_escape_string($this->dmgmin);
+			$dmgmax = $conn->real_escape_string($this->dmgmax);
+			$attackspeed = $conn->real_escape_string($this->attackspeed);
+			$critchance = $conn->real_escape_string($this->critchance);			
+			$armor = $conn->real_escape_string($this->armor);
+			
+			$dmgogien = $conn->real_escape_string($this->dmgogien);
+			$dmgwoda = $conn->real_escape_string($this->dmgwoda);
+			$dmgpowietrze = $conn->real_escape_string($this->dmgpowietrze);
+			$dmgziemia = $conn->real_escape_string($this->dmgziemia);
+			
+			$sila = $conn->real_escape_string($this->sila);
+			$zwinnosc = $conn->real_escape_string($this->zwinnosc);
+			$celnosc = $conn->real_escape_string($this->celnosc);
+			$kondycja = $conn->real_escape_string($this->kondycja);
+			$inteligencja = $conn->real_escape_string($this->inteligencja);
+			$wiedza = $conn->real_escape_string($this->wiedza);
+			$charyzma = $conn->real_escape_string($this->charyzma);
+			$szczescie = $conn->real_escape_string($this->szczescie);
+			
+			$conn->query("INSERT INTO items (name, rarity, tier, slot, type, subtype, dmgmin, dmgmax, attackspeed, critchance, armor, dmgogien, dmgwoda, dmgpowietrze, dmgziemia, sila, zwinnosc, celnosc, kondycja, inteligencja, wiedza, charyzma, szczescie) VALUES ('$name', '$rarity', '$tier', '$slot', '$type', '$subtype', '$dmgmin', '$dmgmax', '$attackspeed', '$critchance', '$armor', '$dmgogien', '$dmgwoda', '$dmgpowietrze', '$dmgziemia', '$sila', '$zwinnosc', '$celnosc', '$kondycja', '$inteligencja', '$wiedza', '$charyzma', '$szczescie')");
+			$this->id = $conn->insert_id;
+			
+			unset($name);
+			unset($rarity);
+			unset($tier);
+			unset($slot);
+			unset($type);
+			unset($subtype);
+			unset($dmgmin);
+			unset($dmgmax);
+			unset($attackspeed);
+			unset($critchance);
+			unset($armor);
+			unset($dmgogien);
+			unset($dmgwoda);
+			unset($dmgpowietrze);
+			unset($dmgziemia);
+			unset($sila);
+			unset($zwinnosc);
+			unset($celnosc);
+			unset($kondycja);
+			unset($inteligencja);
+			unset($wiedza);
+			unset($charyzma);
+			unset($szczescie);
+			
 			$conn->close();
+			unset($conn);
 		}
-		
 		public function drawFoto($divID)
 		{
 			$fotoPath = "url(gfx/itemy/" . $this->foto . ".png)";
@@ -149,7 +236,6 @@
 			$this->updateMana();
 			
 			$this->equipment[$item->slot] = $item;
-			$item->equipped = true;
 		}
 		public function equipFromSlot($slot)
 		{
@@ -176,7 +262,6 @@
 			$this->updateMana();
 			
 			$this->equipment[$item->slot] = "";
-			$item->equipped = false;
 		}
 		public function unequipFromSlot($slot)
 		{
@@ -192,7 +277,19 @@
 				if($this->backpack[$i] == "")
 				{
 					$this->backpack[$i] = $item;
+					//Saving item itself to database
 					$item->saveToDB();
+					//Saving player backpack to database
+					$conn = connectDB();
+					$id = $this->id;
+					$itemID = $item->id;
+					$slot = "slot" . $i;
+					$conn->query("UPDATE equipment SET $slot=$itemID WHERE id=$id");
+					$conn->close();
+					unset($conn);
+					unset($id);
+					unset($itemID);
+					unset($slot);
 					break;
 				}
 			}
@@ -323,7 +420,6 @@
 			unset($zloto);
 			unset($krysztaly);
 		}
-		
 		//TODO: WATCH VIDEO FROM PHONE
 		public function updateMail()
 		{
@@ -506,16 +602,22 @@
 		
 		
 		//Sets the class object by downloading all player data from SQL server - use for existing players
-		public function __construct($id)
+		public static function withID($id)
+		{
+			$instance = new self();
+			$instance->loadByID($id);
+			return $instance;
+		}
+		protected function loadByID($id)
 		{
 			$conn = connectDB();
 			$result = $conn->query("SELECT * FROM users WHERE id='$id'");
 			$row = mysqli_fetch_assoc($result);
 			$conn->close();
+			unset($conn);
 			
 			$this->id = $id;
 			$this->username = $row['username'];
-			
 			$this->plec = $row['plec'];
 			$this->rasa = $row['rasa'];
 			$this->klasa = $row['klasa'];
@@ -548,7 +650,25 @@
 			$this->attackspeed = $row['attackspeed'];
 			$this->critchance = $row['critchance'];
 			$this->armor = $row['armor'];
+			$this->loadItems($id);	
+		}
+		protected function loadItems($id)
+		{
+			$conn = connectDB();
+			$result = $conn->query("SELECT * FROM equipment WHERE id='$id'");
+			$row = mysqli_fetch_assoc($result);
+			$conn->close();
+			unset($conn);
 			
+			//Backpack loading
+			for($i = 0; $i < count($this->backpack); $i++)
+			{
+				$slotName = "slot" . $i;
+				if($row[$slotName] != "NULL")
+				{
+					$this->backpack[$i] = Item::withID($row[$slotName]);
+				}
+			}
 		}
 	}
 	
@@ -632,6 +752,7 @@
 	function generateItem($tier)
 	{
 		$item = new Item();
+		$item->tier = $tier;
 		
 		// RARITY GENERATION
 		$normalMin = 0;

@@ -84,5 +84,4 @@
 			initializeDragDrop();
 		});
 	}
-
 </script>

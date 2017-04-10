@@ -36,7 +36,7 @@
 				$conn->query("UPDATE users SET last_login = NOW() WHERE id=$userID");
 				$conn->close();
 
-				$player = new Player($userID);
+				$player = Player::withID($userID);
 				$_SESSION['player'] = $player;
 				
 				header('Location:main.php');
