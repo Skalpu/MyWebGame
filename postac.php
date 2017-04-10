@@ -4,7 +4,6 @@
     login_check();
 	$_SESSION['player']->updateLocally();
 	drawGame($_SESSION['player']);
-	$_SESSION['player']->remaining = 1;
 	
 	
 	function drawStatystyki()
@@ -137,7 +136,7 @@
 			$_SESSION['player']->updateMana();
 			//Sending the update to SQL server
 			$_SESSION['player']->updateLocally();
-			$_SESSION['player']->updateGlobally();
+			$_SESSION['player']->updateStatsGlobally();
 		}
 		else
 		{

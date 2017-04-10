@@ -13,7 +13,7 @@
 			$attackers = [];
 			$defenders = [];
 			array_push($attackers, $_SESSION['player']);
-			array_push($defenders, new Player($_POST['opponent']));
+			array_push($defenders, Player::withID($_POST['opponent']));
 			//Getting them ready for the fight(hp regen, gold income etc)
 			foreach($attackers as $att)
 			{

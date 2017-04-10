@@ -16,12 +16,10 @@
 		public $attackspeed = 0;
 		public $critchance = 0;
 		public $armor = 0;
-		
 		public $dmgogien = 0;
 		public $dmgwoda = 0;
 		public $dmgpowietrze = 0;
 		public $dmgziemia = 0;
-		
 		public $sila = 0;
 		public $zwinnosc = 0;
 		public $celnosc = 0;
@@ -31,6 +29,18 @@
 		public $charyzma = 0;
 		public $szczescie = 0;
 		
+		public function drawHover()
+		{
+			echo "<div id='hoverlol'>";
+				echo "lololol";
+			echo "</div>";
+		}
+		public function drawFoto($divID)
+		{
+			$fotoPath = "url(gfx/itemy/" . $this->foto . ".png)";
+			echo "<div class='fotoContainer2' id='" .$divID. "' style='background-image: " . $fotoPath . ";'></div>";
+			unset($fotoPath);
+		}
 		public static function withID($id)
 		{
 			$instance = new self();
@@ -69,8 +79,16 @@
 			$this->wiedza = $row['wiedza'];
 			$this->charyzma = $row['charyzma'];
 			$this->szczescie = $row['szczescie'];
+			
+			if($this->rarity != "legendary")
+			{
+				$this->foto = "" . $this->subtype . $this->tier;
+			}
+			else
+			{
+				$this->foto = "legendary/" . $this->subtype . $this->tier;
+			}
 		}
-		
 		public function saveToDB()
 		{
 			$conn = connectDB();
@@ -81,18 +99,15 @@
 			$slot = $conn->real_escape_string($this->slot);
 			$type = $conn->real_escape_string($this->type);
 			$subtype = $conn->real_escape_string($this->subtype);
-			
 			$dmgmin = $conn->real_escape_string($this->dmgmin);
 			$dmgmax = $conn->real_escape_string($this->dmgmax);
 			$attackspeed = $conn->real_escape_string($this->attackspeed);
 			$critchance = $conn->real_escape_string($this->critchance);			
 			$armor = $conn->real_escape_string($this->armor);
-			
 			$dmgogien = $conn->real_escape_string($this->dmgogien);
 			$dmgwoda = $conn->real_escape_string($this->dmgwoda);
 			$dmgpowietrze = $conn->real_escape_string($this->dmgpowietrze);
 			$dmgziemia = $conn->real_escape_string($this->dmgziemia);
-			
 			$sila = $conn->real_escape_string($this->sila);
 			$zwinnosc = $conn->real_escape_string($this->zwinnosc);
 			$celnosc = $conn->real_escape_string($this->celnosc);
@@ -104,7 +119,9 @@
 			
 			$conn->query("INSERT INTO items (name, rarity, tier, slot, type, subtype, dmgmin, dmgmax, attackspeed, critchance, armor, dmgogien, dmgwoda, dmgpowietrze, dmgziemia, sila, zwinnosc, celnosc, kondycja, inteligencja, wiedza, charyzma, szczescie) VALUES ('$name', '$rarity', '$tier', '$slot', '$type', '$subtype', '$dmgmin', '$dmgmax', '$attackspeed', '$critchance', '$armor', '$dmgogien', '$dmgwoda', '$dmgpowietrze', '$dmgziemia', '$sila', '$zwinnosc', '$celnosc', '$kondycja', '$inteligencja', '$wiedza', '$charyzma', '$szczescie')");
 			$this->id = $conn->insert_id;
+			$conn->close();
 			
+			unset($conn);
 			unset($name);
 			unset($rarity);
 			unset($tier);
@@ -128,32 +145,21 @@
 			unset($wiedza);
 			unset($charyzma);
 			unset($szczescie);
-			
-			$conn->close();
-			unset($conn);
-		}
-		public function drawFoto($divID)
-		{
-			$fotoPath = "url(gfx/itemy/" . $this->foto . ".png)";
-			echo "<div class='fotoContainer2' id='" .$divID. "' style='background-image: " . $fotoPath . ";'></div>";
-			unset($fotoPath);
 		}
 	}
 	class Player
 	{
 		public $id;
 		public $username;
-		
 		public $plec;
 		public $rasa;
 		public $klasa;
 		public $foto;
-		
 		public $level;
 		public $experience;
 		public $experiencenext;
 		public $remaining;
-		
+
 		public $sila;
 		public $zwinnosc;
 		public $celnosc;
@@ -215,6 +221,31 @@
 			'boots' => ""
 		];
 		
+		
+		public function addToBackpack(Item $item)
+		{
+			for($i = 0; $i < count($this->backpack); $i++)
+			{
+				if($this->backpack[$i] == "")
+				{
+					$this->backpack[$i] = $item;
+					//Saving item itself to database
+					$item->saveToDB();
+					//Saving player backpack to database
+					$conn = connectDB();
+					$id = $this->id;
+					$itemID = $item->id;
+					$slot = "slot" . $i;
+					$conn->query("UPDATE equipment SET $slot=$itemID WHERE id=$id");
+					$conn->close();
+					unset($conn);
+					unset($id);
+					unset($itemID);
+					unset($slot);
+					break;
+				}
+			}
+		}
 		public function equipItem(Item $item)
 		{
 			$this->sila += $item->sila;
@@ -268,30 +299,6 @@
 			if($this->equipment[$slot] != "")
 			{
 				$this->unequipItem($this->equipment[$slot]);
-			}
-		}
-		public function addToBackpack(Item $item)
-		{
-			for($i = 0; $i < count($this->backpack); $i++)
-			{
-				if($this->backpack[$i] == "")
-				{
-					$this->backpack[$i] = $item;
-					//Saving item itself to database
-					$item->saveToDB();
-					//Saving player backpack to database
-					$conn = connectDB();
-					$id = $this->id;
-					$itemID = $item->id;
-					$slot = "slot" . $i;
-					$conn->query("UPDATE equipment SET $slot=$itemID WHERE id=$id");
-					$conn->close();
-					unset($conn);
-					unset($id);
-					unset($itemID);
-					unset($slot);
-					break;
-				}
 			}
 		}
 		
@@ -664,7 +671,7 @@
 			for($i = 0; $i < count($this->backpack); $i++)
 			{
 				$slotName = "slot" . $i;
-				if($row[$slotName] != "NULL")
+				if($row[$slotName] != NULL)
 				{
 					$this->backpack[$i] = Item::withID($row[$slotName]);
 				}
@@ -963,7 +970,7 @@
 			if($item == "")
 			{
 				//Echoes out a div with the slot name, e.g. helmet, chest
-				echo "<div class='itemSlot equipment blank' id='$slot'>";
+				echo "<div class='itemSlot arrow equipment blank' id='$slot'>";
 				drawBlankItem($slot, $slot);
 				echo "</div>";
 			}
@@ -972,8 +979,9 @@
 			{
 				//Echoes out a div with that slot name, e.g. 1, 2
 				$rarity = $item->rarity;
-				echo "<div class='itemSlot $rarity equipment' id='$slot'>";
+				echo "<div class='itemSlot arrow $rarity equipment' id='$slot'>";
 				$item->drawFoto($slot);
+				$item->drawHover();
 				echo "</div>";
 				unset($rarity);
 			}
@@ -992,7 +1000,7 @@
 			if($item == "")
 			{
 				//Echoes out a div with that slot name (EMPTY), e.g. bp1, bp2
-				echo "<div class='itemSlot backpack blank' id='bp$slot'>";
+				echo "<div class='itemSlot arrow backpack blank' id='bp$slot'>";
 				drawBlankItem("backpack", $slot);
 				echo "</div>";
 			}
@@ -1001,8 +1009,9 @@
 			{
 				//Echoes out a div with that slot name WITH AN ITEM INSIDE, e.g. bp1, bp2
 				$rarity = $item->rarity;
-				echo "<div class='itemSlot $rarity backpack' id='bp$slot'>";
+				echo "<div class='itemSlot arrow $rarity backpack' id='bp$slot'>";
 				$item->drawFoto($slot);
+				$item->drawHover();
 				echo "</div>";
 				unset($rarity);
 			}

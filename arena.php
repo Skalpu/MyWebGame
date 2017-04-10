@@ -122,9 +122,11 @@
 <script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
 
 <script>
+
 	function attack(opponentID)
 	{
 		$("#tabelaGracze").fadeOut();
 		$("#divMainOkno").load('walka.php', {type: 'arena', opponent: opponentID});		
 	}
+	
 </script>

@@ -6,7 +6,7 @@
 
 	if($_POST)
 	{
-		//BP -> ???
+		//BP ->
 		if(strpos($_POST['poczatek'], 'bp') !== false)
 		{
 			
@@ -124,10 +124,10 @@
 			}
 		}
 		
-		// EQ -> ???
+		//EQ ->
 		else
 		{
-			// EQ -> BP
+			//EQ -> BP
 			if(strpos($_POST['koniec'], 'bp') !== false)
 			{
 				preg_match('/(\d+)/', $_POST['koniec'], $matches);

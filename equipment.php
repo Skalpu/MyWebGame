@@ -61,6 +61,8 @@
 			{
 				poczatkowySlot = $(this).parent().attr('id');
 			},
+			revert: true,
+			revertDuration: 100,
 			opacity: 0.5,
 			zIndex: 100,
 			snap: true

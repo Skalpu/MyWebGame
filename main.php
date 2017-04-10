@@ -20,7 +20,10 @@
 
 <Body>
 
-    <div id="divMainOkno">
+    <div id="divMainOkno" style="overflow-Y: scroll;">
+	<?php echo '<pre>';
+	var_dump($_SESSION['player']);
+	echo '</pre>'; ?>
 		<!--- WIOSKA?<br>
 		- GENERACJA ITEMÓW<br>
 		- SUMMONY<br>
