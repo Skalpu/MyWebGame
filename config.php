@@ -676,6 +676,15 @@
 					$this->backpack[$i] = Item::withID($row[$slotName]);
 				}
 			}
+			
+			//Equipment loading
+			foreach($this->equipment as $slot => $item)
+			{
+				if($row[$slot] != NULL)
+				{
+					$this->equipment[$slot] = Item::withID($row[$slot]);
+				}
+			}
 		}
 	}
 	
