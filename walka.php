@@ -14,9 +14,8 @@
 			$defenders = [];
 			array_push($attackers, $_SESSION['player']);
 			array_push($defenders, Player::withID($_POST['opponent']));
-			echo "yo";
 			//Getting them ready for the fight(hp regen, gold income etc)
-			/*foreach($attackers as $att)
+			foreach($attackers as $att)
 			{
 				$att->updateLocally();
 			}
@@ -48,7 +47,7 @@
 			
 			
 			unset($attackers);
-			unset($defenders);*/
+			unset($defenders);
 		}
 		else if($_POST['type'] == 'wyprawa')
 		{
