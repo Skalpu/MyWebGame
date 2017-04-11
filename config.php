@@ -16,6 +16,7 @@
 		public $attackspeed = 0;
 		public $critchance = 0;
 		public $armor = 0;
+		public $movepenalty = 0;
 		public $dmgogien = 0;
 		public $dmgwoda = 0;
 		public $dmgpowietrze = 0;
@@ -859,32 +860,62 @@
 		$subtypeRoll = rand(0, count($itemSubtypes) - 1);
 		$item->subtype = $itemSubtypes[$subtypeRoll];
 		
-		// NAME GENERATION
+		// NAME AND STAT GENERATION
 		switch($item->subtype)
 		{
 			case 'strHelmet': $itemNames = ["Hełm żołdaka", "Gladiatorski hełm", "Zamknięty hełm", "Rogaty hełm"];
+				$item->armor = rand($tier * 5, $tier * 7);
+				$item->movepenalty = 0.2;
 				break;
 			case 'dexHelmet': $itemNames = ["Kaptur", "Bandana", "Przepaska"];
+				$item->armor = rand($tier * 3, $tier * 5);
+				$item->movepenalty = 0.1;
 				break;
 			case 'intHelmet': $itemNames = ["Diadem", "Obręcz"];
+				$item->armor = rand($tier * 1, $tier * 3);
+				$item->movepenalty = 0;
 				break;
-			case 'strAmulet': $itemNames = ["Amulet"];
+			case 'strAmulet': $itemNames = ["Amulet wojownika"];
+				$item->sila = rand($tier * 1, $tier * 3);
 				break;
-			case 'dexAmulet': $itemNames = ["Amulet"];
+			case 'dexAmulet': $itemNames = ["Amulet łotra"];
+				$item->zwinnosc = rand($tier * 1, $tier * 3);
 				break;
-			case 'intAmulet': $itemNames = ["Amulet"];
+			case 'intAmulet': $itemNames = ["Amulet maga"];
+				$item->inteligencja = rand($tier * 1, $tier * 3);
 				break;
 			case 'sword': $itemNames = ["Krótki miecz", "Miecz półtoraręczny", "Rapier", "Szabla"];
+				$item->damagemin = rand($tier * 5, $tier * 6);
+				$item->damagemax = rand($tier * 7, $tier * 8);
+				$item->attackspeed = (rand(110, 120)/100);
+				$item->critchance = (rand(50,60)/1000);
 				break;
 			case 'mace': $itemNames = ["Morgensztern", "Pałka", "Młot", "Młot bitewny", "Buława ceremonialna", "Skałołamacz"];
+				$item->damagemin = rand($tier * 6, $tier * 7);
+				$item->damagemax = rand($tier * 8, $tier * 9);
+				$item->attackspeed = (rand(95, 110)/100);
+				$item->critchance = (rand(50,60)/1000);
 				break;
 			case 'axe': $itemNames = ["Siekierka", "Topór", "Tasak", "Topór bojowy", "Tomahawk"];
+				$item->damagemin = rand($tier * 5, $tier * 8);
+				$item->damagemax = rand($tier * 8, $tier * 10);
+				$item->attackspeed = (rand(95, 110)/100);
+				$item->critchance = (rand(40,50)/1000);
 				break;
 			case 'sword2H': $itemNames = ["Długi miecz", "Wielki miecz", "Dwuręczny miecz"];
+				$item->damagemin = rand($tier * 12, $tier * 13);
+				$item->damagemax = rand($tier * 14, $tier * 15);
+				$item->attackspeed = (rand(90, 110)/100);
+				$item->critchance = (rand(50,60)/1000);
 				break;
 			case 'mace2H': $itemNames = ["Berdysz", "Pika", "Halabarda", "Glewia"];
+				$item->damagemin = rand($tier * 13, $tier * 14);
+				$item->damagemax = rand($tier * 15, $tier * 16);
+				$item->attackspeed = (rand(95, 110)/100);
+				$item->critchance = (rand(50,60)/1000);
 				break;
 			case 'axe2H': $itemNames = ["Wielki topór", "Topór dwuręczny"];
+				
 				break;
 			case 'dagger': $itemNames = ["Kozik", "Nożyk", "Nóż", "Sztylet", "Kolec"];
 				break;
@@ -939,8 +970,6 @@
 		}
 		$nameRoll = rand(0, count($itemNames) - 1);
 		$item->name = $itemNames[$nameRoll];
-		
-		// STAT GENERATION
 		
 		// RANDOM MODS GENERATION
 		
