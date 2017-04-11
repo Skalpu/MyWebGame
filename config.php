@@ -35,6 +35,33 @@
 			echo "<div class='itemHover'>";
 				echo "<div class='itemName'>" .$this->name. "</div>";
 				echo "<div class='divider'></div>";
+				if($this->dmgmin != 0)
+				{
+					echo "<div class='itemDamage'>" .$this->dmgmin. "-" .$this->dmgmax. "</div> obrażeń fizycznych";
+				}
+				if($this->attackspeed != 0)
+				{
+					echo "<div class='itemAttackSpeed'>" .$this->attackspeed. "</div> ataków na sekundę";
+				}
+				if($this->critchance != 0)
+				{
+					echo "<div class='itemCritChance'>" .$this->critchance. "%</div> na traf. kryt.";
+				}
+				if($this->armor != 0)
+				{
+					echo "<div class='itemArmor'>" .$this->armor. "</div> pancerza";
+				}
+				if($this->movepenalty != 0)
+				{
+					if($this->movepenalty > 0)
+					{
+						echo "<div class='movePenaltyNegative'>" .$this->movepenalty. "</div> kary do ruchu";
+					}
+					else
+					{
+						echo "<div class='movePenaltyPositive'>" .$this->movepenalty. "</div> premii do ruchu";
+					}
+				}
 			echo "</div>";
 		}
 		public function drawFoto($divID)
@@ -795,7 +822,7 @@
 		{
 			$item->rarity = "rare";
 		}
-		else if($rarityRoll >= $legendaryMin and $rarityRoll <= $legendaryMax)
+		else if($rarityRoll >= $legendaryMin)
 		{
 			$item->rarity = "legendary";
 		}
@@ -921,14 +948,34 @@
 				$item->critchance = (rand(40,50)/1000);
 				break;
 			case 'dagger': $itemNames = ["Kozik", "Nożyk", "Nóż", "Sztylet", "Kolec"];
+				$item->damagemin = rand($tier * 3, $tier * 5);
+				$item->damagemax = rand($tier * 5, $tier * 6);
+				$item->attackspeed = (rand(120, 140)/100);
+				$item->critchance = (rand(60,80)/1000);
 				break;
 			case 'bow': $itemNames = ["Krótki łuk", "Łuk myśliwski", "Długi łuk"];
+				$item->damagemin = rand($tier * 7, $tier * 9);
+				$item->damagemax = rand($tier * 10, $tier * 11);
+				$item->attackspeed = (rand(90, 110)/100);
+				$item->critchance = (rand(60,70)/1000);
 				break;
 			case 'scepter': $itemNames = ["Kostur", "Berło"];
+				$item->damagemin = rand($tier * 5, $tier * 6);
+				$item->damagemax = rand($tier * 7, $tier * 8);
+				$item->attackspeed = (rand(110, 120)/100);
+				$item->critchance = (rand(50,60)/1000);
 				break;
 			case 'wand': $itemNames = ["Różdżka"];
+				$item->damagemin = rand($tier * 5, $tier * 6);
+				$item->damagemax = rand($tier * 7, $tier * 8);
+				$item->attackspeed = (rand(110, 120)/100);
+				$item->critchance = (rand(50,60)/1000);
 				break;
 			case 'staff': $itemNames = ["Laska"];
+				$item->damagemin = rand($tier * 12, $tier * 14);
+				$item->damagemax = rand($tier * 14, $tier * 16);
+				$item->attackspeed = (rand(100, 120)/100);
+				$item->critchance = (rand(50,60)/1000);
 				break;
 			case 'strChest': $itemNames = ["Kolczuga", "Zbroja płytowa", "Ciężka zbroja"];
 				$item->armor = rand($tier * 12, $tier * 15);
@@ -959,30 +1006,48 @@
 				break;
 			case 'strBelt': $itemNames = ["Wzmacniany pas"];
 				$item->armor = rand($tier * 3, $tier * 5);
+				$item->movepenalty = 0.15;
 				break;
 			case 'dexBelt': $itemNames = ["Skórzany pas"];
 				$item->armor = rand($tier * 2, $tier * 4);
+				$item->movepenalty = 0.1;
 				break;
 			case 'intBelt': $itemNames = ["Pas alchemika"];
 				$item->armor = rand($tier * 1, $tier * 3);
+				$item->movepenalty = 0;
 				break;
 			case 'strGloves': $itemNames = ["Rękawice płytowe"];
+				$item->armor = rand($tier * 3, $tier * 5);
+				$item->movepenalty = 0.15;
 				break;
 			case 'dexGloves': $itemNames = ["Rękawiczki", "Skórzane rękawice"];
+				$item->armor = rand($tier * 2, $tier * 4);
+				$item->movepenalty = 0.1;
 				break;
 			case 'intGloves': $itemNames = ["Aksamitne rękawice", "Rękawice maga"];
+				$item->armor = rand($tier * 1, $tier * 3);
+				$item->movepenalty = 0;
 				break;
-			case 'strRing': $itemNames = ["Pierścień"];
+			case 'strRing': $itemNames = ["Pierścień wojownika"];
+				$item->kondycja = rand($tier * 1, $tier * 3);
 				break;
-			case 'dexRing': $itemNames = ["Pierścień"];
+			case 'dexRing': $itemNames = ["Pierścień łotra"];
+				$item->movepenalty = (rand(10,30) / 100) * (-1);
 				break;
-			case 'intRing': $itemNames = ["Pierścień"];
+			case 'intRing': $itemNames = ["Pierścień maga"];
+				$item->wiedza = rand($tier * 1, $tier * 3);
 				break;
 			case 'strBoots': $itemNames = ["Wzmacniane buty", "Nogawice płytowe"];
+				$item->armor = rand($tier * 3, $tier * 5);
+				$item->movepenalty = 0.15;
 				break;
 			case 'dexBoots': $itemNames = ["Skórzane buty"];
+				$item->armor = rand($tier * 2, $tier * 4);
+				$item->movepenalty = 0.1;
 				break;
 			case 'intBoots': $itemNames = ["Trzewiczki", "Inkrustrowane buty"];
+				$item->armor = rand($tier * 1, $tier * 3);
+				$item->movepenalty = 0;
 				break;
 			default: 
 				break;
