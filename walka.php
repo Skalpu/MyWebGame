@@ -394,8 +394,19 @@
 				$defender->hp = 0;
 			}
 			
+			//TEXT GENERATION
+			if($attacker->side == "attacker")
+			{
+				$attackerSpan = "<span style='color: darkgreen; font-weight: bold;'>";
+				$defenderSpan = "<span style='color: darkred; font-weight: bold;'>";
+			}
+			else
+			{
+				$attackerSpan = "<span style='color: darkred; font-weight: bold;'>";
+				$defenderSpan = "<span style='color: darkgreen; font-weight: bold;'>";
+			}
 			
-			$tekst = $attacker->username . " uderza " . $defender->username . " za pomocą " . $attacker->equipment["lefthand"]->name . " zadając " . $dmg . " obrażeń!<br>";
+			$tekst = $attackerSpan . $attacker->username . "</span> uderza " . $defenderSpan . $defender->username . "</span> za pomocą " . $attacker->equipment["lefthand"]->name . " zadając " . $dmg . " obrażeń!<br>";
 			
 			//Generating hidden fields for jquery
 			echo "<div style='display: none;' class='$iterator' id='co$iterator'>hit</div>";

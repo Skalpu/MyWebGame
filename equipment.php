@@ -51,6 +51,7 @@
 	var koncowySlot = "";
 	
 	$("#divMainOkno").load('update_equipment.php', function() {
+		rescaleImages();
 		initializeDragDrop();
 		initializeHover();
 	});
@@ -99,9 +100,25 @@
 		});
 	}
 	
+	function rescaleImages()
+	{
+		$(".fotoContainer2").each(function() {
+			var currObj = $(this);
+			var img = new Image;
+			img.src = currObj.css('background-image').replace(/url\(|\)$/ig, "").replace(/"/g, "").replace(/'/g, "");
+			img.onload = function() {
+				if(img.width < currObj.width() && img.height < currObj.height())
+				{
+					currObj.css('background-size', 'auto auto');
+				}
+			}
+		});
+	}
+	
 	function moveItem(poczatkowySlot, koncowySlot)
 	{
 		$("#divMainOkno").load('update_equipment.php', {poczatek: poczatkowySlot, koniec: koncowySlot}, function() {
+			rescaleImages();
 			initializeDragDrop();
 			initializeHover();
 		});

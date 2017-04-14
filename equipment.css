@@ -28,8 +28,93 @@
 	-webkit-box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
 	-moz-box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
 	box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
+	margin-bottom: 4px;
 }
-
+.itemDamage
+{
+	color: darkorange;
+	display: inline-block;
+}
+.itemAttackSpeed
+{
+	color: darkgreen;
+	display: inline-block;
+}
+.itemCritChance
+{
+	color: dimgray;
+	display: inline-block;
+}
+.itemArmor
+{
+	color: brown;
+	display: inline-block;
+}
+.itemMovement
+{
+	color: darkblue;
+	display: inline-block;
+}
+.itemSila
+{
+	color: darkred;
+	display: inline-block;
+}
+.itemZwinnosc
+{
+	color: darkgreen;
+	display: inline-block;
+}
+.itemCelnosc
+{
+	color: darkgreen;
+	display: inline-block;
+}
+.itemKondycja
+{
+	color: darkred;
+	display: inline-block;
+}
+.itemInteligencja
+{
+	color: darkblue;
+	display: inline-block;
+}
+.itemWiedza
+{
+	color: darkblue;
+	display: inline-block;
+}
+.itemCharyzma
+{
+	color: darkorange;
+	display: inline-block;
+}
+.itemSzczescie
+{
+	color: darkorange;
+	display: inline-block;
+}
+.itemDmgOgien
+{
+	color: darkred;
+	display: inline-block;
+}
+.itemDmgWoda
+{
+	color: darkblue;
+	display: inline-block;
+}
+.itemDmgPowietrze
+{
+	color: dimgray;
+	display: inline-block;
+}
+.itemDmgZiemia
+{
+	color: darkbrown;
+	display: inline-block;
+}
 
 
 #divMainOkno
@@ -91,7 +176,21 @@
 	clear: right;
 }
 
-
+.scale100
+{
+	width: 100%;
+	height: 100%;
+}
+.scale70
+{
+	width: 70%;
+	height: 70%;
+}
+.scale50
+{
+	width: 50%;
+	height: 50%;
+}
 .fotoContainer2
 {
 	background-size: contain;

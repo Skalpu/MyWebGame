@@ -35,33 +35,76 @@
 			echo "<div class='itemHover'>";
 				echo "<div class='itemName'>" .$this->name. "</div>";
 				echo "<div class='divider'></div>";
+				
 				if($this->dmgmin != 0)
 				{
-					echo "<div class='itemDamage'>" .$this->dmgmin. "-" .$this->dmgmax. "</div> obrażeń fizycznych";
+					echo "<div class='itemDamage'>" .$this->dmgmin. "-" .$this->dmgmax. "</div> obrażeń fizycznych<br>";
 				}
 				if($this->attackspeed != 0)
 				{
-					echo "<div class='itemAttackSpeed'>" .$this->attackspeed. "</div> ataków na sekundę";
+					echo "<div class='itemAttackSpeed'>" .$this->attackspeed. "</div> ataków na sekundę<br>";
 				}
 				if($this->critchance != 0)
 				{
-					echo "<div class='itemCritChance'>" .$this->critchance. "%</div> na traf. kryt.";
+					echo "<div class='itemCritChance'>" .$this->critchance. "%</div> szansy na traf. kryt.<br>";
 				}
 				if($this->armor != 0)
 				{
-					echo "<div class='itemArmor'>" .$this->armor. "</div> pancerza";
+					echo "<div class='itemArmor'>+" .$this->armor. "</div> pancerza<br>";
 				}
 				if($this->movepenalty != 0)
 				{
-					if($this->movepenalty > 0)
-					{
-						echo "<div class='movePenaltyNegative'>" .$this->movepenalty. "</div> kary do ruchu";
-					}
-					else
-					{
-						echo "<div class='movePenaltyPositive'>" .$this->movepenalty. "</div> premii do ruchu";
-					}
+					echo "<div class='itemMovement'>" .$this->movepenalty. "</div> do ruchu<br>";
 				}
+				if($this->dmgogien !=0)
+				{
+					echo "<div class='itemDmgOgien'>+" .$this->dmgogien. "</div> obrażeń od ognia<br>";
+				}
+				if($this->dmgwoda !=0)
+				{
+					echo "<div class='itemDmgWoda'>+" .$this->dmgwoda. "</div> obrażeń od wody<br>";
+				}
+				if($this->dmgpowietrze !=0)
+				{
+					echo "<div class='itemDmgPowietrze'>+" .$this->dmgpowietrze. "</div> obrażeń od powietrza<br>";
+				}
+				if($this->dmgziemia !=0)
+				{
+					echo "<div class='itemDmgZiemia'>+" .$this->dmgziemia. "</div> obrażeń od ziemi<br>";
+				}
+				if($this->sila !=0)
+				{
+					echo "<div class='itemSila'>+" .$this->sila. "</div> siły<br>";
+				}
+				if($this->zwinnosc !=0)
+				{
+					echo "<div class='itemZwinnosc'>+" .$this->zwinnosc. "</div> zwinności<br>";
+				}
+				if($this->celnosc !=0)
+				{
+					echo "<div class='itemCelnosc'>+" .$this->celnosc. "</div> celności<br>";
+				}
+				if($this->kondycja !=0)
+				{
+					echo "<div class='itemKondycja'>+" .$this->kondycja. "</div> kondycji<br>";
+				}
+				if($this->inteligencja !=0)
+				{
+					echo "<div class='itemInteligencja'>+" .$this->inteligencja. "</div> inteligencja<br>";
+				}
+				if($this->wiedza !=0)
+				{
+					echo "<div class='itemWiedza'>+" .$this->wiedza. "</div> wiedzy<br>";
+				}
+				if($this->charyzma !=0)
+				{
+					echo "<div class='itemCharyzma'>+" .$this->charyzma. "</div> charyzmy<br>";
+				}
+				if($this->szczescie !=0)
+				{
+					echo "<div class='itemSzczescie'>+" .$this->szczescie. "</div> szczęścia<br>";
+				}
+			
 			echo "</div>";
 		}
 		public function drawFoto($divID)
@@ -108,6 +151,7 @@
 			$this->wiedza = $row['wiedza'];
 			$this->charyzma = $row['charyzma'];
 			$this->szczescie = $row['szczescie'];
+			$this->movepenalty = $row['movepenalty'];
 			
 			if($this->rarity != "legendary")
 			{
@@ -145,8 +189,9 @@
 			$wiedza = $conn->real_escape_string($this->wiedza);
 			$charyzma = $conn->real_escape_string($this->charyzma);
 			$szczescie = $conn->real_escape_string($this->szczescie);
+			$movepenalty = $conn->real_escape_string($this->movepenalty);
 			
-			$conn->query("INSERT INTO items (name, rarity, tier, slot, type, subtype, dmgmin, dmgmax, attackspeed, critchance, armor, dmgogien, dmgwoda, dmgpowietrze, dmgziemia, sila, zwinnosc, celnosc, kondycja, inteligencja, wiedza, charyzma, szczescie) VALUES ('$name', '$rarity', '$tier', '$slot', '$type', '$subtype', '$dmgmin', '$dmgmax', '$attackspeed', '$critchance', '$armor', '$dmgogien', '$dmgwoda', '$dmgpowietrze', '$dmgziemia', '$sila', '$zwinnosc', '$celnosc', '$kondycja', '$inteligencja', '$wiedza', '$charyzma', '$szczescie')");
+			$conn->query("INSERT INTO items (name, rarity, tier, slot, type, subtype, dmgmin, dmgmax, attackspeed, critchance, armor, dmgogien, dmgwoda, dmgpowietrze, dmgziemia, sila, zwinnosc, celnosc, kondycja, inteligencja, wiedza, charyzma, szczescie, movepenalty) VALUES ('$name', '$rarity', '$tier', '$slot', '$type', '$subtype', '$dmgmin', '$dmgmax', '$attackspeed', '$critchance', '$armor', '$dmgogien', '$dmgwoda', '$dmgpowietrze', '$dmgziemia', '$sila', '$zwinnosc', '$celnosc', '$kondycja', '$inteligencja', '$wiedza', '$charyzma', '$szczescie', '$movepenalty')");
 			$this->id = $conn->insert_id;
 			$conn->close();
 			
@@ -174,6 +219,7 @@
 			unset($wiedza);
 			unset($charyzma);
 			unset($szczescie);
+			unset($movepenalty);
 		}
 	}
 	class Player
@@ -189,22 +235,22 @@
 		public $experiencenext;
 		public $remaining;
 
-		public $sila;
-		public $zwinnosc;
-		public $celnosc;
-		public $kondycja;
-		public $inteligencja;
-		public $wiedza;
-		public $charyzma;
-		public $szczescie;
+		public $sila = 0;
+		public $zwinnosc = 0;
+		public $celnosc = 0;
+		public $kondycja = 0;
+		public $inteligencja = 0;
+		public $wiedza = 0;
+		public $charyzma = 0;
+		public $szczescie = 0;
 		
 		//DB stats
-		public $hp;
-		public $maxhp;
-		public $mana;
-		public $maxmana;
-		public $zloto;
-		public $krysztaly;		
+		public $hp = 0;
+		public $maxhp = 0;
+		public $mana = 0;
+		public $maxmana = 0;
+		public $zloto = 0;
+		public $krysztaly = 0;		
 		public $unread;
 		public $last_update;
 		
@@ -215,11 +261,11 @@
 		public $spells_only;
 		
 		//Combat stats
-		public $dmgmin;
-		public $dmgmax;
-		public $attackspeed;
-		public $critchance;		
-		public $armor;
+		public $dmgmin = 0;
+		public $dmgmax = 0;
+		public $attackspeed = 0;
+		public $critchance = 0;		
+		public $armor = 0;
 		
 		public $backpack = [
 			0 => "",
@@ -432,8 +478,14 @@
 			$zloto = $this->zloto;
 			$krysztaly = $this->krysztaly;
 			
+			$dmgmin = $this->dmgmin;
+			$dmgmax = $this->dmgmax;
+			$attackspeed = $this->attackspeed;
+			$critchance = $this->critchance;
+			$armor = $this->armor;
+			
 			$conn=connectDB();
-			$conn->query("UPDATE users SET level=$level, experience=$experience, experiencenext=$experiencenext, remaining=$remaining, sila=$sila, zwinnosc=$zwinnosc, celnosc=$celnosc, kondycja=$kondycja, inteligencja=$inteligencja, wiedza=$wiedza, charyzma=$charyzma, szczescie=$szczescie, hp=$hp, maxhp=$maxhp, mana=$mana, maxmana=$maxmana, zloto=$zloto, krysztaly=$krysztaly, last_update=NOW() WHERE id=$id");
+			$conn->query("UPDATE users SET level=$level, experience=$experience, experiencenext=$experiencenext, remaining=$remaining, sila=$sila, zwinnosc=$zwinnosc, celnosc=$celnosc, kondycja=$kondycja, inteligencja=$inteligencja, wiedza=$wiedza, charyzma=$charyzma, szczescie=$szczescie, hp=$hp, maxhp=$maxhp, mana=$mana, maxmana=$maxmana, zloto=$zloto, krysztaly=$krysztaly, dmgmin=$dmgmin, dmgmax=$dmgmax, attackspeed=$attackspeed, critchance=$critchance, armor=$armor, last_update=NOW() WHERE id=$id");
 			$conn->close();
 			
 			unset($id);
@@ -892,11 +944,11 @@
 		{
 			case 'strHelmet': $itemNames = ["Hełm żołdaka", "Gladiatorski hełm", "Zamknięty hełm", "Rogaty hełm"];
 				$item->armor = rand($tier * 5, $tier * 7);
-				$item->movepenalty = 0.2;
+				$item->movepenalty = -0.2;
 				break;
 			case 'dexHelmet': $itemNames = ["Kaptur", "Bandana", "Przepaska"];
 				$item->armor = rand($tier * 3, $tier * 5);
-				$item->movepenalty = 0.1;
+				$item->movepenalty = -0.1;
 				break;
 			case 'intHelmet': $itemNames = ["Diadem", "Obręcz"];
 				$item->armor = rand($tier * 1, $tier * 3);
@@ -912,78 +964,78 @@
 				$item->inteligencja = rand($tier * 1, $tier * 3);
 				break;
 			case 'sword': $itemNames = ["Krótki miecz", "Miecz półtoraręczny", "Rapier", "Szabla"];
-				$item->damagemin = rand($tier * 5, $tier * 6);
-				$item->damagemax = rand($tier * 7, $tier * 8);
+				$item->dmgmin = rand($tier * 5, $tier * 6);
+				$item->dmgmax = rand($tier * 7, $tier * 8);
 				$item->attackspeed = (rand(110, 120)/100);
-				$item->critchance = (rand(50,60)/1000);
+				$item->critchance = (rand(50,60)/10);
 				break;
 			case 'mace': $itemNames = ["Morgensztern", "Pałka", "Młot", "Młot bitewny", "Buława ceremonialna", "Skałołamacz"];
-				$item->damagemin = rand($tier * 6, $tier * 7);
-				$item->damagemax = rand($tier * 8, $tier * 9);
+				$item->dmgmin = rand($tier * 6, $tier * 7);
+				$item->dmgmax = rand($tier * 8, $tier * 9);
 				$item->attackspeed = (rand(95, 110)/100);
-				$item->critchance = (rand(50,60)/1000);
+				$item->critchance = (rand(50,60)/10);
 				break;
 			case 'axe': $itemNames = ["Siekierka", "Topór", "Tasak", "Topór bojowy", "Tomahawk"];
-				$item->damagemin = rand($tier * 5, $tier * 8);
-				$item->damagemax = rand($tier * 8, $tier * 10);
+				$item->dmgmin = rand($tier * 5, $tier * 8);
+				$item->dmgmax = rand($tier * 8, $tier * 10);
 				$item->attackspeed = (rand(95, 110)/100);
-				$item->critchance = (rand(40,50)/1000);
+				$item->critchance = (rand(40,50)/10);
 				break;
 			case 'sword2H': $itemNames = ["Długi miecz", "Wielki miecz", "Dwuręczny miecz"];
-				$item->damagemin = rand($tier * 12, $tier * 13);
-				$item->damagemax = rand($tier * 14, $tier * 15);
+				$item->dmgmin = rand($tier * 12, $tier * 13);
+				$item->dmgmax = rand($tier * 14, $tier * 15);
 				$item->attackspeed = (rand(90, 110)/100);
-				$item->critchance = (rand(50,60)/1000);
+				$item->critchance = (rand(50,60)/10);
 				break;
 			case 'mace2H': $itemNames = ["Berdysz", "Pika", "Halabarda", "Glewia"];
-				$item->damagemin = rand($tier * 13, $tier * 14);
-				$item->damagemax = rand($tier * 15, $tier * 16);
+				$item->dmgmin = rand($tier * 13, $tier * 14);
+				$item->dmgmax = rand($tier * 15, $tier * 16);
 				$item->attackspeed = (rand(95, 110)/100);
-				$item->critchance = (rand(50,60)/1000);
+				$item->critchance = (rand(50,60)/10);
 				break;
 			case 'axe2H': $itemNames = ["Wielki topór", "Topór dwuręczny"];
-				$item->damagemin = rand($tier * 10, $tier * 13);
-				$item->damagemax = rand($tier * 14, $tier * 16);
+				$item->dmgmin = rand($tier * 10, $tier * 13);
+				$item->dmgmax = rand($tier * 14, $tier * 16);
 				$item->attackspeed = (rand(95, 110)/100);
-				$item->critchance = (rand(40,50)/1000);
+				$item->critchance = (rand(40,50)/10);
 				break;
 			case 'dagger': $itemNames = ["Kozik", "Nożyk", "Nóż", "Sztylet", "Kolec"];
-				$item->damagemin = rand($tier * 3, $tier * 5);
-				$item->damagemax = rand($tier * 5, $tier * 6);
+				$item->dmgmin = rand($tier * 3, $tier * 5);
+				$item->dmgmax = rand($tier * 5, $tier * 6);
 				$item->attackspeed = (rand(120, 140)/100);
-				$item->critchance = (rand(60,80)/1000);
+				$item->critchance = (rand(60,80)/10);
 				break;
 			case 'bow': $itemNames = ["Krótki łuk", "Łuk myśliwski", "Długi łuk"];
-				$item->damagemin = rand($tier * 7, $tier * 9);
-				$item->damagemax = rand($tier * 10, $tier * 11);
+				$item->dmgmin = rand($tier * 7, $tier * 9);
+				$item->dmgmax = rand($tier * 10, $tier * 11);
 				$item->attackspeed = (rand(90, 110)/100);
-				$item->critchance = (rand(60,70)/1000);
+				$item->critchance = (rand(60,70)/10);
 				break;
 			case 'scepter': $itemNames = ["Kostur", "Berło"];
-				$item->damagemin = rand($tier * 5, $tier * 6);
-				$item->damagemax = rand($tier * 7, $tier * 8);
+				$item->dmgmin = rand($tier * 5, $tier * 6);
+				$item->dmgmax = rand($tier * 7, $tier * 8);
 				$item->attackspeed = (rand(110, 120)/100);
-				$item->critchance = (rand(50,60)/1000);
+				$item->critchance = (rand(50,60)/10);
 				break;
 			case 'wand': $itemNames = ["Różdżka"];
-				$item->damagemin = rand($tier * 5, $tier * 6);
-				$item->damagemax = rand($tier * 7, $tier * 8);
+				$item->dmgmin = rand($tier * 5, $tier * 6);
+				$item->dmgmax = rand($tier * 7, $tier * 8);
 				$item->attackspeed = (rand(110, 120)/100);
-				$item->critchance = (rand(50,60)/1000);
+				$item->critchance = (rand(50,60)/10);
 				break;
 			case 'staff': $itemNames = ["Laska"];
-				$item->damagemin = rand($tier * 12, $tier * 14);
-				$item->damagemax = rand($tier * 14, $tier * 16);
+				$item->dmgmin = rand($tier * 12, $tier * 14);
+				$item->dmgmax = rand($tier * 14, $tier * 16);
 				$item->attackspeed = (rand(100, 120)/100);
-				$item->critchance = (rand(50,60)/1000);
+				$item->critchance = (rand(50,60)/10);
 				break;
 			case 'strChest': $itemNames = ["Kolczuga", "Zbroja płytowa", "Ciężka zbroja"];
 				$item->armor = rand($tier * 12, $tier * 15);
-				$item->movepenalty = 0.3;
+				$item->movepenalty = -0.3;
 				break;
 			case 'dexChest': $itemNames = ["Płaszcz", "Płaszcz myśliwski", "Lekki pancerz"];
 				$item->armor = rand($tier * 9, $tier * 11);
-				$item->movepenalty = 0.15;
+				$item->movepenalty = -0.15;
 				break;
 			case 'intChest': $itemNames = ["Szaty maga", "Szata", "Koszula"];
 				$item->armor = rand($tier * 5, $tier * 8);
@@ -991,26 +1043,26 @@
 				break;
 			case 'strShield': $itemNames = ["Tarcza"];
 				$item->armor = rand($tier * 10, $tier * 12);
-				$item->movepenalty = 0.2;
+				$item->movepenalty = -0.2;
 				break;
 			case 'dexShield': $itemNames = ["Puklerz"];
 				$item->armor = rand($tier * 6, $tier * 8);
-				$item->movepenalty = 0.1;
+				$item->movepenalty = -0.1;
 				break;
 			case 'intShield': $itemNames = ["Puklerz"];
 				$item->armor = rand($tier * 3, $tier * 6);
 				break;
 			case 'dexOff': $itemNames = ["Strzały", "Kołczan"];
-				$item->damagemin = rand($tier * 2, $tier * 4);
-				$item->damagemax = rand($tier * 4, $tier * 5);
+				$item->dmgmin = rand($tier * 2, $tier * 4);
+				$item->dmgmax = rand($tier * 4, $tier * 5);
 				break;
 			case 'strBelt': $itemNames = ["Wzmacniany pas"];
 				$item->armor = rand($tier * 3, $tier * 5);
-				$item->movepenalty = 0.15;
+				$item->movepenalty = -0.15;
 				break;
 			case 'dexBelt': $itemNames = ["Skórzany pas"];
 				$item->armor = rand($tier * 2, $tier * 4);
-				$item->movepenalty = 0.1;
+				$item->movepenalty = -0.1;
 				break;
 			case 'intBelt': $itemNames = ["Pas alchemika"];
 				$item->armor = rand($tier * 1, $tier * 3);
@@ -1018,11 +1070,11 @@
 				break;
 			case 'strGloves': $itemNames = ["Rękawice płytowe"];
 				$item->armor = rand($tier * 3, $tier * 5);
-				$item->movepenalty = 0.15;
+				$item->movepenalty = -0.15;
 				break;
 			case 'dexGloves': $itemNames = ["Rękawiczki", "Skórzane rękawice"];
 				$item->armor = rand($tier * 2, $tier * 4);
-				$item->movepenalty = 0.1;
+				$item->movepenalty = -0.1;
 				break;
 			case 'intGloves': $itemNames = ["Aksamitne rękawice", "Rękawice maga"];
 				$item->armor = rand($tier * 1, $tier * 3);
@@ -1032,18 +1084,18 @@
 				$item->kondycja = rand($tier * 1, $tier * 3);
 				break;
 			case 'dexRing': $itemNames = ["Pierścień łotra"];
-				$item->movepenalty = (rand(10,30) / 100) * (-1);
+				$item->movepenalty = (rand(10,30) / 100);
 				break;
 			case 'intRing': $itemNames = ["Pierścień maga"];
 				$item->wiedza = rand($tier * 1, $tier * 3);
 				break;
 			case 'strBoots': $itemNames = ["Wzmacniane buty", "Nogawice płytowe"];
 				$item->armor = rand($tier * 3, $tier * 5);
-				$item->movepenalty = 0.15;
+				$item->movepenalty = -0.15;
 				break;
 			case 'dexBoots': $itemNames = ["Skórzane buty"];
 				$item->armor = rand($tier * 2, $tier * 4);
-				$item->movepenalty = 0.1;
+				$item->movepenalty = -0.1;
 				break;
 			case 'intBoots': $itemNames = ["Trzewiczki", "Inkrustrowane buty"];
 				$item->armor = rand($tier * 1, $tier * 3);
@@ -1055,7 +1107,9 @@
 		$nameRoll = rand(0, count($itemNames) - 1);
 		$item->name = $itemNames[$nameRoll];
 		
-		// RANDOM MODS GENERATION
+		// TODO RANDOM MODS GENERATION
+		$modsListNormal = ['ogien','woda','powietrze','ziemia'];
+		
 		
 		// FOTO GENERATION
 		if($item->rarity != "legendary")
