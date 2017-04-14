@@ -21,19 +21,21 @@
 <Body>
 
     <div id="divMainOkno" style="overflow-Y: scroll;">
-	<?php echo '<pre>';
+	<?php  
+	
+	echo '<pre>';
 	var_dump($_SESSION['player']);
-	echo '</pre>'; ?>
-		<!--- WIOSKA?<br>
-		- GENERACJA ITEMÓW<br>
+	echo '</pre>';
+	
+	?>
+		<!-- 
+		TODO:
+		- WIOSKA?<br>
 		- SUMMONY<br>
 		- KARCZMA Z QUESTAMI<br>
 		- NAPADY != ARENA<br>
-		- POPRAWIĆ EKWIPUNEK UŻYWAJĄC JSON??<br>
 		- RACIALE I KLASOWE<br>
-		- HANDLARZ<br>
-		- PODLICZANIE MAX HP I MAX MANY PRZY ZAŁOŻENIU ITEMU<br>
-		- CRON JOBS NA WYPRAWY<br>-->
+		- HANDLARZ<br>-->
     </div>
 
 	

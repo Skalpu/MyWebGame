@@ -361,16 +361,17 @@
 	function hit(Player $attacker, Player $defender, $iterator)
 	{
 		//Checking if attacker has enough movement
-		if($attacker->time_remaining >= 1/$attacker->attackspeed)
+		//TODO Wpływ statystyk na movement
+		if($attacker->time_remaining >= (1/$attacker->attackspeed - $attacker->movepenalty))
 		{
 			$iterator++;
-			$attacker->time_remaining -= 1/$attacker->attackspeed;
+			$attacker->time_remaining -= (1/$attacker->attackspeed - $attacker->movepenalty);
 			$attacker->did_move = true;
 			
 			
 			//Randomising base damage
 			$dmg = rand($attacker->dmgmin, $attacker->dmgmax);
-			//Adding basestats to damage
+			//TODO Adding basestats to damage
 			if($attacker->equipment["lefthand"]->type == "melee")
 			{
 				$dmg = $dmg * ( ($attacker->sila + 100) / 100 );
@@ -393,6 +394,7 @@
 			{
 				$defender->hp = 0;
 			}
+			
 			
 			//TEXT GENERATION
 			if($attacker->side == "attacker")
@@ -473,6 +475,28 @@
 		}
 		
 		
+		//Setting protected status
+		if($fightType == "arena")
+		{
+			$seconds = time();
+			$seconds += 900;
+			$until = date("Y-m-d H:i:s", $seconds);
+			$conn = connectDB();
+			
+			foreach($defenders as $def)
+			{
+				$id = $def->id;
+				$conn->query("UPDATE users SET protected_until='$until' WHERE id=$id");
+			}
+			
+			$conn->close();
+			unset($seconds);
+			unset($until);
+			unset($id);
+			unset($conn);
+		}
+		
+		
 		//Granting items
 		if($fightType == "arena" or $fightType == "wyprawa")
 		{
@@ -495,6 +519,7 @@
 				}
 			}
 		}
+		
 		
 		
 		return [

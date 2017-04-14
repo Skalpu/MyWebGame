@@ -1,6 +1,5 @@
 <?php
-//TODO RE-CREATE PLAYER SESSION DATA ON LOGIN
-	
+
     if($_POST)
     {
 		require_once("config.php");  

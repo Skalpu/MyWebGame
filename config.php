@@ -90,7 +90,7 @@
 				}
 				if($this->inteligencja !=0)
 				{
-					echo "<div class='itemInteligencja'>+" .$this->inteligencja. "</div> inteligencja<br>";
+					echo "<div class='itemInteligencja'>+" .$this->inteligencja. "</div> inteligencji<br>";
 				}
 				if($this->wiedza !=0)
 				{
@@ -266,6 +266,7 @@
 		public $attackspeed = 0;
 		public $critchance = 0;		
 		public $armor = 0;
+		public $movepenalty = 0;
 		
 		public $backpack = [
 			0 => "",
@@ -337,6 +338,7 @@
 			$this->attackspeed += $item->attackspeed;
 			$this->critchance += $item->critchance;
 			$this->armor += $item->armor;
+			$this->movepenalty += $item->movepenalty;
 			
 			$this->updateHP();
 			$this->updateMana();
@@ -363,6 +365,7 @@
 			$this->attackspeed -= $item->attackspeed;
 			$this->critchance -= $item->critchance;
 			$this->armor -= $item->armor;
+			$this->movepenalty -= $item->movepenalty;
 			
 			$this->updateHP();
 			$this->updateMana();
@@ -483,9 +486,10 @@
 			$attackspeed = $this->attackspeed;
 			$critchance = $this->critchance;
 			$armor = $this->armor;
+			$movepenalty = $this->movepenalty;
 			
 			$conn=connectDB();
-			$conn->query("UPDATE users SET level=$level, experience=$experience, experiencenext=$experiencenext, remaining=$remaining, sila=$sila, zwinnosc=$zwinnosc, celnosc=$celnosc, kondycja=$kondycja, inteligencja=$inteligencja, wiedza=$wiedza, charyzma=$charyzma, szczescie=$szczescie, hp=$hp, maxhp=$maxhp, mana=$mana, maxmana=$maxmana, zloto=$zloto, krysztaly=$krysztaly, dmgmin=$dmgmin, dmgmax=$dmgmax, attackspeed=$attackspeed, critchance=$critchance, armor=$armor, last_update=NOW() WHERE id=$id");
+			$conn->query("UPDATE users SET level=$level, experience=$experience, experiencenext=$experiencenext, remaining=$remaining, sila=$sila, zwinnosc=$zwinnosc, celnosc=$celnosc, kondycja=$kondycja, inteligencja=$inteligencja, wiedza=$wiedza, charyzma=$charyzma, szczescie=$szczescie, hp=$hp, maxhp=$maxhp, mana=$mana, maxmana=$maxmana, zloto=$zloto, krysztaly=$krysztaly, dmgmin=$dmgmin, dmgmax=$dmgmax, attackspeed=$attackspeed, critchance=$critchance, armor=$armor, movepenalty=$movepenalty, last_update=NOW() WHERE id=$id");
 			$conn->close();
 			
 			unset($id);
@@ -507,6 +511,7 @@
 			unset($maxmana);
 			unset($zloto);
 			unset($krysztaly);
+			unset($movepenalty);
 		}
 		//TODO: WATCH VIDEO FROM PHONE
 		public function updateMail()
@@ -738,6 +743,7 @@
 			$this->attackspeed = $row['attackspeed'];
 			$this->critchance = $row['critchance'];
 			$this->armor = $row['armor'];
+			$this->movepenalty = $row['movepenalty'];
 			$this->loadItems($id);	
 		}
 		protected function loadItems($id)
@@ -1108,8 +1114,12 @@
 		$item->name = $itemNames[$nameRoll];
 		
 		// TODO RANDOM MODS GENERATION
-		$modsListNormal = ['ogien','woda','powietrze','ziemia'];
-		
+		$modsList = ['ogien','woda','powietrze','ziemia','fizyczny','sila','zwinnosc','celnosc','kondycja','inteligencja','wiedza','charyzma','szczescie','ruch','pancerz'];
+		$modsNamesMagic = ['płomyka'];
+		$modsNamesRare = ['ogniska'];
+		$modsNamesLegendary = ['inferno'];
+		//random amount of mods depending on rarity?
+		//$modRoll = rand(0, count($modsList) - 1);	
 		
 		// FOTO GENERATION
 		if($item->rarity != "legendary")
