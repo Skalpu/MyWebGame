@@ -1512,7 +1512,7 @@
 		if($slot != "backpack")
 		{
 			$fotoPath = "url(gfx/eq_slots/" . $slot . "_slot_000000.png)";
-			echo "<div class='fotoContainer2' id='" .$divID. "' style='background-image: " . $fotoPath . ";'></div>";
+			echo "<div class='fotoContainer2 blank' id='" .$divID. "' style='background-image: " . $fotoPath . ";'></div>";
 			unset($fotoPath); 
 		}
 		else
@@ -1599,7 +1599,7 @@
 		echo "<div id='sellOuter'>";
 		echo "<div id='sellInner'>";
 			echo "<div class='itemSlot arrow sell'>";
-				echo "<div class='fotoContainer2 id='sell' style='background-image: url(gfx/eq_slots/sell.png)'></div>";
+				echo "<div class='fotoContainer2' id='sell' style='background-image: url(gfx/eq_slots/sell.png)'></div>";
 			echo "</div>";
 		echo "</div>";
 		echo "</div>";
