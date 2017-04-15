@@ -14,7 +14,7 @@
 		}
 		
 		//Statystyki Label
-		echo "<div class='center noselect' id='statystykiLabel'>Statystyki</div>";
+		echo "<div class='center noselect' id='statystykiLabel'>Cechy</div>";
 		echo "<div class='statContainer noselect'></div>";
 		echo "<div class='statContainer noselect'></div>";
 		

@@ -33,7 +33,8 @@
 		public function drawHover()
 		{
 			echo "<div class='itemHover'>";
-				echo "<div class='itemName'>" .$this->name. "</div>";
+				$rarityName = $this->rarity . "Name";
+				echo "<div class='itemName $rarityName'>" .$this->name. "</div>";
 				echo "<div class='divider'></div>";
 				
 				if($this->dmgmin != 0)
@@ -103,6 +104,316 @@
 				if($this->szczescie !=0)
 				{
 					echo "<div class='itemSzczescie'>+" .$this->szczescie. "</div> szczęścia<br>";
+				}
+			
+			echo "</div>";
+		}
+		public function drawHoverCompare(Item $compare)
+		{
+			echo "<div class='itemHover'>";
+				$rarityName = $this->rarity . "Name";
+				echo "<div class='itemName $rarityName'>" .$this->name. "</div>";
+				echo "<div class='divider'></div>";
+				
+				if($this->dmgmin != 0 or $compare->dmgmin != 0)
+				{
+					if($this->dmgmin < $compare->dmgmin)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->dmgmin > $compare->dmgmin)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					if($this->dmgmax < $compare->dmgmax)
+					{
+						$arrow2 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->dmgmax > $compare->dmgmax)
+					{
+						$arrow2 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow2 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					echo "<div class='itemDamage'>" .$this->dmgmin. "-" .$this->dmgmax. "</div> obrażeń fizycznych (założony: " .$compare->dmgmin. $arrow1 . "-" .$compare->dmgmax. $arrow2 . ")<br>";
+				}
+				if($this->attackspeed != 0 or $compare->attackspeed != 0)
+				{
+					if($this->attackspeed < $compare->attackspeed)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->attackspeed > $compare->attackspeed)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemAttackSpeed'>" .$this->attackspeed. "</div> ataków na sekundę (założony: " .$compare->attackspeed. $arrow1 . ")<br>";
+				}
+				if($this->critchance != 0 or $compare->critchance != 0)
+				{
+					if($this->critchance < $compare->critchance)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->critchance > $compare->critchance)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemCritChance'>" .$this->critchance. "%</div> szansy na traf. kryt. (założony: " .$compare->critchance. $arrow1 . ")<br>";
+				}
+				if($this->armor != 0 or $compare->armor != 0)
+				{
+					if($this->armor < $compare->armor)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->armor > $compare->armor)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					echo "<div class='itemArmor'>+" .$this->armor. "</div> pancerza (założony: " .$compare->armor. $arrow1 . ")<br>";
+				}
+				if($this->movepenalty != 0 or $compare->movepenalty != 0)
+				{
+					if($this->movepenalty < $compare->movepenalty)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->movepenalty > $compare->movepenalty)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemMovement'>" .$this->movepenalty. "</div> do ruchu (założony: " .$compare->movepenalty. $arrow1 . ")<br>";
+				}
+				if($this->dmgogien !=0 or $compare->dmgogien != 0)
+				{
+					if($this->dmgogien < $compare->dmgogien)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->dmgogien > $compare->dmgogien)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemDmgOgien'>+" .$this->dmgogien. "</div> obrażeń od ognia (założony: " .$compare->dmgogien. $arrow1 . ")<br>";
+				}
+				if($this->dmgwoda !=0 or $compare->dmgwoda != 0)
+				{
+					if($this->dmgwoda < $compare->dmgwoda)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->dmgwoda > $compare->dmgwoda)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemDmgWoda'>+" .$this->dmgwoda. "</div> obrażeń od wody (założony: " .$compare->dmgwoda . $arrow1 . ")<br>";
+				}
+				if($this->dmgpowietrze !=0 or $compare->dmgpowietrze != 0)
+				{
+					if($this->dmgpowietrze < $compare->dmgpowietrze)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->dmgpowietrze > $compare->dmgpowietrze)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemDmgPowietrze'>+" .$this->dmgpowietrze. "</div> obrażeń od powietrza (założony: " .$compare->dmgpowietrze . $arrow1 . ")<br>";
+				}
+				if($this->dmgziemia !=0 or $compare->dmgziemia != 0)
+				{
+					if($this->dmgziemia < $compare->dmgziemia)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->dmgziemia > $compare->dmgziemia)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemDmgZiemia'>+" .$this->dmgziemia. "</div> obrażeń od ziemi (założony: " .$compare->dmgziemia . $arrow1 . ")<br>";
+				}
+				if($this->sila !=0 or $compare->sila != 0)
+				{
+					if($this->sila < $compare->sila)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->sila > $compare->sila)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemSila'>+" .$this->sila. "</div> siły (założony: " .$compare->sila . $arrow1 . ")<br>";
+				}
+				if($this->zwinnosc !=0 or $compare->zwinnosc != 0)
+				{
+					if($this->zwinnosc < $compare->zwinnosc)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->zwinnosc > $compare->zwinnosc)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemZwinnosc'>+" .$this->zwinnosc. "</div> zwinności (założony: " .$compare->zwinnosc . $arrow1 . ")<br>";
+				}
+				if($this->celnosc !=0 or $compare->celnosc != 0)
+				{
+					if($this->celnosc < $compare->celnosc)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->celnosc > $compare->celnosc)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemCelnosc'>+" .$this->celnosc. "</div> celności (założony: " .$compare->celnosc . $arrow1 . ")<br>";
+				}
+				if($this->kondycja !=0 or $compare->kondycja != 0)
+				{
+					if($this->kondycja < $compare->kondycja)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->kondycja > $compare->kondycja)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemKondycja'>+" .$this->kondycja. "</div> kondycji (założony: " .$compare->kondycja . $arrow1 . ")<br>";
+				}
+				if($this->inteligencja !=0 or $compare->inteligencja != 0)
+				{
+					if($this->inteligencja < $compare->inteligencja)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->inteligencja > $compare->inteligencja)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemInteligencja'>+" .$this->inteligencja. "</div> inteligencji (założony: " .$compare->inteligencja . $arrow1 . ")<br>";
+				}
+				if($this->wiedza !=0 or $compare->inteligencja != 0)
+				{
+					if($this->wiedza < $compare->wiedza)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->wiedza > $compare->wiedza)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemWiedza'>+" .$this->wiedza. "</div> wiedzy (założony: " .$compare->wiedza . $arrow1 . ")<br>";
+				}
+				if($this->charyzma !=0 or $compare->charyzma != 0)
+				{
+					if($this->charyzma < $compare->charyzma)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->charyzma > $compare->charyzma)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemCharyzma'>+" .$this->charyzma. "</div> charyzmy (założony: " .$compare->charyzma . $arrow1 . ")<br>";
+				}
+				if($this->szczescie !=0 or $compare->szczescie != 0)
+				{
+					if($this->szczescie < $compare->szczescie)
+					{
+						$arrow1 = "<span class='greenArrow'>&nearr;</span>";
+					}
+					else if($this->szczescie > $compare->szczescie)
+					{
+						$arrow1 = "<span class='redArrow'>&searr;</span>";
+					}
+					else
+					{
+						$arrow1 = "<span class='equalArrow'>&#10070;</span>";
+					}
+					
+					echo "<div class='itemSzczescie'>+" .$this->szczescie. "</div> szczęścia (założony: " .$compare->szczescie . $arrow1 . ")<br>";
 				}
 			
 			echo "</div>";
@@ -1252,7 +1563,16 @@
 				$rarity = $item->rarity;
 				echo "<div class='itemSlot arrow $rarity backpack' id='bp$slot'>";
 				$item->drawFoto($slot);
-				$item->drawHover();
+				//Drawing hover with comparison to equipped item
+				if($player->equipment[$item->slot] != "")
+				{
+					$item->drawHoverCompare($player->equipment[$item->slot]);
+				}
+				//Drawing normal hover
+				else
+				{
+					$item->drawHover();
+				}
 				echo "</div>";
 				unset($rarity);
 			}
