@@ -561,6 +561,7 @@
 		//Type of action
 		var co = $("#co" + i).html();
 		
+		//Processing weapon hits
 		if(co == "hit")
 		{
 			//HP bar refreshing
@@ -575,17 +576,19 @@
 			$(".bar.HP" + kogo).find($(".innerBar")).css("width", procent + "%");
 			$(".bar.HP" + kogo).find($(".innerBar")).css("background-color", kolor);
 			
-			//Sound playing on hit
+			//TODO Sound playing on hit
 			var bron = $("#bron" + i).html();
 			switch(bron)
 			{
 				case 'melee': 
 					var wariant = Math.floor(Math.random() * 3);
-					var audio = new Audio('/sounds/melee' + wariant + '.mp3');
+					var audio = new Audio('/sounds/meleequiet' + wariant + '.mp3');
+					audio.volume = 0.2;
 					break;
 				case 'bow':
-					var wariant = Math.floor(Math.random() * 3);
-					var audio = new Audio('/sounds/melee' + wariant + '.mp3');
+					var wariant = Math.floor(Math.random() * 5);
+					var audio = new Audio('/sounds/bow' + wariant + '.mp3');
+					audio.volume = 0.2;
 					break;
 				default:
 					break;

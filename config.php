@@ -364,7 +364,7 @@
 					
 					echo "<div class='itemInteligencja'>+" .$this->inteligencja. "</div> inteligencji (założony: " .$compare->inteligencja . $arrow1 . ")<br>";
 				}
-				if($this->wiedza !=0 or $compare->inteligencja != 0)
+				if($this->wiedza !=0 or $compare->wiedza != 0)
 				{
 					if($this->wiedza < $compare->wiedza)
 					{
@@ -608,6 +608,8 @@
 			'belt' => "",
 			'boots' => ""
 		];
+		//TODO
+		public $shop = [];
 		
 		
 		public function addToBackpack(Item $item)
@@ -1204,6 +1206,13 @@
 	}
 
 	
+	//TODO
+	function generateShop(Player $player)
+	{
+		
+		
+		return $player;
+	}
 	function generateItem($tier)
 	{
 		$item = new Item();
@@ -1513,7 +1522,8 @@
 	}
 	function drawEquipment(Player $player)
 	{
-		echo "<div id='equipment'>";
+		echo "<div id='equipmentOuter'>";
+		echo "<div id='equipmentInner'>";
 		
 		//Iterates through all the player equipment slots
 		foreach($player->equipment as $slot => $item)
@@ -1540,10 +1550,12 @@
 		}		
 			
 		echo "</div>";
+		echo "</div>";
 	}
 	function drawBackpack(Player $player)
 	{
-		echo "<div id='backpack'>";
+		echo "<div id='backpackOuter'>";
+		echo "<div id='backpackInner'>";
 		
 		//Iterates throught all the player backpack slots
 		foreach($player->backpack as $slot => $item)
@@ -1578,6 +1590,18 @@
 			}
 		}
 		
+		echo "</div>";
+		echo "</div>";
+	}
+	//TODO
+	function drawShop(Player $player)
+	{
+		echo "<div id='sellOuter'>";
+		echo "<div id='sellInner'>";
+			echo "<div class='itemSlot arrow sell'>";
+				echo "<div class='fotoContainer2 id='sell' style='background-image: url(gfx/eq_slots/sell.png)'></div>";
+			echo "</div>";
+		echo "</div>";
 		echo "</div>";
 	}
 	

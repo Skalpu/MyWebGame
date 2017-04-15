@@ -29,7 +29,11 @@ body
 .outerBar
 {
 	border: 2px solid; 
-	background: SeaShell;
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top, #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 ); /* IE6-9 */
 	width: 100%;
 	height: 100%;
 	
@@ -160,7 +164,7 @@ body{ background-image: url("/gfx/Fantasy-Background-Wallpapers.jpg"); backgroun
 #magiaMenu { background-image: url(gfx/menu/magia_000000.png); }
 #arenaMenu { background-image: url(gfx/menu/arena_000000.png); }
 #divMainOkno { background-image: url("gfx/background.png"); background-repeat: no-repeat; background-position: center; background-size: cover;}
-
+nav ul { background-image: url("gfx/background.png"); background-repeat: no-repeat; background-position: center; background-size: cover;}
 
 
 /* NAVBAR */
@@ -194,11 +198,15 @@ nav li a
 }
 nav li a:hover
 {
-    background-color: burlywood;
+    background-color: #e1e1e1;
 }
 nav .active
 {
-    background-color: beige;/*#9d4e15;*/
+    background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(-45deg, #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(-45deg, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(135deg, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 
