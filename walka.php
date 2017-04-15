@@ -427,6 +427,7 @@
 			echo "<div style='display: none;' class='$iterator' id='pozostalo$iterator'>" .$defender->hp. "</div>";
 			echo "<div style='display: none;' class='$iterator' id='max$iterator'>" .$defender->maxhp. "</div>";
 			echo "<div style='display: none;' class='$iterator' id='tekst$iterator'>" .$tekst. "</div>";
+			echo "<div style='display: none;' class='$iterator' id='bron$iterator'>" .$attacker->equipment['lefthand']->subtype. "</div>";
 			
 			
 			unset($dmg);
@@ -552,15 +553,17 @@
 <script>
 
 	var iterator = <?php echo json_encode($iterator); ?>;
-	
 	iterate(0);
+	
 	
 	function iterate(i)
 	{
+		//Type of action
 		var co = $("#co" + i).html();
 		
 		if(co == "hit")
 		{
+			//HP bar refreshing
 			var pozostalo = $("#pozostalo" + i).html();
 			var max = $("#max" + i).html();
 			var tekst = "HP: " + pozostalo + " / " + max;
@@ -572,15 +575,30 @@
 			$(".bar.HP" + kogo).find($(".innerBar")).css("width", procent + "%");
 			$(".bar.HP" + kogo).find($(".innerBar")).css("background-color", kolor);
 			
-			var plik = Math.floor(Math.random() * 3) + 1;			
-			var audio = new Audio('/sounds/hit' + plik + '.mp3');
+			//Sound playing on hit
+			var bron = $("#bron" + i).html();
+			switch(bron)
+			{
+				case 'melee': 
+					var wariant = Math.floor(Math.random() * 3);
+					var audio = new Audio('/sounds/melee' + wariant + '.mp3');
+					break;
+				case 'bow':
+					var wariant = Math.floor(Math.random() * 3);
+					var audio = new Audio('/sounds/melee' + wariant + '.mp3');
+					break;
+				default:
+					break;
+			}
 			audio.play();
 		}
 		
+		//Showing text
 		$("#tekst" + i).show();
 		$("#combatWindow").animate({
 			scrollTop: $("#combatWindow").get(0).scrollHeight}, 300);
 		
+		//Moving to next
 		if(i < iterator)
 		{
 			i++;

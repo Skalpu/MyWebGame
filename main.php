@@ -30,6 +30,8 @@
 	?>
 		<!-- 
 		TODO:
+		- HANDLARZ
+		- RÓŻNE DŹWIĘKI PRZY WALCE
 		- WIOSKA?<br>
 		- SUMMONY<br>
 		- KARCZMA Z QUESTAMI<br>
