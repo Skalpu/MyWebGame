@@ -156,6 +156,7 @@
 			$charyzma = $conn->real_escape_string($_SESSION['player']->charyzma);
 			$szczescie = $conn->real_escape_string($_SESSION['player']->szczescie);
 			
+			$_SESSION['player']->type = 'player';
 			$_SESSION['player']->level = 1;
 			$_SESSION['player']->experience = 0;
 			$_SESSION['player']->experiencenext = 84;

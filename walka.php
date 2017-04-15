@@ -23,9 +23,9 @@
 			{
 				$def->updateLocally();
 			}
-			//Drawing HP bars etc
+			//Drawing HP bars, pictures etc
 			drawArena($attackers[0], $defenders[0]);
-			//Drawing the fight
+			//Combat loop
 			$result = drawCombat($attackers, $defenders, "arena");
 			$attackers = $result["attackers"];
 			$defenders = $result["defenders"];
@@ -44,7 +44,6 @@
 			{
 				$def->updateStatsGlobally();
 			}
-			
 			
 			unset($attackers);
 			unset($defenders);
@@ -120,8 +119,8 @@
 			$round = $result["round"];
 			$iterator = $result["iterator"];
 			
-			//Melee fight
-			$result = meleeFight($attackers, $defenders, $dead, $iterator);
+			//Weapons fight
+			$result = weaponFight($attackers, $defenders, $dead, $iterator);
 			$attackers = $result["attackers"];
 			$defenders = $result["defenders"];
 			$dead = $result["dead"];	
@@ -157,15 +156,12 @@
 		];
 	}
 	
-	
-	
 	function initializeFighters($attackers, $defenders)
 	{
 		$fists = new Item();
 		$fists->name = "Pięści";
 		$fists->slot = "lefthand";
-		$fists->type = "melee";
-		$fists->subtype = "none";
+		$fists->subtype = "melee";
 		$fists->dmgmin = 3;
 		$fists->dmgmax = 5;
 		$fists->attackspeed = 1;
@@ -201,6 +197,8 @@
 			"defenders" => $defenders
 		];
 	}
+	
+	
 	
 	function endRound($attackers, $defenders, $round, $round_time, $iterator)
 	{
@@ -266,7 +264,7 @@
 		];
 	}
 	
-	function meleeFight($attackers, $defenders, $dead, $iterator)
+	function weaponFight($attackers, $defenders, $dead, $iterator)
 	{
 		$fighters = [];
 		
@@ -279,8 +277,10 @@
 		{
 			array_push($fighters, $def);
 		}
-		
 		shuffle($fighters);
+		
+		
+		
 		foreach($fighters as $k => $fig)
 		{
 			//Checking if attacker isn't a mage
@@ -371,15 +371,25 @@
 			
 			//Randomising base damage
 			$dmg = rand($attacker->dmgmin, $attacker->dmgmax);
-			//TODO Adding basestats to damage
-			if($attacker->equipment["lefthand"]->type == "melee")
+			
+			
+			//Melee
+			if(in_array($attacker->equipment["lefthand"]->subtype, ["melee", "mace", "axe", "sword2H", "mace2H", "axe2H", "sword", "dagger"]))
 			{
 				$dmg = $dmg * ( ($attacker->sila + 100) / 100 );
 			}
-			else if($attacker->equipment["lefthand"]->type == "ranged")
+			//Ranged
+			if(in_array($attacker->equipment["lefthand"]->subtype, ["ranged", "bow"]))
 			{
 				$dmg = $dmg * ( ($attacker->celnosc + 100) / 100 );
 			}
+			//Magic
+			if(in_array($attacker->equipment["lefthand"]->subtype, ["magic", "scepter","wand","staff"]))
+			{
+				$dmg = $dmg * ( ($attacker->inteligencja + 100) / 100 );
+			}
+
+
 			//Accounting for armor
 			if($defender->armor != 0)
 			{
@@ -388,6 +398,7 @@
 			}
 			
 			
+			//Rounding up and hitting
 			$dmg = round($dmg);
 			$defender->hp -= $dmg;
 			if($defender->hp < 0)
@@ -407,8 +418,8 @@
 				$attackerSpan = "<span style='color: darkred; font-weight: bold;'>";
 				$defenderSpan = "<span style='color: darkgreen; font-weight: bold;'>";
 			}
-			
 			$tekst = $attackerSpan . $attacker->username . "</span> uderza " . $defenderSpan . $defender->username . "</span> za pomocą " . $attacker->equipment["lefthand"]->name . " zadając " . $dmg . " obrażeń!<br>";
+			
 			
 			//Generating hidden fields for jquery
 			echo "<div style='display: none;' class='$iterator' id='co$iterator'>hit</div>";
@@ -416,6 +427,7 @@
 			echo "<div style='display: none;' class='$iterator' id='pozostalo$iterator'>" .$defender->hp. "</div>";
 			echo "<div style='display: none;' class='$iterator' id='max$iterator'>" .$defender->maxhp. "</div>";
 			echo "<div style='display: none;' class='$iterator' id='tekst$iterator'>" .$tekst. "</div>";
+			
 			
 			unset($dmg);
 			unset($mitigation);
@@ -433,7 +445,6 @@
 		];
 	}
 
-	
 	
 	
 	function aftermath($attackers, $defenders, $dead, $winner, $fightType)

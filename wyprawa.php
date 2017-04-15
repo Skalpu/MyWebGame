@@ -46,3 +46,11 @@
 <script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
 <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 <script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
+
+<script>
+
+	$("#divMainOkno").load('update_wyprawa.php', function() {
+
+	});
+
+</script>

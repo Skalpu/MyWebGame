@@ -226,6 +226,7 @@
 	{
 		public $id;
 		public $username;
+		public $type;
 		public $plec;
 		public $rasa;
 		public $klasa;
@@ -710,6 +711,7 @@
 			unset($conn);
 			
 			$this->id = $id;
+			$this->type = "player";
 			$this->username = $row['username'];
 			$this->plec = $row['plec'];
 			$this->rasa = $row['rasa'];
@@ -773,6 +775,44 @@
 				}
 			}
 		}
+		//Sets the class as a monster, for fight purposes
+		public static function asMonster($id, $name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience)
+		{
+			$instance = new self();
+			$instance->loadAsMonster($id, $name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience);
+			return $instance;
+		}
+		protected function loadAsMonster($id, $name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience)
+		{
+			$this->id = (-1) * $id;
+			$this->username = $name;
+			$this->type = "monster";
+			$this->foto = "/monsters/" . $name;
+			$this->sila = $stats;
+			$this->zwinnosc = $stats;
+			$this->celnosc = $stats;
+			$this->kondycja = $kondycja;
+			$this->inteligencja = $stats;
+			$this->wiedza = $stats;
+			$this->charyzma = $stats;
+			$this->szczescie = $stats;
+			
+			$this->zloto = $zloto;
+			$this->krysztaly = $krysztaly;
+			$this->experiencenext = $experience;
+			
+			$bron = new Item();
+			$bron->slot = "lefthand";
+			$bron->name = $attackName;
+			$bron->subtype = $attackType;
+			$bron->dmgmin = $dmgmin;
+			$bron->dmgmax = $dmgmax;
+			$bron->attackspeed = $attackspeed;
+			$bron->critchance = $critchance;
+			$bron->armor = $armor;
+			
+			$this->equipItem($bron);
+		}
 	}
 	
 	
@@ -822,6 +862,7 @@
         }
         else
         {
+			//Kick out
             header('Location:login.php');
         }
     }
@@ -1114,10 +1155,23 @@
 		$item->name = $itemNames[$nameRoll];
 		
 		// TODO RANDOM MODS GENERATION
-		$modsList = ['ogien','woda','powietrze','ziemia','fizyczny','sila','zwinnosc','celnosc','kondycja','inteligencja','wiedza','charyzma','szczescie','ruch','pancerz'];
-		$modsNamesMagic = ['płomyka'];
-		$modsNamesRare = ['ogniska'];
-		$modsNamesLegendary = ['inferno'];
+		/*if($item->rarity != "normal")
+		{
+			$modsList = ['ogien','woda','powietrze','ziemia','fizyczny','sila','zwinnosc','celnosc','kondycja','inteligencja','wiedza','charyzma','szczescie','ruch','pancerz','critchance','dodge'];
+			$modRoll = rand(0, count($modsList) - 1);
+			switch($modsList[$modRoll])
+			{
+				case 'ogien':
+					if($item->rarity == "magic")
+					{
+						$item->name = $item->name . " płomyka";
+					}
+					
+			}
+		}*/
+		/*$modsNamesMagic = ['płomyka','kropli','podmuchu'];
+		$modsNamesRare = ['ogniska','deszczu','zefiru'];
+		$modsNamesLegendary = ['inferno','ulewy'];*/
 		//random amount of mods depending on rarity?
 		//$modRoll = rand(0, count($modsList) - 1);	
 		

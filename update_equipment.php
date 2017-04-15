@@ -229,4 +229,5 @@
 	
 	drawEquipment($_SESSION['player']); 
 	drawBackpack($_SESSION['player']);
+	
 ?>
