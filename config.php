@@ -637,7 +637,12 @@
 			'belt' => "",
 			'boots' => ""
 		];
-		
+		public $village = [
+			'goldmine' => 0,
+			'crystalmine' => 0,
+			'magetower' => 0,
+			'healing' => 0,
+		];
 		
 		
 		public function addToBackpack(Item $item)
@@ -1055,14 +1060,14 @@
 			$percent = round( ($current/$max) * 100);
 			$color = color($current, $max);
 		
-			echo "<div class='bar " .$nazwa. "' style='" .$style. "'>";
+			echo "<div class='bar' id='bar$nazwa' style='" .$style. "'>";
 				echo "<div class='outerBar'>";
 					echo "<div class='innerBar' style='width: " .$percent. "%; background-color: " .$color. ";'></div>";
 				echo "</div>";
-			echo "</div>";
-		
-			echo "<div class='barText " .$nazwa. "' style='" .$style. "'>";
-				echo "HP: " . $current . " / " . "$max";
+				
+				echo "<div class='barText' id='barText$nazwa'>";
+					echo "HP: " . $current . " / " . "$max";
+				echo "</div>";
 			echo "</div>";
 			
 			unset($current);
@@ -1078,15 +1083,17 @@
 			$max = round($this->maxmana);
 			$percent = round( ($current/$max) * 100 );
 		
-			echo "<div class='bar " .$nazwa. "' style='" .$style. "'>";
+			echo "<div class='bar' id='bar$nazwa' style='" .$style. "'>";
 				echo "<div class='outerBar'>";
 					echo "<div class='innerBar' id='innerMana' style='width: " .$percent. "%;'></div>";
 				echo "</div>";
+				
+				echo "<div class='barText' id='barText$nazwa'>";
+					echo "MP: " .$current. " / " .$max;
+				echo "</div>";
 			echo "</div>";
 		
-			echo "<div class='barText " .$nazwa. "' style='" .$style. "'>";
-				echo "MP: " .$current. " / " .$max;
-			echo "</div>";
+			
 			
 			unset($current);
 			unset($max);
@@ -1100,15 +1107,17 @@
 			$max = round($this->experiencenext);
 			$percent = round( ($current/$max) * 100);
 		
-			echo "<div class='bar " .$nazwa. "' style='" .$style. "'>";
+			echo "<div class='bar' id='bar$nazwa' style='" .$style. "'>";
 				echo "<div class='outerBar'>";
 					echo "<div class='innerBar' id='innerExp' style='width: " .$percent. "%;'></div>";
 				echo "</div>";
+				
+				echo "<div class='barText' id='barText$nazwa'>";
+					echo "EXP: " .$current. " / " .$max;
+				echo "</div>";
 			echo "</div>";
 		
-			echo "<div class='barText " .$nazwa. "' style='" .$style. "'>";
-				echo "EXP: " .$current. " / " .$max;
-			echo "</div>";
+			
 			
 			unset($current);
 			unset($max);

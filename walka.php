@@ -60,38 +60,25 @@
 	
 	function drawArena(Player $attacker, Player $defender)
 	{
-		$atakerFotoW = "10%";
-		$obroncaFotoW = "10%";
-		$atakerFotoH = "29%";
-		$obroncaFotoH = "29%";
-		$atakerFotoTop = "18%";
-		$obroncaFotoTop = "18%";
-		$atakerFotoLeft = "21.75%";
-		$obroncaFotoRight = "21.75%";
-		$barH = "2.5%";
-		$bar1Top = "47%";
-		$bar2Top = "49.5%";
-
-		
-		$stylAtakerHP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $barH; top: $bar1Top; left: $atakerFotoLeft;";
-		$stylAtakerMP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $barH; top: $bar2Top; left: $atakerFotoLeft;";
-		
-		$stylObroncaHP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $barH; bottom: $bar1Top; right: $obroncaFotoRight;";
-		$stylObroncaMP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $barH; bottom: $bar2Top; right: $obroncaFotoRight;";
-
-		
-		echo "<div style='position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $atakerFotoH; top: $atakerFotoTop; left: $atakerFotoLeft;'>";
-		$attacker->drawFoto();
+		echo "<div id='attackerDiv' style='box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; position: absolute; width: 12.5%; height: 90%; top: 5%; left: 2.5%'>";
+			echo "<div id='attackerFoto' style='position: relative; height: 30%'>";
+				$attacker->drawFoto();
+			echo "</div>";
+			echo "<div id='attackerBars' style='position: relative;'>";
+				$attacker->drawHP("HP" . $attacker->id, "position: relative; height: 2.5vh;");
+				$attacker->drawMP("MP" . $attacker->id, "position: relative; height: 2.5vh;");
+			echo "</div>";
 		echo "</div>";
-		$attacker->drawHP("HP" . $attacker->id, $stylAtakerHP);
-		$attacker->drawMP("MP" . $attacker->id, $stylAtakerMP);
 		
-		
-		echo "<div style='position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $obroncaFotoH; bottom: $obroncaFotoTop; right: $obroncaFotoRight;'>";
-		$defender->drawFoto();
+		echo "<div id='defenderDiv' style='box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; position: absolute; width: 12.5%; height: 90%; bottom: 5%; right: 2.5%'>";
+			echo "<div id='defenderFoto' style='position: relative; top: 65%; height: 30%'>";
+				$defender->drawFoto();
+			echo "</div>";
+			echo "<div id='defenderBars' style='position: relative; top: 95%;'>";
+				$defender->drawHP("HP" . $defender->id, "position: relative; height: 2.5vh;");
+				$defender->drawMP("MP" . $defender->id, "position: relative; height: 2.5vh;");
+			echo "</div>";
 		echo "</div>";
-		$defender->drawHP("HP" . $defender->id, $stylObroncaHP);
-		$defender->drawMP("MP" . $defender->id, $stylObroncaMP);		
 	}
 
 	function drawCombat($attackers, $defenders, $fightType)

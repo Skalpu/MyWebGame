@@ -1,11 +1,12 @@
 #combatWindow
 {
-	position: fixed;
-	width: 33%;
-	height: 64%;
+	position: absolute;
+	width: 65%;
+	height: 90%;
 	
-	left: 33.5%;
-	top: 18%;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 	
 	border: 2px solid black;
 	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;

@@ -3,11 +3,6 @@
     require_once('config.php');
     login_check();
 	
-	function drawBuilding()
-	{
-		
-	}
-	
 ?>
 
 
@@ -70,6 +65,13 @@
 	document.addEventListener('DOMContentLoaded',function()
     {
         $("#divPlayerBars").load('update_player_bars.php');
+		
+		//Initialize the village
+		$("#divMainOkno").load('update_wioska.php', function() {
+			//rescaleImages();
+			//initializeDragDrop();
+			//initializeHover();
+		});
     });
 	
 </script>
