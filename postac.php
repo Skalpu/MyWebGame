@@ -2,8 +2,6 @@
 
     require_once('config.php');
     login_check();
-	$_SESSION['player']->updateLocally();
-	drawGame($_SESSION['player']);
 	
 	
 	function drawStatystyki()
@@ -43,7 +41,7 @@
 			{
 				//Statistics with + and - buttons
 				echo "<div class='statContainer noselect' id='" . $stat. "Container'>";
-					echo "<div class='statLabel noselect nocursor'>" . $label . ":</div>";
+					echo "<div class='statLabel noselect arrow'>" . $label . ":</div>";
 				
 					echo "<div class='statPlus noselect'>";
 						echo '<button class="buttonPlus noselect arrow" onclick="addStat(\'' .$stat. '\')">+</button>';
@@ -55,7 +53,7 @@
 						echo '<button class="buttonMinus noselect arrow" onclick="removeStat(\'' .$stat. '\')">-</button>';
 					echo "</div>";
 				
-					echo "<div class='statHover noselect'>" . $hover . "</div>";
+					echo "<div class='statHover arrow'>" . $hover . "</div>";
 				echo "</div>";
 				
 				$_SESSION['totalStats'] += $value;
@@ -64,9 +62,9 @@
 			{
 				//Just statistics values
 				echo "<div class='statContainer noselect' id='" . $stat. "Container'>";
-					echo "<div class='statLabel noselect nocursor'>" . $label . ":</div>";
+					echo "<div class='statLabel noselect arrow'>" . $label . ":</div>";
 					echo "<div class='statValue noselect' id='" .$stat. "Value'>" . $value . "</div>";
-					echo "<div class='statHover noselect'>" . $hover . "</div>";
+					echo "<div class='statHover noselect arrow'>" . $hover . "</div>";
 				echo "</div>";
 			}
 			
@@ -158,6 +156,7 @@
 
 <Body>
 
+	<div id="divPlayerBars"></div>
     <div id="divMainOkno">
 		<div id='zdjecie'>	<?php $_SESSION['player']->drawFoto(); ?> 	</div>
 		<div id='podpis'>												
@@ -170,8 +169,7 @@
     </div>
 
 	
-	<nav>
-    <ul>
+	<nav><ul>
 		<li><a href = "main.php"><div class='menuContainer' id='mainMenu'></div></a></li>
         <li><a href = "postac.php" class="active"><div class='menuContainer' id='postacMenu'></div></a></li>
         <li><a href = "equipment.php"><div class='menuContainer' id='equipmentMenu'></div></a></li>
@@ -180,8 +178,7 @@
         <li><a href = "wyprawa.php"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
 		<li><a href = "arena.php"><div class='menuContainer' id='arenaMenu'></div></a></li>
         <li><a href = "logout.php"><div class='menuContainer' id='logoutMenu'></div></a></li>
-    </ul>
-    </nav>
+    </ul></nav>
 	
 </Body>
 
@@ -192,9 +189,13 @@
 <script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
 <script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 <script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
-
-
 <script>
+
+	document.addEventListener('DOMContentLoaded',function()
+    {
+        $("#divPlayerBars").load('update_player_bars.php');
+    });
+	
 
 	//Hover handling
 	$(".statLabel").hover(
@@ -206,8 +207,8 @@
 		}
 	);
 	$(".statLabel").bind('mousemove', function(e){
-		var top = e.pageY + 2;
-		var left = e.pageX + 2;
+		var top = e.pageY + 15;
+		var left = e.pageX + 8;
 		$(this).parent().find('.statHover').css({'top': top, 'left': left});
 	});
 

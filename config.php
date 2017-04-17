@@ -731,7 +731,6 @@
 				$itemID = $this->backpack[$slot]->id;
 				$zloto = $this->zloto;
 				
-				
 				$conn = connectDB();
 				for($i = 0; $i < 15; $i++)
 				{
@@ -779,7 +778,7 @@
 			$userID = $this->id;
 			
 			//Removing current
-			for($i = 0; $i < count($this->shop); $i++)
+			for($i = 0; $i < 15; $i++)
 			{
 				if($this->shop[$i] != "")
 				{
@@ -795,6 +794,7 @@
 			for($i = 0; $i < $itemsNumber; $i++)
 			{
 				$item = generateItem(1);
+				//Great fucking bargains
 				$item->price = $item->price * 5;
 				$item->saveToDB();
 				
@@ -803,6 +803,7 @@
 				$slotName = "shop" . $i;
 				
 				$conn->query("UPDATE equipment set $slotName=$itemID WHERE id=$userID");
+				unset($item);
 			}
 			for($i; $i < 15; $i++)
 			{
@@ -846,6 +847,7 @@
 				$this->mana = $this->maxmana;
 			}
 		}
+		
 		
 		//HP regen, gold income etc. Use before fights and on every reload
 		public function updateLocally()
@@ -1314,18 +1316,7 @@
         }
         return "rgb(" . $red . ", " . $green . ", 00)";
     }
-	function drawGame(Player $player)
-	{
-		echo "<div id='bary'>";
-		$player->drawMail();
-		$player->drawGold();
-		$player->drawCrystals();
-		$player->drawHP("mainHP", "");
-		$player->drawMP("mainMP", "");
-		$player->drawEXP("mainEXP", "");
-		echo "</div>";
-	}
-
+	
 	
 	function generateItem($tier)
 	{
@@ -1724,6 +1715,11 @@
 		
 		echo "</div>";
 		echo "</div>";
+	}
+	//TODO
+	function drawNavbar()
+	{
+		
 	}
 	
 ?>

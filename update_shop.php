@@ -10,7 +10,11 @@
 		//BP ->
 		if(strpos($_POST['poczatek'], 'bp') !== false)
 		{
+			
+			
+			//------------------
 			//BP -> BP
+			//------------------
 			if(strpos($_POST['koniec'], 'bp') !== false)
 			{
 				preg_match('/(\d+)/', $_POST['poczatek'], $matches);
@@ -18,36 +22,35 @@
 				preg_match('/(\d+)/', $_POST['koniec'], $matches);
 				$idKon = $matches[1];
 
-				//Swapping
-				$holder = $_SESSION['player']->backpack[$idKon];
-				$_SESSION['player']->backpack[$idKon] = $_SESSION['player']->backpack[$idPocz];
-				$_SESSION['player']->backpack[$idPocz] = $holder;
-				
-				//Saving to DB
+				//Setting variables
 				$conn = connectDB();
 				$id = $_SESSION['player']->id;
 				$slotPocz = "slot" . $idPocz;
 				$slotKon = "slot" . $idKon;
-				if($_SESSION['player']->backpack[$idPocz] == "")
-				{
+				
+				//Updating locally
+				$holder = $_SESSION['player']->backpack[$idKon];
+				$_SESSION['player']->backpack[$idKon] = $_SESSION['player']->backpack[$idPocz];
+				$_SESSION['player']->backpack[$idPocz] = $holder;
+				
+				//Updating to DB
+				if($_SESSION['player']->backpack[$idPocz] == ""){
 					$valPocz = "NULL";
 				}
-				else
-				{
+				else{
 					$valPocz = $_SESSION['player']->backpack[$idPocz]->id;
 				}
 				
-				if($_SESSION['player']->backpack[$idKon] == "")
-				{
+				if($_SESSION['player']->backpack[$idKon] == ""){
 					$valKon = "NULL";
 				}
-				else
-				{
+				else{
 					$valKon = $_SESSION['player']->backpack[$idKon]->id;
 				}
 				$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon where ID=$id");
 				$conn->close();
 				
+				//Unsetting variables
 				unset($holder);
 				unset($idPocz);
 				unset($idKon);
@@ -57,7 +60,11 @@
 				unset($valPocz);
 				unset($valKon);
 			}
+			
+			
+			//------------------
 			//BP -> sell or BP -> shop
+			//------------------
 			else if($_POST['koniec'] == 'sell' or strpos($_POST['koniec'], 'shop') !== false)
 			{
 				preg_match('/(\d+)/', $_POST['poczatek'], $matches);
@@ -68,18 +75,70 @@
 				
 				unset($idPocz);
 			}
+			
+			
 		}
 		//Shop -> 
 		else if(strpos($_POST['poczatek'], 'shop') !== false)
 		{
+			
+			
+			//------------------
 			//Shop -> BP
+			//------------------
 			if(strpos($_POST['koniec'], 'bp') !== false)
 			{
+				preg_match('/(\d+)/', $_POST['poczatek'], $matches);
+				$idPocz = $matches[1];
 				preg_match('/(\d+)/', $_POST['koniec'], $matches);
 				$idKon = $matches[1];
-				$idPocz = $_POST['poczatek'];
 				
-				
+				//BP is empty
+				if($_SESSION['player']->backpack[$idKon] == "")
+				{
+					//Player has enough gold
+					if($_SESSION['player']->zloto >= $_SESSION['player']->shop[$idPocz]->price)
+					{
+						//Setting variables
+						$conn = connectDB();
+						$id = $_SESSION['player']->id;
+						$zloto = $_SESSION['player']->zloto - $_SESSION['player']->shop[$idPocz]->price;
+						
+						//Updating locally
+						$_SESSION['player']->zloto = $zloto;
+						$_SESSION['player']->backpack[$idKon] = $_SESSION['player']->shop[$idPocz];
+						$_SESSION['player']->shop[$idPocz] = "";
+						
+						//Updating to DB
+						$slotPocz = "shop" . $idPocz;
+						$slotKon = "slot" . $idKon;
+						$valPocz = "NULL";
+						$valKon = $_SESSION['player']->backpack[$idKon]->id;
+						
+						$conn->query("UPDATE users SET zloto=$zloto WHERE id=$id");
+						$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon WHERE id=$id");
+						$conn->close();
+						
+						//Unsetting variables
+						unset($conn);
+						unset($id);
+						unset($zloto);
+						unset($slotPocz);
+						unset($slotKon);
+						unset($valPocz);
+						unset($valKon);
+					}
+					//Player doesn't have enough gold
+					else
+					{
+						//TODO: show error?
+					}
+				}
+				//That slot is not empty
+				else
+				{
+					
+				}
 			}
 		}
 	}
@@ -87,7 +146,7 @@
 	function updateShop()
 	{
 		$now = time();
-		//Last update is saved locally, in number format
+		//Last update was saved locally, in number format
 		if(is_numeric($_SESSION['player']->last_shop_update))
 		{
 			$last = $_SESSION['player']->last_shop_update;
