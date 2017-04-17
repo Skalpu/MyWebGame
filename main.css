@@ -159,6 +159,7 @@ body{ background-image: url("/gfx/Fantasy-Background-Wallpapers.jpg"); backgroun
 #mainMenu { background-image: url(gfx/menu/menuglowne_000000.png); }
 #postacMenu { background-image: url(gfx/menu/postac_000000.png); }
 #equipmentMenu { background-image: url(gfx/menu/ekwipunek_000000.png); }
+#shopMenu { background-image: url(gfx/menu/handlarz_000000.png); }
 #wyprawaMenu { background-image: url(gfx/menu/wyprawa_000000.png); }
 #logoutMenu { background-image: url(gfx/menu/logout_000000.png); }
 #magiaMenu { background-image: url(gfx/menu/magia_000000.png); }
@@ -266,6 +267,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	position: absolute;
 	right: 0%;
 }
+
 
 
 /* ----------- BUTTONS ------------------ */

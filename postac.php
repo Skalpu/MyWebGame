@@ -4,6 +4,40 @@
     login_check();
 	
 	
+	if($_POST)
+	{
+		//Getting new values from POST
+		$_SESSION['player']->sila = $_POST['sila'];
+		$_SESSION['player']->zwinnosc = $_POST['zwinnosc'];
+		$_SESSION['player']->celnosc = $_POST['celnosc'];
+		$_SESSION['player']->kondycja = $_POST['kondycja'];
+		$_SESSION['player']->inteligencja = $_POST['inteligencja'];
+		$_SESSION['player']->wiedza = $_POST['wiedza'];
+		$_SESSION['player']->charyzma = $_POST['charyzma'];
+		$_SESSION['player']->szczescie = $_POST['szczescie'];
+		$_SESSION['player']->remaining = $_POST['remaining'];
+		
+		$total = $_POST['sila'] + $_POST['zwinnosc'] + $_POST['celnosc'] + $_POST['kondycja'] + $_POST['inteligencja'] + $_POST['wiedza'] + $_POST['charyzma'] + $_POST['szczescie'] + $_POST['remaining'];
+		
+		if($total == $_SESSION['totalStats'])
+		{
+			unset($_SESSION['totalStats']);
+			unset($total);
+			
+			//Updating max hp and max mana
+			$_SESSION['player']->updateHP();
+			$_SESSION['player']->updateMana();
+			//Sending the update to SQL server
+			$_SESSION['player']->updateLocally();
+			$_SESSION['player']->updateStatsGlobally();
+		}
+		else
+		{
+			//TODO: Ban za cheating?
+		}
+	}
+	
+	
 	function drawStatystyki()
 	{
 		if($_SESSION['player']->remaining > 0)
@@ -85,9 +119,6 @@
 			$_SESSION['totalStats'] += $_SESSION['player']->remaining;
 		}	
 	}
-	
-	
-	
 	function drawButton()
 	{
 		if($_SESSION['player']->remaining > 0)
@@ -108,39 +139,6 @@
 		}
 	}
 	
-	//Form was sent
-	if($_POST)
-	{
-		//Getting new values from POST
-		$_SESSION['player']->sila = $_POST['sila'];
-		$_SESSION['player']->zwinnosc = $_POST['zwinnosc'];
-		$_SESSION['player']->celnosc = $_POST['celnosc'];
-		$_SESSION['player']->kondycja = $_POST['kondycja'];
-		$_SESSION['player']->inteligencja = $_POST['inteligencja'];
-		$_SESSION['player']->wiedza = $_POST['wiedza'];
-		$_SESSION['player']->charyzma = $_POST['charyzma'];
-		$_SESSION['player']->szczescie = $_POST['szczescie'];
-		$_SESSION['player']->remaining = $_POST['remaining'];
-		
-		$total = $_POST['sila'] + $_POST['zwinnosc'] + $_POST['celnosc'] + $_POST['kondycja'] + $_POST['inteligencja'] + $_POST['wiedza'] + $_POST['charyzma'] + $_POST['szczescie'] + $_POST['remaining'];
-		
-		if($total == $_SESSION['totalStats'])
-		{
-			unset($_SESSION['totalStats']);
-			unset($total);
-			
-			//Updating max hp and max mana
-			$_SESSION['player']->updateHP();
-			$_SESSION['player']->updateMana();
-			//Sending the update to SQL server
-			$_SESSION['player']->updateLocally();
-			$_SESSION['player']->updateStatsGlobally();
-		}
-		else
-		{
-			//TODO: Ban za cheating?
-		}
-	}
 ?>
 
 <HTML>
@@ -150,6 +148,26 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="main.css">
 	<link rel="stylesheet" type="text/css" href="postac.css">
+	<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
+	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
+	<script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
+	<link rel="apple-touch-icon" sizes="57x57" href="/gfx/icon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/gfx/icon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/gfx/icon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/gfx/icon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/gfx/icon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/gfx/icon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/gfx/icon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/gfx/icon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/gfx/icon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/gfx/icon/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/gfx/icon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/gfx/icon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/gfx/icon/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/gfx/icon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
     <Title>SkalpoGra</Title>
 	
 </Head>
@@ -186,9 +204,6 @@
 
 
 
-<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
-<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
-<script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
 <script>
 
 	document.addEventListener('DOMContentLoaded',function()

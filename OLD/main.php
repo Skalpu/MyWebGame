@@ -12,6 +12,9 @@
     
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="main.css">
+	<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
+	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
+	<script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
     <Title>SkalpoGra</Title>
 	
 </Head>
@@ -59,9 +62,7 @@
 
 </HTML>
 
-<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
-<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
-<script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
+
 
 <script>	
 	

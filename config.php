@@ -854,14 +854,13 @@
 		{
 			$now = time();
 			//Last update is saved locally, in number format
-			if(is_numeric($this->last_update))
-			{
+			if(is_numeric($this->last_update)){
 				$last = $this->last_update;
 			}
 			//Last update was downloaded from DB, in time format
-			else
-			{
+			else{
 				$last = strtotime($this->last_update);
+				$this->last_update = $last;
 			}
 			
 			$seconds = $now-$last;

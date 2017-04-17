@@ -3,6 +3,18 @@
     require_once('config.php');
     login_check();
 	
+	//Last update was saved locally, in number format
+	if(is_numeric($_SESSION['player']->last_shop_update)){
+		$last = $_SESSION['player']->last_shop_update;
+	}
+	//Last update was downloaded from DB, in time format
+	else{
+		$last = strtotime($_SESSION['player']->last_shop_update);
+		$_SESSION['player']->last_shop_update = $last;
+	}
+	$next = $last + 14400; //4 hours
+	$next = date("Y-m-d H:i:s", $next);
+	
 ?>
 
 
@@ -13,6 +25,26 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="main.css">
 	<link rel="stylesheet" type="text/css" href="equipment.css">
+	<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
+	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
+	<script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
+	<link rel="apple-touch-icon" sizes="57x57" href="/gfx/icon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/gfx/icon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/gfx/icon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/gfx/icon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/gfx/icon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/gfx/icon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/gfx/icon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/gfx/icon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/gfx/icon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/gfx/icon/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/gfx/icon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/gfx/icon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/gfx/icon/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/gfx/icon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
     <Title>SkalpoGra</Title>
 	
 </Head>
@@ -21,6 +53,8 @@
 
 	<div id="divPlayerBars"></div>
     <div id="divMainOkno"></div>
+	<div id="divRemainingTimeLabel" class="center noselect">NASTĘPNA DOSTAWA ZA</div>
+	<div id="divRemainingTime" class="center noselect"></div>
 
 	<nav><ul>
 		<li><a href = "main.php"><div class='menuContainer' id='mainMenu'></div></a></li>
@@ -39,24 +73,52 @@
 
 
 
-<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
-<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
-<script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
 <script>
 
 	document.addEventListener('DOMContentLoaded',function()
     {
         $("#divPlayerBars").load('update_player_bars.php');
+		
+		//Initialize the shop
+		$("#divMainOkno").load('update_shop.php', function() {
+			rescaleImages();
+			initializeDragDrop();
+			initializeHover();
+		});
+		//Initialize countdown
+		startCountdown();
+		
+		var poczatkowySlot = "";
+		var koncowySlot = "";
     });
-
-	var poczatkowySlot = "";
-	var koncowySlot = "";
 	
-	$("#divMainOkno").load('update_shop.php', function() {
-		rescaleImages();
-		initializeDragDrop();
-		initializeHover();
-	});
+	
+	
+	function startCountdown()
+	{
+		var nextUpdate = <?php echo json_encode($next); ?>;
+		
+		$("#divRemainingTime").countdown(nextUpdate, function(event) {
+			$(this).html(event.strftime('%H:%M:%S'))
+		}).on('finish.countdown', function(event) {
+			//Reload shop when countdown hits 0
+			$("#divMainOkno").load('update_shop.php', function() {
+				rescaleImages();
+				initializeDragDrop();
+				initializeHover();
+				startCountdown();
+			});
+		});
+	}
+
+	function moveItem(poczatkowySlot, koncowySlot)
+	{
+		$("#divMainOkno").load('update_shop.php', {poczatek: poczatkowySlot, koniec: koncowySlot}, function() {
+			rescaleImages();
+			initializeDragDrop();
+			initializeHover();
+		});
+	}
 	
 	function initializeDragDrop()
 	{
@@ -118,12 +180,4 @@
 		});
 	}
 	
-	function moveItem(poczatkowySlot, koncowySlot)
-	{
-		$("#divMainOkno").load('update_shop.php', {poczatek: poczatkowySlot, koniec: koncowySlot}, function() {
-			rescaleImages();
-			initializeDragDrop();
-			initializeHover();
-		});
-	}
 </script>
