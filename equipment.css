@@ -38,7 +38,8 @@
 	-webkit-box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
 	-moz-box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
 	box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
-	margin-bottom: 4px;
+	margin-bottom: 5px;
+	margin-top: 3px;
 }
 .itemDamage
 {
@@ -212,14 +213,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	height: 12vh;
 	margin: 0.1vh;
 }
-#equipmentOuter, #backpackOuter, #sellOuter
-{
-	display: table;
-    position: absolute;
-    height: 100%;
-	width: 50%;
-}
-#equipmentOuter
+#equipmentOuter, #shopOuter
 {
 	left: 3vh;
 }
@@ -232,7 +226,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	top: 24.9vh;
 	right: 45.0vh;
 }
-#equipmentInner, #backpackInner, #sellInner
+#equipmentOuter, #backpackOuter, #sellOuter, #shopOuter
+{
+	display: table;
+    position: absolute;
+    height: 100%;
+	width: 50%;
+}
+#equipmentInner, #backpackInner, #sellInner, #shopInner
 {
 	display: table-cell; 
 	vertical-align: middle;
@@ -250,7 +251,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	background: linear-gradient(135deg, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
-.equipment
+.equipment, .shop
 {
 	float: left;
 	box-shadow: inset 0 0 10px black;
@@ -263,6 +264,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	border: 1px solid black;
 }
 #amulet, #lefthand, #gloves
+{
+	clear: left;
+}
+#shop0, #shop3, #shop6, #shop9, #shop12
 {
 	clear: left;
 }

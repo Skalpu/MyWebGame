@@ -121,7 +121,7 @@
 		
 		if($total == $_SESSION['player']->totalStats)
 		{
-			//Unsetting variables from previous screen because character creation is DONE
+			//Unsetting variables from previous screen because character creation is done
 			unset($_SESSION['player']->totalStats);
 			unset($_SESSION['iPlec']);
 			unset($_SESSION['iRasa']);
@@ -141,12 +141,10 @@
 			$conn = connectDB();
 			//Setting variables in short format for easier query
 			$id = $conn->real_escape_string($_SESSION['player']->id);
-			
 			$plec = $conn->real_escape_string($_SESSION['player']->plec);
 			$rasa = $conn->real_escape_string($_SESSION['player']->rasa);
 			$klasa = $conn->real_escape_string($_SESSION['player']->klasa);
 			$foto = $conn->real_escape_string($_SESSION['player']->foto);
-			
 			$sila = $conn->real_escape_string($_SESSION['player']->sila);
 			$zwinnosc = $conn->real_escape_string($_SESSION['player']->zwinnosc);
 			$celnosc = $conn->real_escape_string($_SESSION['player']->celnosc);
@@ -161,10 +159,12 @@
 			$_SESSION['player']->experience = 0;
 			$_SESSION['player']->experiencenext = 84;
 			$_SESSION['player']->remaining = 0;
-			$_SESSION['player']->updateMaxHP();
-			$_SESSION['player']->updateMaxMana();
 			$_SESSION['player']->zloto = 100;
 			$_SESSION['player']->krysztaly = 100;
+			$_SESSION['player']->last_update = time();
+			$_SESSION['player']->last_shop_update = time();
+			$_SESSION['player']->updateMaxHP();
+			$_SESSION['player']->updateMaxMana();
 
 			$hp = $conn->real_escape_string($_SESSION['player']->hp);
 			$maxhp = $conn->real_escape_string($_SESSION['player']->maxhp);
@@ -172,10 +172,11 @@
 			$maxmana = $conn->real_escape_string($_SESSION['player']->maxmana);
 			
 			//Updating database
-			$conn->query("UPDATE users SET plec='$plec', rasa='$rasa', klasa='$klasa', foto='$foto', sila='$sila', zwinnosc='$zwinnosc', celnosc='$celnosc', kondycja='$kondycja', inteligencja='$inteligencja', wiedza='$wiedza', charyzma='$charyzma', szczescie='$szczescie', last_login=NOW(), last_update=NOW(), protected_until=NOW(), hp='$hp', maxhp='$maxhp', mana='$mana', maxmana='$maxmana', level=1 WHERE id='$id'");
+			$conn->query("UPDATE users SET plec='$plec', rasa='$rasa', klasa='$klasa', foto='$foto', sila='$sila', zwinnosc='$zwinnosc', celnosc='$celnosc', kondycja='$kondycja', inteligencja='$inteligencja', wiedza='$wiedza', charyzma='$charyzma', szczescie='$szczescie', last_login=NOW(), last_update=NOW(), last_shop_update=NOW(), protected_until=NOW(), hp='$hp', maxhp='$maxhp', mana='$mana', maxmana='$maxmana', level=1 WHERE id='$id'");
 			$conn->query("INSERT INTO user_mail (id) VALUES ($id)");
 			$conn->query("INSERT INTO spellbooks (id) VALUES ($id)");
 			$conn->query("INSERT INTO equipment (id) VALUES ($id)");
+			$_SESSION['player']->generateShop();
 			$conn->close();
 			
 			//Moving the user to main game

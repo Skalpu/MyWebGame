@@ -29,6 +29,7 @@
 		public $wiedza = 0;
 		public $charyzma = 0;
 		public $szczescie = 0;
+		public $price = 0;
 		
 		public function drawHover()
 		{
@@ -105,6 +106,9 @@
 				{
 					echo "<div class='itemSzczescie'>+" .$this->szczescie. "</div> szczęścia<br>";
 				}
+				
+				echo "<div class='divider'></div>";
+				echo "<div class='itemPrice'>Cena: " .$this->price. " szt. zł.</div>";
 			
 			echo "</div>";
 		}
@@ -416,6 +420,9 @@
 					echo "<div class='itemSzczescie'>+" .$this->szczescie. "</div> szczęścia (założony: " .$compare->szczescie . $arrow1 . ")<br>";
 				}
 			
+				echo "<div class='divider'></div>";
+				echo "<div class='itemPrice'>Cena: " .$this->price. " szt. zł.</div>";
+			
 			echo "</div>";
 		}
 		public function drawFoto($divID)
@@ -463,6 +470,7 @@
 			$this->charyzma = $row['charyzma'];
 			$this->szczescie = $row['szczescie'];
 			$this->movepenalty = $row['movepenalty'];
+			$this->price = $row['price'];
 			
 			if($this->rarity != "legendary")
 			{
@@ -501,8 +509,9 @@
 			$charyzma = $conn->real_escape_string($this->charyzma);
 			$szczescie = $conn->real_escape_string($this->szczescie);
 			$movepenalty = $conn->real_escape_string($this->movepenalty);
+			$price = $conn->real_escape_string($this->price);
 			
-			$conn->query("INSERT INTO items (name, rarity, tier, slot, type, subtype, dmgmin, dmgmax, attackspeed, critchance, armor, dmgogien, dmgwoda, dmgpowietrze, dmgziemia, sila, zwinnosc, celnosc, kondycja, inteligencja, wiedza, charyzma, szczescie, movepenalty) VALUES ('$name', '$rarity', '$tier', '$slot', '$type', '$subtype', '$dmgmin', '$dmgmax', '$attackspeed', '$critchance', '$armor', '$dmgogien', '$dmgwoda', '$dmgpowietrze', '$dmgziemia', '$sila', '$zwinnosc', '$celnosc', '$kondycja', '$inteligencja', '$wiedza', '$charyzma', '$szczescie', '$movepenalty')");
+			$conn->query("INSERT INTO items (name, rarity, tier, slot, type, subtype, dmgmin, dmgmax, attackspeed, critchance, armor, dmgogien, dmgwoda, dmgpowietrze, dmgziemia, sila, zwinnosc, celnosc, kondycja, inteligencja, wiedza, charyzma, szczescie, movepenalty, price) VALUES ('$name', '$rarity', '$tier', '$slot', '$type', '$subtype', '$dmgmin', '$dmgmax', '$attackspeed', '$critchance', '$armor', '$dmgogien', '$dmgwoda', '$dmgpowietrze', '$dmgziemia', '$sila', '$zwinnosc', '$celnosc', '$kondycja', '$inteligencja', '$wiedza', '$charyzma', '$szczescie', '$movepenalty','$price')");
 			$this->id = $conn->insert_id;
 			$conn->close();
 			
@@ -531,6 +540,7 @@
 			unset($charyzma);
 			unset($szczescie);
 			unset($movepenalty);
+			unset($price);
 		}
 	}
 	class Player
@@ -565,6 +575,7 @@
 		public $krysztaly = 0;		
 		public $unread;
 		public $last_update;
+		public $last_shop_update;
 		
 		//Combat settings
 		public $side;
@@ -580,7 +591,25 @@
 		public $armor = 0;
 		public $movepenalty = 0;
 		
+		//Inventory
 		public $backpack = [
+			0 => "",
+			1 => "",
+			2 => "",
+			3 => "",
+			4 => "",
+			5 => "",
+			6 => "",
+			7 => "",
+			8 => "",
+			9 => "",
+			10 => "",
+			11 => "",
+			12 => "",
+			13 => "",
+			14 => "",
+		];
+		public $shop = [
 			0 => "",
 			1 => "",
 			2 => "",
@@ -608,8 +637,7 @@
 			'belt' => "",
 			'boots' => ""
 		];
-		//TODO
-		public $shop = [];
+		
 		
 		
 		public function addToBackpack(Item $item)
@@ -693,6 +721,101 @@
 				$this->unequipItem($this->equipment[$slot]);
 			}
 		}
+		public function sellFromSlot($slot)
+		{
+			if($this->backpack[$slot] != "")
+			{
+				//Local updates
+				$this->zloto += $this->backpack[$slot]->price;
+				$id = $this->id;
+				$itemID = $this->backpack[$slot]->id;
+				$zloto = $this->zloto;
+				
+				
+				$conn = connectDB();
+				for($i = 0; $i < 15; $i++)
+				{
+					//Checking if there is space to place this item in shop
+					if($this->shop[$i] == "")
+					{
+						//Swapping
+						$this->shop[$i] = $this->backpack[$slot];
+						$this->backpack[$slot] = "";
+					
+						//Updating position in DB
+						$slotName = "shop" . $i;
+						$conn->query("UPDATE equipment SET $slotName=$itemID WHERE id=$id");
+						
+						//Updating item price in DB
+						$price = $this->shop[$i]->price * 5;
+						$this->shop[$i]->price = $price;
+						$conn->query("UPDATE items SET price=$price WHERE id=$itemID");
+						
+						unset($price);
+						break;
+					}
+					//No space, just delete
+					else
+					{
+						$conn->query("DELETE FROM items WHERE id=$itemID");
+					}
+				}
+				
+				$slotName = "slot" . $slot;
+				$conn->query("UPDATE equipment SET $slotName=NULL WHERE id=$id");
+				$conn->query("UPDATE users SET zloto=$zloto WHERE id=$id");
+				$conn->close();
+				//Unsetting helper variables
+				unset($conn);
+				unset($id);
+				unset($itemID);
+				unset($zloto);
+				unset($slotName);
+			}
+		}
+		public function generateShop()
+		{
+			$conn = connectDB();
+			$userID = $this->id;
+			
+			//Removing current
+			for($i = 0; $i < count($this->shop); $i++)
+			{
+				if($this->shop[$i] != "")
+				{
+					$id = $this->shop[$i]->id;
+					$conn->query("DELETE FROM items WHERE id=$id");
+				}
+				
+				$this->shop = "";
+			}
+			
+			//Generating new
+			$itemsNumber = rand(5,15);
+			for($i = 0; $i < $itemsNumber; $i++)
+			{
+				$item = generateItem(1);
+				$item->price = $item->price * 5;
+				$item->saveToDB();
+				
+				$this->shop[$i] = $item;
+				$itemID = $this->shop[$i]->id;
+				$slotName = "shop" . $i;
+				
+				$conn->query("UPDATE equipment set $slotName=$itemID WHERE id=$userID");
+			}
+			for($i; $i < 15; $i++)
+			{
+				$slotName = "shop" . $i;
+				$this->shop[$i] = "";
+				
+				$conn->query("UPDATE equipment SET $slotName=NULL WHERE id=$userID");
+			}
+			
+			$conn->close();
+			unset($conn);
+			unset($userID);
+		}
 		
 		
 		public function updateMaxHP()
@@ -728,29 +851,15 @@
 		public function updateLocally()
 		{
 			$now = time();
-			
-			if(isset($this->last_update))
+			//Last update is saved locally, in number format
+			if(is_numeric($this->last_update))
 			{
-				//Was saved in session
-				if(is_int($this->last_update))
-				{
-					$last = $this->last_update;
-				}
-				else
-				{
-					$last = strtotime($this->last_update);
-				}
+				$last = $this->last_update;
 			}
+			//Last update was downloaded from DB, in time format
 			else
 			{
-				//Wasn't saved, read from SQL
-				$conn = connectDB();
-				$id = $this->id;
-				$last = get_value($conn, "SELECT last_update FROM users WHERE id=$id");
-				$last = strtotime($last);
-				$this->last_update = $last;
-				$conn->close();
-				unset($id);
+				$last = strtotime($this->last_update);
 			}
 			
 			$seconds = $now-$last;
@@ -1015,6 +1124,7 @@
 			$instance->loadByID($id);
 			return $instance;
 		}
+		//TODO too much data being loaded for fight only (shop, equipment, inventory, update times etc not needed)
 		protected function loadByID($id)
 		{
 			$conn = connectDB();
@@ -1052,6 +1162,7 @@
 			$this->zloto = $row['zloto'];
 			$this->krysztaly = $row['krysztaly'];
 			$this->last_update = $row['last_update'];
+			$this->last_shop_update = $row['last_shop_update'];
 			
 			$this->dmgmin = $row['dmgmin'];
 			$this->dmgmax = $row['dmgmax'];
@@ -1085,6 +1196,16 @@
 				if($row[$slot] != NULL)
 				{
 					$this->equipment[$slot] = Item::withID($row[$slot]);
+				}
+			}
+			
+			//Shop loading
+			for($i = 0; $i < count($this->shop); $i++)
+			{
+				$slotName = "shop" . $i;
+				if($row[$slotName] != NULL)
+				{
+					$this->shop[$i] = Item::withID($row[$slotName]);
 				}
 			}
 		}
@@ -1206,13 +1327,6 @@
 	}
 
 	
-	//TODO
-	function generateShop(Player $player)
-	{
-		
-		
-		return $player;
-	}
 	function generateItem($tier)
 	{
 		$item = new Item();
@@ -1505,16 +1619,34 @@
 			$item->foto = "legendary/" . $item->subtype . $tier;
 		}
 		
+		// PRICE GENERATION
+		switch($item->rarity)
+		{
+			case 'normal': $multiplier = 1;
+				break;
+			case 'magic': $multiplier = 3;
+				break;
+			case 'rare': $multiplier = 7;
+				break;
+			case 'legendary': $multiplier = 20;
+				break;
+		}
+		$item->price = rand(3,7) * $tier * $multiplier;
+		
+		//TODO unset variables
+		
 		return $item;
 	}
 	function drawBlankItem($slot, $divID)
 	{
-		if($slot != "backpack")
+		//"Normal" blanks
+		if($slot != "backpack" or $slot != "shop")
 		{
 			$fotoPath = "url(gfx/eq_slots/" . $slot . "_slot_000000.png)";
 			echo "<div class='fotoContainer2 blank' id='" .$divID. "' style='background-image: " . $fotoPath . ";'></div>";
 			unset($fotoPath); 
 		}
+		//Blanks with pre-filled image (for equipment)
 		else
 		{
 			echo "<div class='fotoContainer2' id='" .$divID. "'></div>";
@@ -1557,7 +1689,7 @@
 		echo "<div id='backpackOuter'>";
 		echo "<div id='backpackInner'>";
 		
-		//Iterates throught all the player backpack slots
+		//Iterates through all the player backpack slots
 		foreach($player->backpack as $slot => $item)
 		{
 			//There is no item at that backpack slot, we draw a blank image
@@ -1590,17 +1722,6 @@
 			}
 		}
 		
-		echo "</div>";
-		echo "</div>";
-	}
-	//TODO
-	function drawShop(Player $player)
-	{
-		echo "<div id='sellOuter'>";
-		echo "<div id='sellInner'>";
-			echo "<div class='itemSlot arrow sell'>";
-				echo "<div class='fotoContainer2' id='sell' style='background-image: url(gfx/eq_slots/sell.png)'></div>";
-			echo "</div>";
 		echo "</div>";
 		echo "</div>";
 	}

@@ -74,7 +74,7 @@
 			revertDuration: 0,
 			opacity: 0.5,
 			zIndex: 100,
-			cancel: "#sell"
+			cancel: "#sell, .blank"
 		});
 	
 		$(".itemSlot").droppable({
