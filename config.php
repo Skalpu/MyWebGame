@@ -1715,10 +1715,5 @@
 		echo "</div>";
 		echo "</div>";
 	}
-	//TODO
-	function drawNavbar()
-	{
-		
-	}
 	
 ?>

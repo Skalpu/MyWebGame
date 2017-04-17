@@ -2,7 +2,12 @@
 
     require_once('config.php');
     login_check();
-
+	
+	function drawBuilding()
+	{
+		
+	}
+	
 ?>
 
 
@@ -12,6 +17,7 @@
     
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" type="text/css" href="wioska.css">
 	<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
 	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 	<script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
@@ -37,7 +43,7 @@
 </Head>
 
 <Body>
-
+	
 	<div id="divPlayerBars"></div>
     <div id="divMainOkno"></div>
 
@@ -45,10 +51,10 @@
 		<li><a href = "main.php"><div class='menuContainer' id='mainMenu'></div></a></li>
         <li><a href = "postac.php"><div class='menuContainer' id='postacMenu'></div></a></li>
         <li><a href = "equipment.php"><div class='menuContainer' id='equipmentMenu'></div></a></li>
-		<li><a href = "wioska.php"><div class='menuContainer' id='wioskaMenu'></div></a></li>
+		<li><a href = "wioska.php" class="active"><div class='menuContainer' id='wioskaMenu'></div></a></li>
 		<li><a href = "shop.php"><div class='menuContainer' id='shopMenu'></div></a></li>
 		<li><a href = "magia.php"><div class='menuContainer' id='magiaMenu'></div></a></li>
-        <li><a href = "wyprawa.php" class="active"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
+        <li><a href = "wyprawa.php"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
 		<li><a href = "arena.php"><div class='menuContainer' id='arenaMenu'></div></a></li>
         <li><a href = "logout.php"><div class='menuContainer' id='logoutMenu'></div></a></li>
     </ul></nav>
@@ -65,9 +71,5 @@
     {
         $("#divPlayerBars").load('update_player_bars.php');
     });
-
-	$("#divMainOkno").load('update_wyprawa.php', function() {
-
-	});
-
+	
 </script>

@@ -62,22 +62,22 @@
 	{
 		$atakerFotoW = "10%";
 		$obroncaFotoW = "10%";
-		$atakerFotoH = "30%";
-		$obroncaFotoH = "30%";
+		$atakerFotoH = "29%";
+		$obroncaFotoH = "29%";
 		$atakerFotoTop = "18%";
 		$obroncaFotoTop = "18%";
 		$atakerFotoLeft = "21.75%";
 		$obroncaFotoRight = "21.75%";
 		$barH = "2.5%";
-		$bar1Top = "48.5%";
-		$bar2Top = "51%";
+		$bar1Top = "47%";
+		$bar2Top = "49.5%";
 
 		
 		$stylAtakerHP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $barH; top: $bar1Top; left: $atakerFotoLeft;";
 		$stylAtakerMP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $barH; top: $bar2Top; left: $atakerFotoLeft;";
 		
-		$stylObroncaHP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $barH; top: $bar1Top; right: $obroncaFotoRight;";
-		$stylObroncaMP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $barH; top: $bar2Top; right: $obroncaFotoRight;";
+		$stylObroncaHP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $barH; bottom: $bar1Top; right: $obroncaFotoRight;";
+		$stylObroncaMP = "position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $obroncaFotoW; height: $barH; bottom: $bar2Top; right: $obroncaFotoRight;";
 
 		
 		echo "<div style='position: fixed; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; width: $atakerFotoW; height: $atakerFotoH; top: $atakerFotoTop; left: $atakerFotoLeft;'>";

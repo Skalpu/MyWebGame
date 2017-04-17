@@ -20,7 +20,7 @@
 }
 .magicName
 {
-	color: blue;
+	color: DarkSlateBlue;
 }
 .rareName
 {
@@ -125,6 +125,11 @@
 {
 	color: darkbrown;
 	display: inline-block;
+}
+.itemPrice
+{
+	font-size: 1vh;
+	text-align: right;
 }
 
 
