@@ -65,8 +65,8 @@
 				$attacker->drawFoto();
 			echo "</div>";
 			echo "<div id='attackerBars' style='position: relative;'>";
-				$attacker->drawHP("HP" . $attacker->id, "position: relative; height: 2.5vh;");
-				$attacker->drawMP("MP" . $attacker->id, "position: relative; height: 2.5vh;");
+				$attacker->drawHP("HP" . $attacker->id, "position: relative; height: 2.5vh; border-top: 0px;");
+				$attacker->drawMP("MP" . $attacker->id, "position: relative; height: 2.5vh; border-top: 0px;");
 			echo "</div>";
 		echo "</div>";
 		
@@ -75,8 +75,8 @@
 				$defender->drawFoto();
 			echo "</div>";
 			echo "<div id='defenderBars' style='position: relative; top: 95%;'>";
-				$defender->drawHP("HP" . $defender->id, "position: relative; height: 2.5vh;");
-				$defender->drawMP("MP" . $defender->id, "position: relative; height: 2.5vh;");
+				$defender->drawHP("HP" . $defender->id, "position: relative; height: 2.5vh; border-top: 0px;");
+				$defender->drawMP("MP" . $defender->id, "position: relative; height: 2.5vh; border-top: 0px;");
 			echo "</div>";
 		echo "</div>";
 	}

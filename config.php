@@ -730,51 +730,69 @@
 		{
 			if($this->backpack[$slot] != "")
 			{
-				//Local updates
-				$this->zloto += $this->backpack[$slot]->price;
+				//Setting variables
 				$id = $this->id;
 				$itemID = $this->backpack[$slot]->id;
-				$zloto = $this->zloto;
+				$newZloto = $this->zloto + $this->backpack[$slot]->price;
+				$newPrice = $this->backpack[$slot]->price / 5;
 				
+				//Local updates
+				$this->zloto = $newZloto;
+				$this->backpack[$slot]->price = $newPrice;
+				
+				//Updating in DB
 				$conn = connectDB();
+				$conn->query("UPDATE items SET price=$newPrice WHERE id=$itemID");
+				$conn->query("UPDATE users SET zloto=$newZloto WHERE id=$id");
+				
+				$movedToShop = false;
+				
 				for($i = 0; $i < 15; $i++)
 				{
 					//Checking if there is space to place this item in shop
 					if($this->shop[$i] == "")
 					{
-						//Swapping
+						//Updating locally
 						$this->shop[$i] = $this->backpack[$slot];
 						$this->backpack[$slot] = "";
-					
-						//Updating position in DB
-						$slotName = "shop" . $i;
-						$conn->query("UPDATE equipment SET $slotName=$itemID WHERE id=$id");
 						
-						//Updating item price in DB
-						$price = $this->shop[$i]->price * 5;
-						$this->shop[$i]->price = $price;
-						$conn->query("UPDATE items SET price=$price WHERE id=$itemID");
+						//Setting variables
+						$slotPocz = "slot" . $slot;
+						$slotKon = "shop" . $i;
+						$valPocz = "NULL";
+						$valKon = $this->shop[$i]->id;
 						
-						unset($price);
+						//Updating in DB
+						$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon WHERE id=$id");
+						
+						//Ending loop
+						$movedToShop = true;
 						break;
-					}
-					//No space, just delete
-					else
-					{
-						$conn->query("DELETE FROM items WHERE id=$itemID");
 					}
 				}
 				
-				$slotName = "slot" . $slot;
-				$conn->query("UPDATE equipment SET $slotName=NULL WHERE id=$id");
-				$conn->query("UPDATE users SET zloto=$zloto WHERE id=$id");
-				$conn->close();
+				//There was no space for this item
+				if($movedToShop == false)
+				{
+					//Updating locally
+					$this->backpack[$slot] = "";
+					
+					//Setting variables
+					$slotPocz = "slot" . $slot;
+					$valPocz = "NULL";
+					
+					//Updating in DB
+					$conn->query("UPDATE equipment SET $slotPocz=$valPocz WHERE id=$id");
+					$conn->query("DELETE FROM items WHERE id=$itemID");
+				}
+				
 				//Unsetting helper variables
+				$conn->close();
 				unset($conn);
 				unset($id);
 				unset($itemID);
-				unset($zloto);
-				unset($slotName);
+				unset($newPrice);
+				unset($newZloto);
 			}
 		}
 		public function generateShop()
@@ -783,7 +801,7 @@
 			$userID = $this->id;
 			
 			//Removing current
-			for($i = 0; $i < 15; $i++)
+			for($i = 0; $i < count($this->shop); $i++)
 			{
 				if($this->shop[$i] != "")
 				{
@@ -1360,7 +1378,7 @@
 		}
 		
 		// SLOT GENERATION
-		$itemSlots = ['helmet', 'amulet', 'lefthand', 'chest', 'righthand', 'belt', 'gloves', 'ring', 'boots'];
+		$itemSlots = ['helmet', 'amulet', 'lefthand', 'lefthand', 'lefthand', 'lefthand', 'chest', 'righthand', 'belt', 'gloves', 'ring', 'boots'];
 		$slotRoll = rand(0, count($itemSlots) - 1);
 		$item->slot = $itemSlots[$slotRoll];
 

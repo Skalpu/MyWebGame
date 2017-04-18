@@ -80,14 +80,15 @@
     {
         $("#divPlayerBars").load('update_player_bars.php');
 		
+		//Initialize countdown
+		startCountdown();
+		
 		//Initialize the shop
 		$("#divMainOkno").load('update_shop.php', function() {
 			rescaleImages();
 			initializeDragDrop();
 			initializeHover();
 		});
-		//Initialize countdown
-		startCountdown();
 		
 		var poczatkowySlot = "";
 		var koncowySlot = "";
