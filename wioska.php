@@ -77,13 +77,11 @@
 		$(".buildingButton").hover(
 			function(){
 				$(this).parent().parent().parent().find('.buildingCosts').animate({
-					//width: "7%",
 					opacity: "1"
 				}, 300);
 			},
 			function(){
 				$(this).parent().parent().parent().find('.buildingCosts').animate({
-					//width: "0%",
 					opacity: "0"
 				}, 300);
 			}

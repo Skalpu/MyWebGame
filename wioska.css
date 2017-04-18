@@ -130,16 +130,22 @@
 	width: auto;
 	content: url(gfx/gold.png);
 	float: left;
+	margin-left: 1px;
 }
 .crystalIcon
 {
 	height: 1em;
 	width: auto;
 	content: url(gfx/crystals.png);
-	display: inline-block;
-	text-align: left;
+	float: left;
 }
 
+
+.buildingDescription
+{
+	margin-left: 1%;
+	padding: 1%;
+}
 .descTitle
 {
 	text-align: center;
@@ -157,12 +163,29 @@
 	-webkit-box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
 	-moz-box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
 	box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
-	margin-bottom: 5px;
-	margin-top: 3px;
+	margin-bottom: 2%;
+	margin-top: 2%;
 }
 .description
 {
-	margin: 4px;
+	text-align: justify;
+}
+.aktualnyBonus, .nastepnyBonus
+{
+	float: right;
+	clear: right;
+}
+.aktualnyBonusLabel, .nastepnyBonusLabel
+{
+	font-weight: bold;
+	display: inline-block;
+}
+.bonusy
+{
+	position: absolute;
+	bottom: 1vh;
+	right: 2vh;
+	
 }
 
 
@@ -180,5 +203,7 @@
 
 #goldmineFoto { background-image: url(gfx/buildings/goldmine.jpg); }
 #crystalmineFoto { background-image: url(gfx/buildings/crystalmine.png); }
+#traderFoto { background-image: url(gfx/buildings/rynek.jpg); }
 #magetowerFoto { background-image: url(gfx/buildings/magetower.jpg); }
 #healingFoto { background-image: url(gfx/buildings/healing.jpg); }
+#manahealingFoto { background-image: url(gfx/buildings/manahealing.jpg); }

@@ -640,8 +640,11 @@
 		public $village = [
 			'goldmine' => 0,
 			'crystalmine' => 0,
+			'trader' => 0,
 			'magetower' => 0,
 			'healing' => 0,
+			'manahealing' => 0,
+			
 		];
 		
 		
@@ -734,7 +737,7 @@
 				$id = $this->id;
 				$itemID = $this->backpack[$slot]->id;
 				$newZloto = $this->zloto + $this->backpack[$slot]->price;
-				$newPrice = $this->backpack[$slot]->price / 5;
+				$newPrice = $this->backpack[$slot]->price * 5;
 				
 				//Local updates
 				$this->zloto = $newZloto;
