@@ -17,16 +17,16 @@
 					$goldCost = round(55 * pow(2, $level));
 					$crystalCost = round(70 * pow(2, $level));
 					$description = "Chociaż nigdy nie zapuszczałeś się do środka tego labiryntu, to mieszkając nieopodal przyrzekłbyś, że krasnoludzkie przyśpiewki i górnicze powiedzonka znasz lepiej niż twarze własnych rodzicieli. Kiedy tylko przedstawiciele tej rasy usłyszeli, że pod ziemią odnaleziona została żyła tego cennego surowca, całkowicie wyparowali z życia na powierzchni. Szczęście w nieszczęściu - praca tutaj nigdy nie ustaje, co potwierdza kolejny okrzyk sztygara: \"Fedrować, nie pierdolić!\"";
-					$aktualny = ($level * 60) . " złota/godzinę";
-					$nastepny = (($level+1) * 60) . " złota/godzinę";
+					$aktualny = ($level * 60) . " Złota/godzinę.";
+					$nastepny = (($level+1) * 60) . " Złota/godzinę.";
 					break;
 				case 'crystalmine': 
 					$name = "Kopalnia kryształów"; 
 					$goldCost = round(80 * pow(2, $level));
 					$crystalCost = round(50 * pow(2, $level));
 					$description = "Wydobycie i obróbka kryształu to nie lada zadanie. W kopalni tego kruszca zatrudniani są tylko najlepsi fachowcy, wykorzystywane są tylko najnowsze technologie, a całość otacza niemal mistyczna atmosfera profesjonalizmu. Popularne przysłowie głosi, że to właśnie w odbiciach kryształów, wychodzących spod rąk tutejszych czeladników, zobaczyć można prawdziwą magię.";
-					$aktualny = ($level * 60) . " kryształów/godzinę";
-					$nastepny = (($level+1) * 60) . " kryształów/godzinę";
+					$aktualny = ($level * 60) . " Kryształów/godzinę.";
+					$nastepny = (($level+1) * 60) . " Kryształów/godzinę.";
 					break;
 				case 'trader':
 					$name = "Rynek";
@@ -34,12 +34,12 @@
 					$crystalCost = round(20 * pow(2, $level));
 					$description = "Jedzą, piją, lulki palą; Tańce, hulanka, swawola<br>Ledwie karczmy nie rozwalą, Cha cha, chi chi, hejza, hola!<br><br>Chociaż rynek niewątpliwie stanowi miejsce do (bardzo wesołych) spotkań międzyludzkich, to nie byłoby to możliwe bez jakże doświadczonych (i żądnych zysku) rzemieślników. Można rzec: wolny rynek.";
 					if($level == 0){
-						$aktualny = "brak dostępu do handlarza";
+						$aktualny = "Brak dostępu do handlarza.";
 					}
 					else{
-						$aktualny = "handlarz oferuje przedmioty " . ($level) . " poziomu";
+						$aktualny = "Handlarz oferuje przedmioty " . ($level) . " poziomu.";
 					}
-					$nastepny = "handlarz oferuje przedmioty " . ($level+1) . " poziomu";
+					$nastepny = "Handlarz oferuje przedmioty " . ($level+1) . " poziomu.";
 					break;
 				case 'magetower': 
 					$name = "Wieża magów"; 
@@ -47,28 +47,28 @@
 					$crystalCost = round(90 * pow(2, $level));
 					$description = "Podobno od rozmowy z magiem gorsza jest tylko rozmowa z wyedukowanym magiem. Pomimo tego, że studia w Wieży zdają się zmieniać młodych i obiecujących kandydatów w absolutnych gburów, to ich absolwentom nie można odmówić magicznych umiejętności. Założyciel tej akademii zwykł mawiać, że na świecie nie ma rzeczy niemożliwych, istnieją tylko niewymyślone.";
 					if($level == 0){
-						$aktualny = "brak dostępu do czarów";
+						$aktualny = "Brak dostępu do czarów.";
 					}
 					else{
-						$aktualny = "dostęp do czarów $level poziomu";
+						$aktualny = "Dostęp do czarów $level poziomu.";
 					}
-					$nastepny = "dostęp do czarów " . ($level+1) . " poziomu";
+					$nastepny = "Dostęp do czarów " . ($level+1) . " poziomu.";
 					break;
 				case 'healing': 
 					$name = "Chata znachorki"; 
 					$goldCost = round(70 * pow(2, $level));
 					$crystalCost = round(50 * pow(2, $level));
 					$description = "Osoby, które przebyły leczenie u tej pozornie zwyczajnej staruszki, często mówią, że ludzie dzielą się na dwa rodzaje: tych, którzy się jej boją, i tych, którzy będą się jej bali. Przemawianie do rozbijanych akurat w moździerzu ingredientów to jedno z normalniejszych zachowań, jakich można tutaj uświadczyć. Mimo tego, usługi znachorki mają też swoje plusy: przynajmniej nie czeka się na nie w kolejce.";
-					$aktualny = ($level*30) . " HP/godzinę";
-					$nastepny = (($level+1)*30) . " HP/godzinę";
+					$aktualny = ($level*30) . " HP/godzinę.";
+					$nastepny = (($level+1)*30) . " HP/godzinę.";
 					break;
 				case 'manahealing':
 					$name = "Starożytny ołtarz";
 					$goldCost = round(50 * pow(2, $level));
 					$crystalCost = round(60 * pow(2, $level));
 					$description = "Nikt dokładnie nie wie, jak powstało to miejsce. Z historii zatartej przez pokolenia wynika tylko, że od zawsze było kojarzone z wieloma bóstwami, a przez niektórych nawet czczone. Spacerując w pobliżu czujesz, jak napełnia cię siła duchowa.";
-					$aktualny = ($level*30) . " MP/godzinę";
-					$nastepny = (($level+1)*30) . " MP/godzinę";
+					$aktualny = ($level*30) . " MP/godzinę.";
+					$nastepny = (($level+1)*30) . " MP/godzinę.";
 					break;
 				default: 
 					break;
