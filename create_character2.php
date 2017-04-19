@@ -176,6 +176,7 @@
 			$conn->query("INSERT INTO user_mail (id) VALUES ($id)");
 			$conn->query("INSERT INTO spellbooks (id) VALUES ($id)");
 			$conn->query("INSERT INTO equipment (id) VALUES ($id)");
+			$conn->query("INSERT INTO villages (id) VALUES ($id)");
 			$_SESSION['player']->generateShop();
 			$conn->close();
 			

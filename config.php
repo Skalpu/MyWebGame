@@ -644,7 +644,6 @@
 			'magetower' => 0,
 			'healing' => 0,
 			'manahealing' => 0,
-			
 		];
 		
 		
@@ -1149,14 +1148,14 @@
 		
 		
 		//Sets the class object by downloading all player data from SQL server - use for existing players
-		public static function withID($id)
+		public static function withID($id, $downloadItems, $downloadVillage)
 		{
 			$instance = new self();
-			$instance->loadByID($id);
+			$instance->loadByID($id, $downloadItems, $downloadVillage);
 			return $instance;
 		}
 		//TODO too much data being loaded for fight only (shop, equipment, inventory, update times etc not needed)
-		protected function loadByID($id)
+		protected function loadByID($id, $downloadItems, $downloadVillage)
 		{
 			$conn = connectDB();
 			$result = $conn->query("SELECT * FROM users WHERE id='$id'");
@@ -1201,7 +1200,13 @@
 			$this->critchance = $row['critchance'];
 			$this->armor = $row['armor'];
 			$this->movepenalty = $row['movepenalty'];
-			$this->loadItems($id);	
+			
+			if($downloadItems == true){
+				$this->loadItems($id);
+			}
+			if($downloadVillage == true){
+				$this->loadVillage($id);
+			}
 		}
 		protected function loadItems($id)
 		{
@@ -1240,6 +1245,20 @@
 				}
 			}
 		}
+		protected function loadVillage($id)
+		{
+			$conn = connectDB();
+			$result = $conn->query("SELECT * FROM villages WHERE id='$id'");
+			$row = mysqli_fetch_assoc($result);
+			$conn->close();
+			unset($conn);
+			
+			foreach($this->village as $building => $level)
+			{
+				$this->village[$building] = $row[$building];
+			}
+		}
+		
 		//Sets the class as a monster, for fight purposes
 		public static function asMonster($id, $name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience)
 		{
@@ -1550,7 +1569,7 @@
 				$item->armor = rand($tier * 6, $tier * 8);
 				$item->movepenalty = -0.1;
 				break;
-			case 'intShield': $itemNames = ["Puklerz"];
+			case 'intShield': $itemNames = ["Osłona maga"];
 				$item->armor = rand($tier * 3, $tier * 6);
 				break;
 			case 'dexOff': $itemNames = ["Strzały", "Kołczan"];

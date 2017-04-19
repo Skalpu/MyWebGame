@@ -16,6 +16,7 @@
 					$name = "Kopalnia złota"; 
 					$goldCost = round(55 * pow(2, $level));
 					$crystalCost = round(70 * pow(2, $level));
+					$timeCost = round(30 * pow(2, $level));
 					$description = "Chociaż nigdy nie zapuszczałeś się do środka tego labiryntu, to mieszkając nieopodal przyrzekłbyś, że krasnoludzkie przyśpiewki i górnicze powiedzonka znasz lepiej niż twarze własnych rodzicieli. Kiedy tylko przedstawiciele tej rasy usłyszeli, że pod ziemią odnaleziona została żyła tego cennego surowca, całkowicie wyparowali z życia na powierzchni. Szczęście w nieszczęściu - praca tutaj nigdy nie ustaje, co potwierdza kolejny okrzyk sztygara: \"Fedrować, nie pierdolić!\"";
 					$aktualny = ($level * 60) . " Złota/godzinę.";
 					$nastepny = (($level+1) * 60) . " Złota/godzinę.";
@@ -24,6 +25,7 @@
 					$name = "Kopalnia kryształów"; 
 					$goldCost = round(80 * pow(2, $level));
 					$crystalCost = round(50 * pow(2, $level));
+					$timeCost = round(40 * pow(2, $level));
 					$description = "Wydobycie i obróbka kryształu to nie lada zadanie. W kopalni tego kruszca zatrudniani są tylko najlepsi fachowcy, wykorzystywane są tylko najnowsze technologie, a całość otacza niemal mistyczna atmosfera profesjonalizmu. Popularne przysłowie głosi, że to właśnie w odbiciach kryształów, wychodzących spod rąk tutejszych czeladników, zobaczyć można prawdziwą magię.";
 					$aktualny = ($level * 60) . " Kryształów/godzinę.";
 					$nastepny = (($level+1) * 60) . " Kryształów/godzinę.";
@@ -32,6 +34,7 @@
 					$name = "Rynek";
 					$goldCost = round(120 * pow(3, $level));
 					$crystalCost = round(20 * pow(2, $level));
+					$timeCost = round(30 * pow(2, $level));
 					$description = "Jedzą, piją, lulki palą; Tańce, hulanka, swawola<br>Ledwie karczmy nie rozwalą, Cha cha, chi chi, hejza, hola!<br><br>Chociaż rynek niewątpliwie stanowi miejsce do (bardzo wesołych) spotkań międzyludzkich, to nie byłoby to możliwe bez jakże doświadczonych (i żądnych zysku) rzemieślników. Można rzec: wolny rynek.";
 					if($level == 0){
 						$aktualny = "Brak dostępu do handlarza.";
@@ -45,6 +48,7 @@
 					$name = "Wieża magów"; 
 					$goldCost = round(40 * pow(2, $level));
 					$crystalCost = round(90 * pow(2, $level));
+					$timeCost = round(40 * pow(2, $level));
 					$description = "Podobno od rozmowy z magiem gorsza jest tylko rozmowa z wyedukowanym magiem. Pomimo tego, że studia w Wieży zdają się zmieniać młodych i obiecujących kandydatów w absolutnych gburów, to ich absolwentom nie można odmówić magicznych umiejętności. Założyciel tej akademii zwykł mawiać, że na świecie nie ma rzeczy niemożliwych, istnieją tylko niewymyślone.";
 					if($level == 0){
 						$aktualny = "Brak dostępu do czarów.";
@@ -58,6 +62,7 @@
 					$name = "Chata znachorki"; 
 					$goldCost = round(70 * pow(2, $level));
 					$crystalCost = round(50 * pow(2, $level));
+					$timeCost = round(50 * pow(2, $level));
 					$description = "Osoby, które przebyły leczenie u tej pozornie zwyczajnej staruszki, często mówią, że ludzie dzielą się na dwa rodzaje: tych, którzy się jej boją, i tych, którzy będą się jej bali. Przemawianie do rozbijanych akurat w moździerzu ingredientów to jedno z normalniejszych zachowań, jakich można tutaj uświadczyć. Mimo tego, usługi znachorki mają też swoje plusy: przynajmniej nie czeka się na nie w kolejce.";
 					$aktualny = ($level*30) . " HP/godzinę.";
 					$nastepny = (($level+1)*30) . " HP/godzinę.";
@@ -66,6 +71,7 @@
 					$name = "Starożytny ołtarz";
 					$goldCost = round(50 * pow(2, $level));
 					$crystalCost = round(60 * pow(2, $level));
+					$timeCost = round(45 * pow(2, $level));
 					$description = "Nikt dokładnie nie wie, jak powstało to miejsce. Z historii zatartej przez pokolenia wynika tylko, że od zawsze było kojarzone z wieloma bóstwami, a przez niektórych nawet czczone. Spacerując w pobliżu czujesz, jak napełnia cię siła duchowa.";
 					$aktualny = ($level*30) . " MP/godzinę.";
 					$nastepny = (($level+1)*30) . " MP/godzinę.";
@@ -73,6 +79,16 @@
 				default: 
 					break;
 			}
+			
+			if($timeCost < 60){
+				$format = "s";
+			} else if($timeCost >= 60 and $timeCost < 3600){
+				$format = "i:s";
+			} else if($timeCost >= 3600){
+				$format = "H:i:s";
+			}
+			$timeCost = gmdate($format, $timeCost);
+			
 			
 			//Main div of each building
 			echo "<div class='building'>";
@@ -108,6 +124,8 @@
 						//Overlay
 						if($level == 0){
 							$class = "notBuilt";
+						}else{
+							$class = "";
 						}
 						echo "<div class='buildingOver $class' id='" .$building. "Over'></div>";
 						
@@ -140,6 +158,14 @@
 						else{
 							echo "<div class='noCost'>$crystalCost</div>";
 						}
+					echo "</div>";
+					
+					//Time cost
+					echo "<div class='cost' id='" . $building. "TimeCost'>";
+					
+						echo "<img class='timeIcon'>";
+						
+						echo "<div class='okCost'>$timeCost</div>";
 					echo "</div>";
 				echo "</div>";
 				
