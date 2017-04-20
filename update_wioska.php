@@ -346,6 +346,7 @@
 	$("#divPlayerBars").load('update_player_bars.php');
 	initializeButtons();
 	initializeCountdown();
+	animateBuilding();
 	
 	function initializeButtons()
 	{
@@ -368,6 +369,10 @@
 			//Reload village when countdown finishes
 			$("#divMainOkno").load('update_wioska.php');
 		});
+	}
+	function animateBuilding()
+	{
+		
 	}
 	
 </script>

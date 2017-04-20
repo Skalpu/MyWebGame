@@ -1008,8 +1008,9 @@
 		{
 			//1 times = 10 seconds
 			//30/h/lvl
+			$base = 0.1;
 			
-			$perUpdate = (($this->village['healing'] * 30) / 360);
+			$perUpdate = (($this->village['healing'] * 30) / 360) + $base;
 			$this->hp += ($times * $perUpdate);
 			
 			if($this->hp > $this->maxhp){
@@ -1017,13 +1018,15 @@
 			}
 			
 			unset($perUpdate);
+			unset($base);
 		}
 		public function mpRegen($times)
 		{
 			//1 times = 10 seconds
 			//30/h/lvl
+			$base = 0.1;
 			
-			$perUpdate = (($this->village['manahealing'] * 30) / 360);
+			$perUpdate = (($this->village['manahealing'] * 30) / 360) + $base;
 			$this->mana += ($times * $perUpdate);
 			
 			if($this->mana > $this->maxmana){
@@ -1031,26 +1034,31 @@
 			}
 			
 			unset($perUpdate);
+			unset($base);
 		}
 		public function goldRegen($times)
 		{
 			//1 times = 10 seconds
 			//60/h/lvl
+			$base = 0.2;
 			
-			$perUpdate = (($this->village['goldmine'] * 60) / 360);
+			$perUpdate = (($this->village['goldmine'] * 60) / 360) + $base;
 			$this->zloto += ($times * $perUpdate);
 			
 			unset($perUpdate);
+			unset($base);
 		}
 		public function crystalsRegen($times)
 		{
 			//1 times = 10 seconds
 			//60/h/lvl
+			$base = 0.2;
 			
-			$perUpdate = (($this->village['crystalmine'] * 60) / 360);
+			$perUpdate = (($this->village['crystalmine'] * 60) / 360) + $base;
 			$this->krysztaly += ($times * $perUpdate);
 			
 			unset($perUpdate);
+			unset($base);
 		}
 		
 		

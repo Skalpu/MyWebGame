@@ -65,9 +65,7 @@
 	document.addEventListener('DOMContentLoaded',function()
     {
         $("#divPlayerBars").load('update_player_bars.php');
-		$("#divMainOkno").load('update_wioska.php', function() {
-			
-		});
+		$("#divMainOkno").load('update_wioska.php');
     });
 	
 </script>
