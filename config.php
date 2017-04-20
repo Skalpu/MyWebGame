@@ -579,6 +579,7 @@
 		public $last_update;
 		public $last_shop_update;
 		public $building;
+		public $building_started;
 		public $building_until;
 		
 		
@@ -1231,6 +1232,7 @@
 			$this->last_update = $row['last_update'];
 			$this->last_shop_update = $row['last_shop_update'];
 			$this->building = $row['building'];
+			$this->building_started = $row['building_started'];
 			$this->building_until = $row['building_until'];
 			
 			$this->dmgmin = $row['dmgmin'];

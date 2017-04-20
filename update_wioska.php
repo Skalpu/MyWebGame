@@ -55,9 +55,9 @@
 					$currentBonus = "Brak dostępu do handlarza";
 				}
 				else{
-					$currentBonus = "Targowisko " . ($level) . " poziomu";
+					$currentBonus = "Handlarz " . ($level) . " poziomu";
 				}
-				$nextBonus = "Targowisko " . ($level+1) . " poziomu";
+				$nextBonus = "Handlarz " . ($level+1) . " poziomu";
 				$description = "Jedzą, piją, lulki palą; Tańce, hulanka, swawola<br>Ledwie karczmy nie rozwalą, Cha cha, chi chi, hejza, hola!<br><br>Chociaż rynek niewątpliwie stanowi miejsce do (bardzo wesołych) spotkań międzyludzkich, to nie byłoby to możliwe bez jakże doświadczonych (i żądnych zysku) rzemieślników. Można rzec: wolny rynek.";
 				break;
 			case 'magetower': 
@@ -204,9 +204,13 @@
 		} else if($buildingArr['timeCost'] >= 3600){
 			$format = "H:i:s";
 		}
+		
+		
 		$buildingArr['timeCost'] = gmdate($format, $buildingArr['timeCost']);
-		$buildingArr['timeCost'] = $buildingArr['timeCost'] . "s";
-
+		if($format == "s"){
+			$buildingArr['timeCost'] = $buildingArr['timeCost'] . "s";
+		}
+		
 		
 		//Footer container
 		echo "<div class='descFooter'>";		
@@ -274,6 +278,7 @@
 				//Setting variables
 				$now = time();
 				$id = $_SESSION['player']->id;
+				$start = $now;
 				$until = $now + $arrBuilding['timeCost'];
 				$untilDate = date("Y-m-d H:i:s", $until);
 				$newGold = $_SESSION['player']->zloto - $arrBuilding['goldCost'];
@@ -281,18 +286,20 @@
 				
 				//Local updates
 				$_SESSION['player']->building = $building;
+				$_SESSION['player']->building_started = $start;
 				$_SESSION['player']->building_until = $until;
 				$_SESSION['player']->zloto = $newGold;
 				$_SESSION['player']->krysztaly = $newCrystal;
 				
 				//DB updates
 				$conn = connectDB();
-				$conn->query("UPDATE users SET building='$building', building_until='$untilDate', zloto='$newGold', krysztaly='$newCrystal' WHERE id='$id'");
+				$conn->query("UPDATE users SET building='$building', building_started='$start', building_until='$untilDate', zloto='$newGold', krysztaly='$newCrystal' WHERE id='$id'");
 				$conn->close();
 				
 				//Unsetting variables
 				unset($now);
 				unset($id);
+				unset($start);
 				unset($until);
 				unset($untilDate);
 				unset($newGold);
@@ -346,7 +353,6 @@
 	$("#divPlayerBars").load('update_player_bars.php');
 	initializeButtons();
 	initializeCountdown();
-	animateBuilding();
 	
 	function initializeButtons()
 	{
@@ -358,19 +364,58 @@
 	function initializeCountdown()
 	{
 		var building = <?php echo json_encode($_SESSION['player']->building); ?>;
-		var building_until = <?php echo json_encode(date("Y-m-d H:i:s", $_SESSION['player']->building_until)); ?>;
-		var buildingFoto = "#" + building + "Foto";
 		
-		$(buildingFoto).append("<div id='divRemainingTime'></div>");
+		if(building != null)
+		{
+			var building_until = <?php echo json_encode(date("Y-m-d H:i:s", $_SESSION['player']->building_until)); ?>;
+			var building_started_seconds = <?php echo json_encode($_SESSION['player']->building_started); ?>;
+			var building_until_seconds = <?php echo json_encode($_SESSION['player']->building_until); ?>;
+			var buildingFoto = "#" + building + "Foto";
 		
-		$("#divRemainingTime").countdown(building_until, function(event) {
-			$(this).html(event.strftime('%H:%M:%S'))
-		}).on('finish.countdown', function(event) {
-			//Reload village when countdown finishes
-			$("#divMainOkno").load('update_wioska.php');
-		});
+			$(buildingFoto).append("<div id='divRemainingTime'></div>");
+		
+			$("#divRemainingTime").countdown(building_until, function(event) {
+				$(this).html(event.strftime('%H:%M:%S'))
+			}).on('finish.countdown', function(event) {
+				//Reload village when countdown finishes
+				$("#divMainOkno").load('update_wioska.php');
+			});
+			
+			darkenBuildings(building);
+			animateBuilding(building, building_started_seconds, building_until_seconds);
+		}
 	}
-	function animateBuilding()
+	function animateBuilding(building, building_started_seconds, building_until_seconds)
+	{
+		var buildingOver = "#" + building + "Over";
+		var now = new Date().getTime() / 1000;
+		var total = building_until_seconds - building_started_seconds;
+		var elapsed = now - building_started_seconds; 
+		var procentComplete = Math.floor(elapsed/total * 100);
+		
+		var procentComplete = procentComplete -3;
+		if(procentComplete < 0){
+			procentComplete = 0;
+		}
+		
+		var procent2 = procentComplete + 3;
+		if(procent2 > 100){
+			procent2 = 100;
+		}
+		
+		var procentComplete = procentComplete.toString();
+		var procent2 = procent2.toString();
+		
+		var myCss = "linear-gradient(45deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0) " + procentComplete + "%, rgba(0,0,0,0.9) " + procent2 + "%)";
+		$(buildingOver).css("background", myCss); 
+		
+		if(now < building_until_seconds){
+			setTimeout(function(){
+				animateBuilding(building, building_started_seconds, building_until_seconds);
+			}, 100);
+		}
+	}
+	function darkenBuildings(building)
 	{
 		
 	}

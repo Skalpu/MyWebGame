@@ -43,12 +43,15 @@
 	
 	<?php  
 	
+	echo "<div style='background: linear-gradient(45deg, rgba(0,0,0,0.0) 50%, rgba(0,0,0,0.8) 53%);'>elo<br><br></div>";
+	
 	echo '<pre>';
 	var_dump($_SESSION['player']);
 	echo '</pre>';
 	
 	?>
 		<!-- TODO:
+		- BUGFIX: GENERUJĄ SIĘ ITEMY TIERU 0
 		- DODAWANIE KLASY AKTYWNEJ DO OVERLAYA BUDYNKU PODCZAS BUDOWY
 		- "ŁADOWANIE" GRADIENTU NA ŻYWO PODCZAS BUDOWY
 		- UPDATE PASKÓW ZŁOTA ITP PRZY KLIKNIĘCIU WYBUDUJ
