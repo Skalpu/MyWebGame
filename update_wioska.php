@@ -95,19 +95,6 @@
 			default: break;
 		}
 		
-		
-		//Formatting time
-		if($timeCost < 60){
-			$format = "s";
-		} else if($timeCost >= 60 and $timeCost < 3600){
-			$format = "i:s";
-		} else if($timeCost >= 3600){
-			$format = "H:i:s";
-		}
-		$timeCost = gmdate($format, $timeCost);
-		$timeCost = $timeCost . "s";
-		
-		
 		//Photo overlay
 		if($level == 0){
 			$photoClass = "notBuilt";
@@ -208,7 +195,19 @@
 	}
 	
 	function drawDescriptionFooter($buildingArr)
-	{
+	{				
+		//Formatting time
+		if($buildingArr['timeCost'] < 60){
+			$format = "s";
+		} else if($buildingArr['timeCost'] >= 60 and $buildingArr['timeCost'] < 3600){
+			$format = "i:s";
+		} else if($buildingArr['timeCost'] >= 3600){
+			$format = "H:i:s";
+		}
+		$buildingArr['timeCost'] = gmdate($format, $buildingArr['timeCost']);
+		$buildingArr['timeCost'] = $buildingArr['timeCost'] . "s";
+
+		
 		//Footer container
 		echo "<div class='descFooter'>";
 			//Building costs
@@ -307,7 +306,7 @@
 	
 	function updateBuildings()
 	{
-		if(isset($_SESSION['player']->building) and $_SESSION['player'] != NULL)
+		if(isset($_SESSION['player']->building) and $_SESSION['player']->building != NULL)
 		{
 			$now = time();
 		
@@ -344,6 +343,7 @@
 
 <script>
 
+	$("#divPlayerBars").load('update_player_bars.php');
 	initializeButtons();
 	initializeCountdown();
 	
@@ -354,7 +354,6 @@
 			$("#divMainOkno").load('update_wioska.php', {budynek: budynek});
 		});
 	}
-	
 	function initializeCountdown()
 	{
 		var building = <?php echo json_encode($_SESSION['player']->building); ?>;
@@ -370,4 +369,5 @@
 			$("#divMainOkno").load('update_wioska.php');
 		});
 	}
+	
 </script>
