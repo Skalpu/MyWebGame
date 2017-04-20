@@ -20,6 +20,7 @@
 					   color-stop(.5, transparent), to(transparent));
 }
 
+/*Main div*/
 .building
 {
 	margin: 1%;
@@ -29,6 +30,8 @@
 	
 	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
 }
+
+/*Photo contents */
 .buildingFoto
 {
 	width: 15vw;
@@ -74,29 +77,43 @@
 	
 	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
 }
-.buildingCosts
+.buildingOver
 {
-	border: 1px solid black;
-	float: left;
-	width: 7%;
-	opacity: 0;
-	height: 15vw;
+	width: 100%;
+	height: 100%;
 	
 	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
-	
-	background: #4c4c4c; /* Old browsers */
-	background: -moz-linear-gradient(-45deg, #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(-45deg, #4c4c4c 0%,#595959 12%,#666666 25%,#474747 39%,#2c2c2c 50%,#000000 51%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(135deg, #4c4c4c 0%,#595959 12%,#666666 25%,#474747 39%,#2c2c2c 50%,#000000 51%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
+#divRemainingTime
+{
+	position: absolute;
+	text-align: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	
+	font-size: 2.0vw;
+	color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.notBuilt
+{
+	background: rgba(15, 13, 13, 0.8);
+}
+
+/*Description*/
+/*Container*/
 .buildingDescription
 {
 	border: 1px solid black;
 	float: left;
 	margin-left: 1%;
 	height: 15vw;
-	width: 38vw;
+	width: 42vw;
+	padding: 1%;
+	padding-top: 0.5%;
+	padding-bottom: 0.5%;
 	
 	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
 	
@@ -105,46 +122,11 @@
 	background: linear-gradient(135deg, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
-.cost
+/*Content*/
+.descContent
 {
-	clear: both;
-	margin: 10%;
-}
-.okCost
-{
-	float: right;
-	color: white;
-	font-size: 1em;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-}
-.noCost
-{
-	float: right;
-	color: white;
-	font-size: 1em;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-}
-.goldIcon
-{
-	height: 1em;
-	width: auto;
-	content: url(gfx/gold.png);
-	float: left;
-	margin-left: 1px;
-}
-.crystalIcon
-{
-	height: 1em;
-	width: auto;
-	content: url(gfx/crystals.png);
-	float: left;
-}
-
-
-.buildingDescription
-{
-	margin-left: 1%;
-	padding: 1%;
+	height: 80%;
+	overflow-y: auto;
 }
 .descTitle
 {
@@ -163,44 +145,82 @@
 	-webkit-box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
 	-moz-box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
 	box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
-	margin-bottom: 2%;
-	margin-top: 2%;
+	margin-bottom: 1%;
+	margin-top: 1%;
 }
-.description
+.descText
 {
 	text-align: justify;
 	font-size: 0.7em;
 }
-.aktualnyBonus, .nastepnyBonus
+
+/* Footer of the description */
+.descFooter
+{
+	height: 20%;
+	overflow-y: auto;
+}
+.buildingCosts
+{
+	float: left;
+}
+.buildingBonuses
+{	
+	float: right;
+}
+.cost
+{
+	float: left;
+}
+.enoughCost
+{
+	color: darkgreen;
+}
+.notEnoughCost
+{
+	color: darkred;
+}
+
+.bonus
 {
 	float: right;
-	clear: right;
+	clear: right; 
 }
-.aktualnyBonusLabel, .nastepnyBonusLabel
+.goldCost, .timeCost
 {
-	font-weight: bold;
+	clear: left;
+}
+.goldIcon, .crystalIcon, .timeIcon 
+{ 
+	height: 0.8em; 
+	width: auto; 
+	content: url(gfx/gold.png); 
 	display: inline-block;
+} 
+.crystalIcon 
+{ 
+	content: url(gfx/crystals_old.png);  
 }
-.bonusy
+.timeIcon
 {
-	position: absolute;
-	bottom: 1vh;
-	right: 2vh;
-	
+	content: url(gfx/time.png);
+}
+.goldText, .crystalText, .timeText
+{
+	display: inline-block;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+.bonusLabel
+{
+	display: inline-block;
+	font-weight: bold;
 }
 
 
-.buildingOver
-{
-	width: 100%;
-	height: 100%;
-	
-	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
-}
-.notBuilt
-{
-	background: rgba(15, 13, 13, 0.8);
-}
+
+
+
 
 #goldmineFoto { background-image: url(gfx/buildings/goldmine.jpg); }
 #crystalmineFoto { background-image: url(gfx/buildings/crystalmine.png); }

@@ -284,39 +284,43 @@
 		
 		
 		//Draws shop
-		echo "<div id='shopOuter'><div id='shopInner'>";
-		//Iterates through all the player shop slots
-		foreach($player->shop as $slot => $item)
+		if($player->village['trader'] != 0)
 		{
-			//There is no item at that shop slot, we draw a blank image
-			if($item == "")
+			
+			echo "<div id='shopOuter'><div id='shopInner'>";
+			//Iterates through all the player shop slots
+			foreach($player->shop as $slot => $item)
 			{
-				echo "<div class='itemSlot arrow shop blank' id='shop$slot'>";
-				drawBlankItem("shop", $slot);
-				echo "</div>";
-			}
-			//We draw the item depending on rarity
-			else 
-			{
-				$rarity = $item->rarity;
-				echo "<div class='itemSlot arrow $rarity shop' id='shop$slot'>";
-				$item->drawFoto($slot);
-				//Drawing hover with comparison to equipped item
-				if($player->equipment[$item->slot] != "")
+				//There is no item at that shop slot, we draw a blank image
+				if($item == "")
 				{
-					$item->drawHoverCompare($player->equipment[$item->slot]);
+					echo "<div class='itemSlot arrow shop blank' id='shop$slot'>";
+					drawBlankItem("shop", $slot);
+					echo "</div>";
 				}
-				//Drawing normal hover
-				else
+				//We draw the item depending on rarity
+				else 
 				{
-					$item->drawHover();
+					$rarity = $item->rarity;
+					echo "<div class='itemSlot arrow $rarity shop' id='shop$slot'>";
+					$item->drawFoto($slot);
+					//Drawing hover with comparison to equipped item
+					if($player->equipment[$item->slot] != "")
+					{
+						$item->drawHoverCompare($player->equipment[$item->slot]);
+					}
+					//Drawing normal hover
+					else
+					{
+						$item->drawHover();
+					}
+					echo "</div>";
+					unset($rarity);
 				}
-				echo "</div>";
-				unset($rarity);
 			}
+			echo "</div></div>";
+			
 		}
-		
-		echo "</div></div>";
 	}
 	
 	

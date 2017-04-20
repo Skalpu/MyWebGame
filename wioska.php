@@ -65,27 +65,9 @@
 	document.addEventListener('DOMContentLoaded',function()
     {
         $("#divPlayerBars").load('update_player_bars.php');
-		
-		//Initialize the village
 		$("#divMainOkno").load('update_wioska.php', function() {
-			initializeHover();
+			
 		});
     });
-	
-	function initializeHover()
-	{
-		$(".buildingButton").hover(
-			function(){
-				$(this).parent().parent().parent().find('.buildingCosts').animate({
-					opacity: "1"
-				}, 300);
-			},
-			function(){
-				$(this).parent().parent().parent().find('.buildingCosts').animate({
-					opacity: "0"
-				}, 300);
-			}
-		);
-	}
 	
 </script>

@@ -14,6 +14,7 @@
 	}
 	$next = $last + 14400; //4 hours
 	$next = date("Y-m-d H:i:s", $next);
+	$level = $_SESSION['player']->village['trader'];
 	
 ?>
 
@@ -53,7 +54,7 @@
 
 	<div id="divPlayerBars"></div>
     <div id="divMainOkno"></div>
-	<div id="divRemainingTimeLabel" class="center noselect">NASTĘPNA DOSTAWA ZA</div>
+	<div id="divRemainingTimeLabel" class="center noselect"></div>
 	<div id="divRemainingTime" class="center noselect"></div>
 
 	<nav><ul>
@@ -98,19 +99,25 @@
 	
 	function startCountdown()
 	{
-		var nextUpdate = <?php echo json_encode($next); ?>;
+		var level = <?php echo json_encode($level); ?>;
 		
-		$("#divRemainingTime").countdown(nextUpdate, function(event) {
-			$(this).html(event.strftime('%H:%M:%S'))
-		}).on('finish.countdown', function(event) {
-			//Reload shop when countdown hits 0
-			$("#divMainOkno").load('update_shop.php', function() {
-				rescaleImages();
-				initializeDragDrop();
-				initializeHover();
-				startCountdown();
+		if(level != 0)
+		{
+			$("#divRemainingTimeLabel").html("NASTĘPNA DOSTAWA ZA");
+			var nextUpdate = <?php echo json_encode($next); ?>;
+		
+			$("#divRemainingTime").countdown(nextUpdate, function(event) {
+				$(this).html(event.strftime('%H:%M:%S'))
+			}).on('finish.countdown', function(event) {
+				//Reload shop when countdown hits 0
+				$("#divMainOkno").load('update_shop.php', function() {
+					rescaleImages();
+					initializeDragDrop();
+					initializeHover();
+					startCountdown();
+				});
 			});
-		});
+		}
 	}
 
 	function moveItem(poczatkowySlot, koncowySlot)

@@ -573,9 +573,14 @@
 		public $maxmana = 0;
 		public $zloto = 0;
 		public $krysztaly = 0;		
+		
+		//Updates
 		public $unread;
 		public $last_update;
 		public $last_shop_update;
+		public $building;
+		public $building_until;
+		
 		
 		//Combat settings
 		public $side;
@@ -818,8 +823,7 @@
 			$itemsNumber = rand(5,15);
 			for($i = 0; $i < $itemsNumber; $i++)
 			{
-				$item = generateItem(1);
-				//Great fucking bargains
+				$item = generateItem($this->village['trader']);
 				$item->price = $item->price * 5;
 				$item->saveToDB();
 				
@@ -1002,27 +1006,51 @@
 		
 		public function hpRegen($times)
 		{
-			$this->hp += $times;
-			if($this->hp > $this->maxhp)
-			{
+			//1 times = 10 seconds
+			//30/h/lvl
+			
+			$perUpdate = (($this->village['healing'] * 30) / 360);
+			$this->hp += ($times * $perUpdate);
+			
+			if($this->hp > $this->maxhp){
 				$this->hp = $this->maxhp;
 			}
+			
+			unset($perUpdate);
 		}
 		public function mpRegen($times)
 		{
-			$this->mana += $times;
-			if($this->mana > $this->maxmana)
-			{
+			//1 times = 10 seconds
+			//30/h/lvl
+			
+			$perUpdate = (($this->village['manahealing'] * 30) / 360);
+			$this->mana += ($times * $perUpdate);
+			
+			if($this->mana > $this->maxmana){
 				$this->mana = $this->maxmana;
 			}
+			
+			unset($perUpdate);
 		}
 		public function goldRegen($times)
 		{
-			$this->zloto += $times;
+			//1 times = 10 seconds
+			//60/h/lvl
+			
+			$perUpdate = (($this->village['goldmine'] * 60) / 360);
+			$this->zloto += ($times * $perUpdate);
+			
+			unset($perUpdate);
 		}
 		public function crystalsRegen($times)
 		{
-			$this->krysztaly += $times;
+			//1 times = 10 seconds
+			//60/h/lvl
+			
+			$perUpdate = (($this->village['crystalmine'] * 60) / 360);
+			$this->krysztaly += ($times * $perUpdate);
+			
+			unset($perUpdate);
 		}
 		
 		
@@ -1191,8 +1219,11 @@
 			$this->maxmana = $row['maxmana'];
 			$this->zloto = $row['zloto'];
 			$this->krysztaly = $row['krysztaly'];
+			
 			$this->last_update = $row['last_update'];
 			$this->last_shop_update = $row['last_shop_update'];
+			$this->building = $row['building'];
+			$this->building_until = $row['building_until'];
 			
 			$this->dmgmin = $row['dmgmin'];
 			$this->dmgmax = $row['dmgmax'];
