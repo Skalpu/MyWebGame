@@ -48,7 +48,7 @@
 				break;
 			case 'trader':
 				$name = "Rynek";
-				$goldCost = round(120 * pow(3, $level));
+				$goldCost = round(60 * pow(3, $level));
 				$crystalCost = round(20 * pow(2, $level));
 				$timeCost = round(30 * pow(2, $level));
 				if($level == 0){
@@ -58,7 +58,7 @@
 					$currentBonus = "Handlarz " . ($level) . " poziomu";
 				}
 				$nextBonus = "Handlarz " . ($level+1) . " poziomu";
-				$description = "Jedzą, piją, lulki palą; Tańce, hulanka, swawola<br>Ledwie karczmy nie rozwalą, Cha cha, chi chi, hejza, hola!<br><br>Chociaż rynek niewątpliwie stanowi miejsce do (bardzo wesołych) spotkań międzyludzkich, to nie byłoby to możliwe bez jakże doświadczonych (i żądnych zysku) rzemieślników. Można rzec: wolny rynek.";
+				$description = "Jedzą, piją, lulki palą; Tańce, hulanka, swawola<br>Ledwie karczmy nie rozwalą, Cha cha, chi chi, hejza, hola!<br><br>Chociaż rynek niewątpliwie stanowi miejsce do (bardzo wesołych) spotkań międzyludzkich, to nie byłoby to możliwe bez jakże doświadczonych (i żądnych zysku) rzemieślników. Możnaby rzec: wolny rynek.";
 				break;
 			case 'magetower': 
 				$name = "Wieża magów"; 
@@ -143,7 +143,15 @@
 				}
 						
 				//Upgrade button (build/upgrade)
-				echo "<div class='buildingButton noselect arrow' id='" .$buildingArr['building']. "Button'>";
+				if($_SESSION['player']->zloto >= $buildingArr['goldCost'] and $_SESSION['player']->krysztaly >= $buildingArr['crystalCost'] and $_SESSION['player']->building == null){
+					$class = "enoughCost";
+				}else if($_SESSION['player']->building == $buildingArr['building']){
+					$class = "";
+				}else{
+					$class = "notEnoughCost";
+ 				}
+				
+				echo "<div class='buildingButton $class noselect arrow' id='" .$buildingArr['building']. "Button'>";
 					if($buildingArr['level'] == 0){
 						echo "Wybuduj";
 					}
@@ -417,7 +425,8 @@
 	}
 	function darkenBuildings(building)
 	{
-		
+		var buildingOver = "#" + building + "Over";
+		$(".buildingOver:not(" + buildingOver + ")").css("background", "rgba(255, 0, 0, 0.3)");
 	}
 	
 </script>

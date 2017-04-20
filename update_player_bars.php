@@ -26,6 +26,6 @@
 
 <script>
 	
-	//TODO update barów na żywo TUTAJ
+	//TODO: update barów na żywo tutaj
 	
 </script>

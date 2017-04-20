@@ -42,22 +42,15 @@
     <div id="divMainOkno" style="overflow-Y: scroll;">
 	
 	<?php  
-	
-	echo "<div style='background: linear-gradient(45deg, rgba(0,0,0,0.0) 50%, rgba(0,0,0,0.8) 53%);'>elo<br><br></div>";
-	
+
 	echo '<pre>';
 	var_dump($_SESSION['player']);
 	echo '</pre>';
 	
 	?>
 		<!-- TODO:
-		- BUGFIX: GENERUJĄ SIĘ ITEMY TIERU 0
-		- DODAWANIE KLASY AKTYWNEJ DO OVERLAYA BUDYNKU PODCZAS BUDOWY
-		- "ŁADOWANIE" GRADIENTU NA ŻYWO PODCZAS BUDOWY
-		- UPDATE PASKÓW ZŁOTA ITP PRZY KLIKNIĘCIU WYBUDUJ
+		- CHANGE HOW SHOP UPDATES USING NEW METHOD FROM VILLAGE
 		- DIVIDE BUILDING DESCRIPTION CONTENT INTO TITLE AND CONTENT (THAT SCROLLS)
-		- CHANGE HOW THE SCROLLING LOOKS
-		- REFRESH SHOPU PRZY KOŃCU ODLICZANIA
 		- MOVE SELL ITEM TO UPDATE_SHOP
 		- 2H != 1H bronie, kołczany itp
 		- GENERACJA LOSOWYCH MODÓW W ITEMACH

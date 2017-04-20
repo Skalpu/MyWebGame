@@ -644,9 +644,9 @@
 			'boots' => ""
 		];
 		public $village = [
-			'goldmine' => 0,
-			'crystalmine' => 0,
-			'trader' => 0,
+			'goldmine' => 1,
+			'crystalmine' => 1,
+			'trader' => 1,
 			'magetower' => 0,
 			'healing' => 0,
 			'manahealing' => 0,
