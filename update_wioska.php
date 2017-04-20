@@ -209,7 +209,7 @@
 
 		
 		//Footer container
-		echo "<div class='descFooter'>";
+		echo "<div class='descFooter'>";		
 			//Building costs
 			echo "<div class='buildingCosts'>";
 				
@@ -253,7 +253,7 @@
 				echo "</div>";
 				//Next bonus
 				echo "<div class='bonus'>";
-					echo "<div class='bonusLabel'>+1&raquo;</div> "; 
+					echo "<div class='bonusLabel'>+1 &raquo;</div> "; 
 					echo $buildingArr['nextBonus'];
 				echo "</div>";
 				

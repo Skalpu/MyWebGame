@@ -106,15 +106,13 @@
 /*Container*/
 .buildingDescription
 {
-	border: 1px solid black;
 	float: left;
 	margin-left: 1%;
 	height: 15vw;
 	width: 42vw;
-	padding: 1%;
-	padding-top: 0.5%;
-	padding-bottom: 0.5%;
+	padding: 7px;
 	
+	border: 1px solid black;
 	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
 	
 	background: -moz-linear-gradient(-45deg, #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%); /* FF3.6-15 */
@@ -132,6 +130,7 @@
 {
 	text-align: center;
 	font-size: 1.5vw;
+	font-weight: bold;
 }
 .descSubtitle
 {
@@ -151,22 +150,27 @@
 .descText
 {
 	text-align: justify;
-	font-size: 0.7em;
+	font-size: 0.8vw;
 }
 
 /* Footer of the description */
 .descFooter
 {
+	position: relative;
 	height: 20%;
 	overflow-y: auto;
 }
 .buildingCosts
 {
-	float: left;
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
 }
 .buildingBonuses
 {	
-	float: right;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
 }
 .cost
 {
@@ -190,6 +194,8 @@
 {
 	clear: left;
 }
+
+
 .goldIcon, .crystalIcon, .timeIcon 
 { 
 	height: 0.8em; 
