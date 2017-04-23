@@ -174,7 +174,7 @@
 				
 				foreach($journeyArr['monsters'] as $monster)
 				{
-					echo "<div class='monsterFoto'>";
+					echo "<div class='monsterFoto arrow noselect'>";
 						$monster->drawFoto("monster");
 					echo "</div>";
 				}
