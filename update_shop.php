@@ -3,7 +3,10 @@
     require_once('config.php');
     login_check();
 
-	//TODO
+	updateShop();
+	drawBackpack($_SESSION['player']);
+	drawShop($_SESSION['player']);
+	
 	if($_POST)
 	{
 		//BP ->
@@ -242,7 +245,6 @@
 			}
 		}
 	}
-	
 	function updateShop()
 	{
 		$now = time();
@@ -322,10 +324,5 @@
 			
 		}
 	}
-	
-	
-	updateShop();
-	drawBackpack($_SESSION['player']);
-	drawShop($_SESSION['player']);
 	
 ?>

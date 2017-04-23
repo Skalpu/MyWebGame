@@ -176,7 +176,7 @@
 
 	<div id="divPlayerBars"></div>
     <div id="divMainOkno">
-		<div id='zdjecie'>	<?php $_SESSION['player']->drawFoto(); ?> 	</div>
+		<div id='zdjecie'>	<?php $_SESSION['player']->drawFoto("player"); ?> 	</div>
 		<div id='podpis'>												
 			<div id='nick'>		<?php echo $_SESSION['player']->username; ?>		</div>
 			<div id='podnick'> 	<?php echo $_SESSION['player']->rasa . " " . $_SESSION['player']->klasa; ?>		</div>

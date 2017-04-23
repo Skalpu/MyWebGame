@@ -581,6 +581,9 @@
 		public $building;
 		public $building_started;
 		public $building_until;
+		public $journey;
+		public $journey_started;
+		public $journey_until;
 		
 		
 		//Combat settings
@@ -1063,11 +1066,19 @@
 		}
 		
 		
-		public function drawFoto()
+		public function drawFoto($type)
 		{
-			$fotoPath = "url(gfx/portrety/" . $this->foto . ".jpg)";
-			echo "<div class='fotoContainer' id='" .$this->id. "' style='background-image: " . $fotoPath . ";'></div>";
-		
+			if($type == "player")
+			{
+				$fotoPath = "url(gfx/portrety/" . $this->foto . ".jpg)";
+				echo "<div class='fotoContainer' id='" .$this->id. "Foto' style='background-image: " . $fotoPath . ";'></div>";
+			}
+			else if($type == "monster")
+			{
+				$fotoPath = "url(gfx/monsters/" . $this->username . ".jpg)";
+				echo "<div class='fotoContainer' id='" .$this->id. "Foto' style='background-image: " . $fotoPath . ";'></div>";
+			}
+			
 			unset($fotoPath);
 		}
 		public function drawMail()
@@ -1301,15 +1312,14 @@
 		}
 		
 		//Sets the class as a monster, for fight purposes
-		public static function asMonster($id, $name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience)
+		public static function asMonster($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience)
 		{
 			$instance = new self();
-			$instance->loadAsMonster($id, $name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience);
+			$instance->loadAsMonster($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience);
 			return $instance;
 		}
-		protected function loadAsMonster($id, $name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience)
+		protected function loadAsMonster($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience)
 		{
-			$this->id = (-1) * $id;
 			$this->username = $name;
 			$this->type = "monster";
 			$this->foto = "/monsters/" . $name;

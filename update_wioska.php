@@ -213,7 +213,6 @@
 			$format = "H:i:s";
 		}
 		
-		
 		$buildingArr['timeCost'] = gmdate($format, $buildingArr['timeCost']);
 		if($format == "s"){
 			$buildingArr['timeCost'] = $buildingArr['timeCost'] . "s";

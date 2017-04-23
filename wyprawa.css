@@ -1,0 +1,192 @@
+#divMainOkno
+{
+	overflow-y: scroll;
+}
+#divMainOkno::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+#divMainOkno::-webkit-scrollbar
+{
+	width: 8px;
+	background-color: #F5F5F5;
+}
+#divMainOkno::-webkit-scrollbar-thumb
+{
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#b5bdc8+0,828c95+36,28343b+100;Grey+Black+3D */
+background: rgb(181,189,200); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(181,189,200,1) 0%, rgba(130,140,149,1) 36%, rgba(40,52,59,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', endColorstr='#28343b',GradientType=0 ); /* IE6-9 */
+}
+
+/*Main div*/
+.journey
+{
+	margin: 1%;
+	height: 15vw;
+	position: relative;
+	clear: both;
+	
+	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+}
+/*Photo contents */
+.journeyFoto
+{
+	width: 22vw;
+	height: 15vw;
+	position: relative;
+	float: left;
+	
+	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+}
+.journeyLocation
+{
+	position: absolute;
+	bottom: 0vw;
+	padding-top: 0.3vw;
+	padding-bottom: 0.3vw;
+	left: 50%;
+	width: 100%;
+	transform: translateX(-50%);
+	text-align: center;
+	
+	font-size: 1.2vw;
+	color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	background: rgba(0, 0, 0, 0.6);
+	
+	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+}
+.journeyButton
+{
+	position: absolute;
+	padding: 0.4vw;
+	
+	font-size: 0.7vw;
+	color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	background: rgba(0, 0, 0, 0.6);
+	
+	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+	right: 0vw;
+}
+.journeyOver
+{
+	width: 100%;
+	height: 100%;
+	
+	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+}
+#divRemainingTime
+{
+	position: absolute;
+	text-align: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	
+	font-size: 2.0vw;
+	color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+.inTravel
+{
+	background: rgba(0, 0, 0, 0.9);
+}
+
+/*Description*/
+/*Container*/
+.journeyDescription
+{
+	float: left;
+	margin-left: 1%;
+	height: 15vw;
+	width: 35vw;
+	padding: 7px;
+	
+	border: 1px solid black;
+	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+	
+	background: -moz-linear-gradient(-45deg, #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(-45deg, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(135deg, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+/*Content*/
+.descContent
+{
+	height: 80%;
+	overflow-y: auto;
+}
+.descTitle
+{
+	text-align: center;
+	font-size: 1.5vw;
+	font-weight: bold;
+}
+.divider
+{
+	height: 1px;
+	background: dimgrey;
+	-webkit-box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
+	-moz-box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
+	box-shadow: 0px 1px 1px 0px rgba(48,48,48,1);
+	margin-bottom: 1%;
+	margin-top: 1%;
+}
+.descText
+{
+	text-align: justify;
+	font-size: 0.8vw;
+}
+/* Footer of the description */
+.descFooter
+{
+	position: relative;
+	height: 20%;
+	overflow-y: auto;
+}
+.journeyCosts
+{
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+}
+.journeyMonsters
+{
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+}
+.monsterFoto
+{
+	height: 6vh;
+	width: 6vh;
+	float: right;
+	margin-left: 0.8vh;
+}
+.cost
+{
+	float: left;
+}
+.timeIcon 
+{ 
+	height: 0.8em; 
+	width: auto; 
+	content: url(gfx/time.png); 
+	display: inline-block;
+} 
+.timeText
+{
+	display: inline-block;
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+
+#forestFoto { background-image: url(gfx/wyprawa/forest.jpg); }
+#lakeFoto { background-image: url(gfx/wyprawa/lake.jpg); }
+#darkforestFoto { background-image: url(gfx/wyprawa/darkforest.jpg); }
