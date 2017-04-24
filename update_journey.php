@@ -60,9 +60,9 @@
 		{
 			case 'forest':
 				$location = "Las";
-				$name = "Zlecenie: patrol okolicy";
+				$name = "Zlecenie: polowanie";
 				$timeCost = 60;
-				$description = "";
+				$description = "W wiosce z której pochodzisz zachorował myśliwy. Ktoś musi szybko go zastąpić, bo kończą się zapasy mięsa. Udajesz się do lasu na proste polowanie. Kto wie, co tam znajdziesz.<br><br>Wyprawa odpowiednia dla początkujących graczy.";
 				break;
 			case 'lake':
 				$location = "Jezioro";
@@ -98,12 +98,11 @@
 		
 		switch($journey)
 		{
-			//($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience);
-			
+			//($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $magicdefense, $zloto, $krysztaly, $experience);
 			case 'forest':
-				array_push($monstersArr, Player::asMonster("Jeleń", 8, 5, "Poroża", "melee", 3, 5, 0.8, 5.0, 0, 50, 10, 5));
-				array_push($monstersArr, Player::asMonster("Sowa", 5, 3, "Pikowania", "melee", 1, 3, 1.0, 3.0, 0, 30, 0, 3));
-				array_push($monstersArr, Player::asMonster("Robak", 5, 2, "Podkopu", "melee", 2, 3, 0.7, 3.0, 0, 25, 0, 3));
+				array_push($monstersArr, Player::asMonster("Jeleń", 8, 4, "Poroża", "melee", 3, 5, 0.8, 5.0, 0, 0, 50, 10, 5));
+				array_push($monstersArr, Player::asMonster("Sowa", 5, 3, "Pikowania", "melee", 2, 3, 1.0, 3.0, 0, 0, 30, 0, 3));
+				array_push($monstersArr, Player::asMonster("Robak", 5, 2, "Podkopu", "melee", 1, 2, 0.7, 3.0, 0, 0, 25, 0, 3));
 				break;
 			default: 
 				break;
@@ -228,11 +227,17 @@
 		echo "<div class='monsterHover'>";
 			echo "<div class='monsterName'>" . $monster->username . "</div>";
 			echo "<div class='divider'></div>";
-			echo "<div class='stats1 floatLeft clearLeft'>";
-				echo "<div class='icon floatLeft' id='HPIcon'></div>";
-				echo "<div class='statText monsterHP floatLeft'>" . $monster->maxhp . "</div>";
-				echo "<div class='icon floatLeft' id='armorIcon'></div>";
-				echo "<div class='statText monsterArmor floatLeft'>" . $monster->armor . "</div>";
+			echo "<div class='stats1 centerText'>";
+				echo "<div class='icon' id='HPIcon'></div>";
+				echo "<div class='statText monsterHP'>" . $monster->maxhp . "</div>";
+				echo "<div class='icon' id='armorIcon'></div>";
+				echo "<div class='statText monsterArmor'>" . $monster->armor . "</div>";
+				echo "<div class='icon' id='magicDefenseIcon'></div>";
+				echo "<div class='lastText monsterMagicDefense'>" . $monster->magicdefense . "</div>";
+			echo "</div>";
+			echo "<div class='clearLeft centerText'>";
+				echo "<div class='icon' id='attackIcon'></div>";
+				echo "<div class='lastText monsterAttack'>" . $monster->dmgmin . "-" . $monster->dmgmax . "</div>";
 			echo "</div>";
 			
 		echo "</div>";

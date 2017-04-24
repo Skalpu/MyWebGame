@@ -598,6 +598,7 @@
 		public $attackspeed = 0;
 		public $critchance = 0;		
 		public $armor = 0;
+		public $magicdefense = 0;
 		public $movepenalty = 0;
 		
 		//Inventory
@@ -696,6 +697,7 @@
 			$this->attackspeed += $item->attackspeed;
 			$this->critchance += $item->critchance;
 			$this->armor += $item->armor;
+			$this->magicdefense += $item->magicdefense;
 			$this->movepenalty += $item->movepenalty;
 			
 			$this->updateHP();
@@ -723,6 +725,7 @@
 			$this->attackspeed -= $item->attackspeed;
 			$this->critchance -= $item->critchance;
 			$this->armor -= $item->armor;
+			$this->magicdefense -= $item->magicdefense;
 			$this->movepenalty -= $item->movepenalty;
 			
 			$this->updateHP();
@@ -1308,13 +1311,13 @@
 		
 		
 		//Sets the class as a monster, for fight purposes
-		public static function asMonster($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience)
+		public static function asMonster($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $magicdefense, $zloto, $krysztaly, $experience)
 		{
 			$instance = new self();
-			$instance->loadAsMonster($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience);
+			$instance->loadAsMonster($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $magicdefense, $zloto, $krysztaly, $experience);
 			return $instance;
 		}
-		protected function loadAsMonster($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience)
+		protected function loadAsMonster($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $magicdefense, $zloto, $krysztaly, $experience)
 		{
 			$this->username = $name;
 			$this->type = "monster";
@@ -1343,6 +1346,7 @@
 			$bron->attackspeed = $attackspeed;
 			$bron->critchance = $critchance;
 			$bron->armor = $armor;
+			$bron->magicdefense = $magicdefense;
 			
 			$this->equipItem($bron);
 		}

@@ -217,24 +217,30 @@
 	width: auto;  
 	display: inline-block;
 }
-.floatLeft
-{
-	float: left;
-}
-.clearLeft
-{
-	clear: left;
-}
 .statText
 {
 	margin-left: 3px;
 	margin-right: 3px;
+	display: inline-block;
+}
+.lastText
+{
+	margin-left: 3px;
+	display: inline-block;
+}
+.centerText
+{
+	text-align: center;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 /*Icons for hover*/
 #HPIcon {content: url(gfx/hp.png);}
 #armorIcon {content: url(gfx/armor.png);}
-
+#attackIcon {content: url(gfx/attack.png);}
+#magicDefenseIcon {content: url(gfx/magicDefense.png);}
 
 
 
