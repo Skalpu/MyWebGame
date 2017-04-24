@@ -62,7 +62,7 @@
 				$location = "Las";
 				$name = "Zlecenie: polowanie";
 				$timeCost = 60;
-				$description = "W wiosce z której pochodzisz zachorował myśliwy. Ktoś musi szybko go zastąpić, bo kończą się zapasy mięsa. Udajesz się do lasu na proste polowanie. Kto wie, co tam znajdziesz.<br><br>Wyprawa odpowiednia dla początkujących graczy.";
+				$description = "W okolicznej wiosce zachorował myśliwy. Ktoś musi szybko go zastąpić, bo kończą się zapasy mięsa. Udajesz się do lasu na proste polowanie. Kto wie, co tam znajdziesz.<br><br>Wyprawa odpowiednia dla początkujących graczy.";
 				break;
 			case 'lake':
 				$location = "Jezioro";

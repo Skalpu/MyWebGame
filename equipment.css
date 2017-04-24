@@ -61,6 +61,11 @@
 	color: brown;
 	display: inline-block;
 }
+.itemMagicDefense
+{
+	color: blue;
+	display: inline-block;
+}
 .itemMovement
 {
 	color: darkblue;
