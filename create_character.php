@@ -35,7 +35,7 @@
 		$_SESSION['player']->plec = $_POST['plec'];
 		$_SESSION['player']->rasa = $_POST['rasa'];
 		$_SESSION['player']->klasa = $_POST['klasa'];
-		$_SESSION['player']->foto = $_POST['foto'];
+		$_SESSION['player']->foto = "portrety/" . $_POST['foto'];
 		$_SESSION['iPlec'] = $_POST['iplec'];
 		$_SESSION['iRasa'] = $_POST['irasa'];
 		$_SESSION['iKlasa'] = $_POST['iklasa'];

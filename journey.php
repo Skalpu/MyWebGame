@@ -12,7 +12,7 @@
     
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="main.css">
-	<link rel="stylesheet" type="text/css" href="wyprawa.css">
+	<link rel="stylesheet" type="text/css" href="journey.css">
 	<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
 	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 	<script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
@@ -49,7 +49,7 @@
 		<li><a href = "wioska.php"><div class='menuContainer' id='wioskaMenu'></div></a></li>
 		<li><a href = "shop.php"><div class='menuContainer' id='shopMenu'></div></a></li>
 		<li><a href = "magia.php"><div class='menuContainer' id='magiaMenu'></div></a></li>
-        <li><a href = "wyprawa.php" class="active"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
+        <li><a href = "journey.php" class="active"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
 		<li><a href = "arena.php"><div class='menuContainer' id='arenaMenu'></div></a></li>
         <li><a href = "logout.php"><div class='menuContainer' id='logoutMenu'></div></a></li>
     </ul></nav>
@@ -65,7 +65,7 @@
 	document.addEventListener('DOMContentLoaded',function()
     {
         $("#divPlayerBars").load('update_player_bars.php');
-		$("#divMainOkno").load('update_wyprawa.php');
+		$("#divMainOkno").load('update_journey.php');
     });
 
 </script>

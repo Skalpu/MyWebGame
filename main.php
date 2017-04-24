@@ -42,10 +42,10 @@
     <div id="divMainOkno" style="overflow-Y: scroll;">
 	
 	<?php  
-
-	echo '<pre>';
-	var_dump($_SESSION['player']);
-	echo '</pre>';
+	
+	//echo '<pre>';
+	//var_dump($_SESSION['player']);
+	//echo '</pre>';
 	
 	?>
 		<!-- TODO:
@@ -75,7 +75,7 @@
 		<li><a href = "wioska.php"><div class='menuContainer' id='wioskaMenu'></div></a></li>
 		<li><a href = "shop.php"><div class='menuContainer' id='shopMenu'></div></a></li>
 		<li><a href = "magia.php"><div class='menuContainer' id='magiaMenu'></div></a></li>
-        <li><a href = "wyprawa.php"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
+        <li><a href = "journey.php"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
 		<li><a href = "arena.php"><div class='menuContainer' id='arenaMenu'></div></a></li>
         <li><a href = "logout.php"><div class='menuContainer' id='logoutMenu'></div></a></li>
     </ul></nav>

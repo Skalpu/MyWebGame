@@ -11,6 +11,90 @@
 	}
 	
 	drawVillage();
+		
+	function upgradeBuilding($building)
+	{
+		$arrBuilding = initializeBuilding($building);
+		
+		//Checking if player has sufficient resources
+		if($_SESSION['player']->zloto >= $arrBuilding['goldCost'] and $_SESSION['player']->krysztaly >= $arrBuilding['crystalCost'])
+		{
+			//Checking if player isn't already building sth
+			if($_SESSION['player']->building == NULL)
+			{
+				//Setting variables
+				$id = $_SESSION['player']->id;
+				$start = time();
+				$until = $start + $arrBuilding['timeCost'];
+				$startDate = date("Y-m-d H:i:s", $start);
+				$untilDate = date("Y-m-d H:i:s", $until);
+				$newGold = $_SESSION['player']->zloto - $arrBuilding['goldCost'];
+				$newCrystal = $_SESSION['player']->krysztaly - $arrBuilding['crystalCost'];
+				
+				//Local updates
+				$_SESSION['player']->building = $building;
+				$_SESSION['player']->building_started = $start;
+				$_SESSION['player']->building_until = $until;
+				$_SESSION['player']->zloto = $newGold;
+				$_SESSION['player']->krysztaly = $newCrystal;
+				
+				//DB updates
+				$conn = connectDB();
+				$conn->query("UPDATE users SET building='$building', building_started='$startDate', building_until='$untilDate', zloto='$newGold', krysztaly='$newCrystal' WHERE id='$id'");
+				$conn->close();
+				
+				//Unsetting variables
+				unset($id);
+				unset($start);
+				unset($until);
+				unset($startDate);
+				unset($untilDate);
+				unset($newGold);
+				unset($newCrystal);
+				unset($conn);
+			}
+		}
+		
+		unset($arrBuilding);
+	}
+	
+	function updateBuildings()
+	{
+		//Checking if player is in the process of building something
+		if(isset($_SESSION['player']->building) and $_SESSION['player']->building != null)
+		{
+			$now = time();
+		
+			//Building has ended
+			if($now >= $_SESSION['player']->building_until)
+			{
+				//Setting variables
+				$id = $_SESSION['player']->id;
+				$building = $_SESSION['player']->building;
+				$newLevel = $_SESSION['player']->village[$building] + 1;
+					
+				//Updating locally
+				$_SESSION['player']->village[$building] = $newLevel;
+				$_SESSION['player']->building = null;
+				$_SESSION['player']->building_started = null;
+				$_SESSION['player']->building_until = null;
+			
+				//Updating to DB
+				$conn = connectDB();
+				$conn->query("UPDATE villages SET $building=$newLevel WHERE id=$id");
+				$conn->query("UPDATE users SET building=NULL, building_started=NULL, building_until=NULL WHERE id=$id");
+				$conn->close();
+			
+				//Unsetting variables
+				unset($id);
+				unset($building);
+				unset($newLevel);
+				unset($conn);
+			}
+		
+			unset($now);
+		}
+	}
 	
 	function drawVillage()
 	{
@@ -270,87 +354,6 @@
 				
 			echo "</div>";
 		echo "</div>";
-	}
-	
-	function upgradeBuilding($building)
-	{
-		$arrBuilding = initializeBuilding($building);
-		
-		//Checking if player has sufficient resources
-		if($_SESSION['player']->zloto >= $arrBuilding['goldCost'] and $_SESSION['player']->krysztaly >= $arrBuilding['crystalCost'])
-		{
-			//Checking if player isn't already building sth
-			if($_SESSION['player']->building == NULL)
-			{
-				//Setting variables
-				$now = time();
-				$id = $_SESSION['player']->id;
-				$start = $now;
-				$until = $now + $arrBuilding['timeCost'];
-				$untilDate = date("Y-m-d H:i:s", $until);
-				$newGold = $_SESSION['player']->zloto - $arrBuilding['goldCost'];
-				$newCrystal = $_SESSION['player']->krysztaly - $arrBuilding['crystalCost'];
-				
-				//Local updates
-				$_SESSION['player']->building = $building;
-				$_SESSION['player']->building_started = $start;
-				$_SESSION['player']->building_until = $until;
-				$_SESSION['player']->zloto = $newGold;
-				$_SESSION['player']->krysztaly = $newCrystal;
-				
-				//DB updates
-				$conn = connectDB();
-				$conn->query("UPDATE users SET building='$building', building_started='$start', building_until='$untilDate', zloto='$newGold', krysztaly='$newCrystal' WHERE id='$id'");
-				$conn->close();
-				
-				//Unsetting variables
-				unset($now);
-				unset($id);
-				unset($start);
-				unset($until);
-				unset($untilDate);
-				unset($newGold);
-				unset($newCrystal);
-				unset($conn);
-			}
-		}
-		
-		unset($arrBuilding);
-	}
-	
-	function updateBuildings()
-	{
-		if(isset($_SESSION['player']->building) and $_SESSION['player']->building != NULL)
-		{
-			$now = time();
-		
-			if($now >= $_SESSION['player']->building_until)
-			{
-				//Setting variables
-				$id = $_SESSION['player']->id;
-				$building = $_SESSION['player']->building;
-				$newLevel = $_SESSION['player']->village[$building] + 1;
-					
-				//Updating locally
-				$_SESSION['player']->village[$building] = $newLevel;
-				$_SESSION['player']->building = NULL;
-				$_SESSION['player']->building_until = NULL;
-			
-				//Updating to DB
-				$conn = connectDB();
-				$conn->query("UPDATE villages SET $building=$newLevel WHERE id=$id");
-				$conn->query("UPDATE users SET building=NULL, building_until=NULL WHERE id=$id");
-				$conn->close();
-			
-				//Unsetting variables
-				unset($id);
-				unset($building);
-				unset($newLevel);
-				unset($conn);
-			}
-		
-			unset($now);
-		}
 	}
 
 ?>

@@ -176,7 +176,7 @@
 
 	<div id="divPlayerBars"></div>
     <div id="divMainOkno">
-		<div id='zdjecie'>	<?php $_SESSION['player']->drawFoto("player"); ?> 	</div>
+		<div id='zdjecie'>	<?php $_SESSION['player']->drawFoto(); ?> 	</div>
 		<div id='podpis'>												
 			<div id='nick'>		<?php echo $_SESSION['player']->username; ?>		</div>
 			<div id='podnick'> 	<?php echo $_SESSION['player']->rasa . " " . $_SESSION['player']->klasa; ?>		</div>
@@ -194,7 +194,7 @@
 		<li><a href = "wioska.php"><div class='menuContainer' id='wioskaMenu'></div></a></li>
 		<li><a href = "shop.php"><div class='menuContainer' id='shopMenu'></div></a></li>
 		<li><a href = "magia.php"><div class='menuContainer' id='magiaMenu'></div></a></li>
-        <li><a href = "wyprawa.php"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
+        <li><a href = "journey.php"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
 		<li><a href = "arena.php"><div class='menuContainer' id='arenaMenu'></div></a></li>
         <li><a href = "logout.php"><div class='menuContainer' id='logoutMenu'></div></a></li>
     </ul></nav>

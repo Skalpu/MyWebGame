@@ -121,13 +121,6 @@
 		
 		if($total == $_SESSION['player']->totalStats)
 		{
-			//Unsetting variables from previous screen because character creation is done
-			unset($_SESSION['player']->totalStats);
-			unset($_SESSION['iPlec']);
-			unset($_SESSION['iRasa']);
-			unset($_SESSION['iKlasa']);
-			unset($_SESSION['iFoto']);
-		
 			//Getting variables from post and saving them in session		
 			$_SESSION['player']->sila = $_POST['sila'];
 			$_SESSION['player']->zwinnosc = $_POST['zwinnosc'];
@@ -144,7 +137,7 @@
 			$plec = $conn->real_escape_string($_SESSION['player']->plec);
 			$rasa = $conn->real_escape_string($_SESSION['player']->rasa);
 			$klasa = $conn->real_escape_string($_SESSION['player']->klasa);
-			$foto = $conn->real_escape_string($_SESSION['player']->foto);
+			$foto = $conn->real_escape_string($_SESSION['iFoto']);
 			$sila = $conn->real_escape_string($_SESSION['player']->sila);
 			$zwinnosc = $conn->real_escape_string($_SESSION['player']->zwinnosc);
 			$celnosc = $conn->real_escape_string($_SESSION['player']->celnosc);
@@ -179,6 +172,13 @@
 			$conn->query("INSERT INTO villages (id) VALUES ($id)");
 			$_SESSION['player']->generateShop();
 			$conn->close();
+			
+			//Unsetting variables from previous screen because character creation is done
+			unset($_SESSION['player']->totalStats);
+			unset($_SESSION['iPlec']);
+			unset($_SESSION['iRasa']);
+			unset($_SESSION['iKlasa']);
+			unset($_SESSION['iFoto']);
 			
 			//Moving the user to main game
 			header('Location:main.php');

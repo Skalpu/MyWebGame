@@ -1066,18 +1066,10 @@
 		}
 		
 		
-		public function drawFoto($type)
+		public function drawFoto()
 		{
-			if($type == "player")
-			{
-				$fotoPath = "url(gfx/portrety/" . $this->foto . ".jpg)";
-				echo "<div class='fotoContainer' id='" .$this->id. "Foto' style='background-image: " . $fotoPath . ";'></div>";
-			}
-			else if($type == "monster")
-			{
-				$fotoPath = "url(gfx/monsters/" . $this->username . ".jpg)";
-				echo "<div class='fotoContainer' id='" .$this->id. "Foto' style='background-image: " . $fotoPath . ";'></div>";
-			}
+			$fotoPath = "url(gfx/" . $this->foto . ".jpg)";
+			echo "<div class='fotoContainer' id='" .$this->id. "Foto' style='background-image: " . $fotoPath . ";'></div>";
 			
 			unset($fotoPath);
 		}
@@ -1217,7 +1209,7 @@
 			$this->plec = $row['plec'];
 			$this->rasa = $row['rasa'];
 			$this->klasa = $row['klasa'];
-			$this->foto = $row['foto'];
+			$this->foto = "portrety/" . $row['foto'];
 			
 			$this->level = $row['level'];
 			$this->experience = $row['experience'];
@@ -1245,6 +1237,9 @@
 			$this->building = $row['building'];
 			$this->building_started = $row['building_started'];
 			$this->building_until = $row['building_until'];
+			$this->journey = $row['journey'];
+			$this->journey_started = $row['journey_started'];
+			$this->journey_until = $row['journey_until'];
 			
 			$this->dmgmin = $row['dmgmin'];
 			$this->dmgmax = $row['dmgmax'];
@@ -1311,6 +1306,7 @@
 			}
 		}
 		
+		
 		//Sets the class as a monster, for fight purposes
 		public static function asMonster($name, $stats, $kondycja, $attackName, $attackType, $dmgmin, $dmgmax, $attackspeed, $critchance, $armor, $zloto, $krysztaly, $experience)
 		{
@@ -1322,7 +1318,7 @@
 		{
 			$this->username = $name;
 			$this->type = "monster";
-			$this->foto = "/monsters/" . $name;
+			$this->foto = "monsters/" . $name;
 			$this->sila = $stats;
 			$this->zwinnosc = $stats;
 			$this->celnosc = $stats;
@@ -1335,6 +1331,8 @@
 			$this->zloto = $zloto;
 			$this->krysztaly = $krysztaly;
 			$this->experiencenext = $experience;
+			$this->updateMaxHP();
+			$this->updateMaxMana();
 			
 			$bron = new Item();
 			$bron->slot = "lefthand";

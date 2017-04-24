@@ -14,12 +14,12 @@
 }
 #divMainOkno::-webkit-scrollbar-thumb
 {
-/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#b5bdc8+0,828c95+36,28343b+100;Grey+Black+3D */
-background: rgb(181,189,200); /* Old browsers */
-background: -moz-linear-gradient(top,  rgba(181,189,200,1) 0%, rgba(130,140,149,1) 36%, rgba(40,52,59,1) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', endColorstr='#28343b',GradientType=0 ); /* IE6-9 */
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#b5bdc8+0,828c95+36,28343b+100;Grey+Black+3D */
+	background: rgb(181,189,200); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(181,189,200,1) 0%, rgba(130,140,149,1) 36%, rgba(40,52,59,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  rgba(181,189,200,1) 0%,rgba(130,140,149,1) 36%,rgba(40,52,59,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', endColorstr='#28343b',GradientType=0 ); /* IE6-9 */
 }
 
 /*Main div*/
@@ -32,6 +32,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', end
 	
 	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
 }
+
 /*Photo contents */
 .journeyFoto
 {
@@ -92,10 +93,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', end
 	color: white;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
-.inTravel
-{
-	background: rgba(0, 0, 0, 0.9);
-}
 
 /*Description*/
 /*Container*/
@@ -115,6 +112,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', end
 	background: linear-gradient(135deg, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
+
 /*Content*/
 .descContent
 {
@@ -142,6 +140,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', end
 	text-align: justify;
 	font-size: 0.8vw;
 }
+
 /* Footer of the description */
 .descFooter
 {
@@ -149,24 +148,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', end
 	height: 20%;
 	overflow-y: auto;
 }
+
+/*Costs*/
 .journeyCosts
 {
 	position: absolute;
 	left: 0px;
 	bottom: 0px;
-}
-.journeyMonsters
-{
-	position: absolute;
-	right: 0px;
-	bottom: 0px;
-}
-.monsterFoto
-{
-	height: 6vh;
-	width: 6vh;
-	float: right;
-	margin-left: 0.8vh;
 }
 .cost
 {
@@ -185,6 +173,69 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', end
 	margin-left: 3px;
 	margin-right: 3px;
 }
+
+/*Monsters*/
+.journeyMonsters
+{
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+}
+.monsterFoto
+{
+	height: 6vh;
+	width: 6vh;
+	float: right;
+	margin-left: 0.8vh;
+}
+.monsterHover
+{
+	display: none;
+	position: fixed;
+	
+	padding: 7px;
+	z-index: 5;
+	border: 1px solid black;
+	box-shadow: inset 0 0 5px black;
+	background: linear-gradient(beige,burlywood);
+}
+
+/*Monster Hover*/
+.monsterName
+{
+	font-weight: bold;
+	text-align: center;
+}
+.stats1
+{
+	margin-top: 3px;
+	font-size: 1.0em;
+}
+.icon
+{
+	height: 0.8em; 
+	width: auto;  
+	display: inline-block;
+}
+.floatLeft
+{
+	float: left;
+}
+.clearLeft
+{
+	clear: left;
+}
+.statText
+{
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+/*Icons for hover*/
+#HPIcon {content: url(gfx/hp.png);}
+#armorIcon {content: url(gfx/armor.png);}
+
+
 
 
 #forestFoto { background-image: url(gfx/wyprawa/forest.jpg); }

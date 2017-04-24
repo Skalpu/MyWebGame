@@ -3,8 +3,45 @@
 	require_once('config.php');
     login_check();
 
+	if($_POST)
+	{
+		sendJourney($_POST['journey']);
+	}
 	
 	drawJourneys();
+	
+	function sendJourney($journey)
+	{
+		$arrJourney = initializeJourney($journey);
+		
+		//Checking if player is currently doing something
+		if($_SESSION['player']->journey == null)
+		{
+			//Setting variables
+			$id = $_SESSION['player']->id;
+			$start = time();
+			$until = $start + $arrJourney['timeCost'];
+			$startDate = date("Y-m-d H:i:s", $start);
+			$untilDate = date("Y-m-d H:i:s", $until);
+				
+			//Local updates
+			$_SESSION['player']->journey = $journey;
+			$_SESSION['player']->journey_started = $start;
+			$_SESSION['player']->journey_until = $until;
+
+			//DB updates
+			$conn = connectDB();
+			$conn->query("UPDATE users SET journey='$journey', journey_started='$startDate', journey_until='$untilDate' WHERE id='$id'");
+			$conn->close();
+				
+			//Unsetting variables
+			unset($start);
+			unset($until);
+			unset($startDate);
+			unset($untilDate);
+			unset($conn);
+		}
+	}
 	
 	function drawJourneys()
 	{
@@ -175,7 +212,8 @@
 				foreach($journeyArr['monsters'] as $monster)
 				{
 					echo "<div class='monsterFoto arrow noselect'>";
-						$monster->drawFoto("monster");
+						$monster->drawFoto();
+						drawHover($monster);
 					echo "</div>";
 				}
 				
@@ -184,4 +222,113 @@
 		//End of footer
 		echo "</div>";
 	}
+	
+	function drawHover(Player $monster)
+	{
+		echo "<div class='monsterHover'>";
+			echo "<div class='monsterName'>" . $monster->username . "</div>";
+			echo "<div class='divider'></div>";
+			echo "<div class='stats1 floatLeft clearLeft'>";
+				echo "<div class='icon floatLeft' id='HPIcon'></div>";
+				echo "<div class='statText monsterHP floatLeft'>" . $monster->maxhp . "</div>";
+				echo "<div class='icon floatLeft' id='armorIcon'></div>";
+				echo "<div class='statText monsterArmor floatLeft'>" . $monster->armor . "</div>";
+			echo "</div>";
+			
+		echo "</div>";
+	}
+	
 ?>
+
+<script>
+	
+	$("#divPlayerBars").load('update_player_bars.php');
+	initializeButtons();
+	initializeHover();
+	initializeCountdown();
+	
+	function initializeButtons()
+	{
+		$(".journeyButton").click(function(){
+			var journey = $(this).parent().parent().parent().attr('id');
+			$("#divMainOkno").load('update_journey.php', {journey: journey});
+		});
+	}
+	function initializeHover()
+	{
+		$(".monsterFoto").hover(
+			function(){
+				$(this).find('.monsterHover').show();
+			},
+			function(){
+				$(this).find('.monsterHover').hide();
+			}
+		);
+		
+		$(".monsterFoto").bind('mousemove', function(e){
+			var top = e.pageY + 15;
+			var left = e.pageX + 8;
+			$(this).find('.monsterHover').css({'top': top, 'left': left});
+		});
+	}
+	function initializeCountdown()
+	{
+		var journey = <?php echo json_encode($_SESSION['player']->journey); ?>;
+		
+		if(journey != null)
+		{
+			var journey_until = <?php echo json_encode(date("Y-m-d H:i:s", $_SESSION['player']->journey_until)); ?>;
+			var journey_started_seconds = <?php echo json_encode($_SESSION['player']->journey_started); ?>;
+			var journey_until_seconds = <?php echo json_encode($_SESSION['player']->journey_until); ?>;
+			var journeyFoto = "#" + journey + "Foto";
+		
+			$(journeyFoto).append("<div id='divRemainingTime'></div>");
+		
+			$("#divRemainingTime").countdown(journey_until, function(event) {
+				$(this).html(event.strftime('%H:%M:%S'))
+			}).on('finish.countdown', function(event) {
+				//Load combat when countdown finishes
+				$("#divMainOkno").load('walka.php');
+			});
+			
+			darkenJourneys(journey);
+			animateJourney(journey, journey_started_seconds, journey_until_seconds);
+		}
+	}
+	function animateJourney(journey, journey_started_seconds, journey_until_seconds)
+	{
+		var journeyOver = "#" + journey + "Over";
+		var now = new Date().getTime() / 1000;
+		var total = journey_until_seconds - journey_started_seconds;
+		var elapsed = now - journey_started_seconds; 
+		var procentComplete = Math.floor(elapsed/total * 100);
+		
+		var procentComplete = procentComplete -3;
+		if(procentComplete < 0){
+			procentComplete = 0;
+		}
+		
+		var procent2 = procentComplete + 3;
+		if(procent2 > 100){
+			procent2 = 100;
+		}
+		
+		var procentComplete = procentComplete.toString();
+		var procent2 = procent2.toString();
+		
+		var myCss = "linear-gradient(45deg, rgba(0,0,0,0.0), rgba(0,0,0,0.0) " + procentComplete + "%, rgba(0,0,0,0.9) " + procent2 + "%)";
+		$(journeyOver).css("background", myCss); 
+		
+		if(now < journey_until_seconds){
+			setTimeout(function(){
+				animateJourney(journey, journey_started_seconds, journey_until_seconds);
+			}, 100);
+		}
+	}
+	function darkenJourneys(journey)
+	{
+		var journeyOver = "#" + journey + "Over";
+		$(".journeyOver:not(" + journeyOver + ")").css("background", "rgba(255, 0, 0, 0.3)");
+	}
+	
+</script>
