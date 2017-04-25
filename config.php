@@ -1736,7 +1736,7 @@
 			if($item == "")
 			{
 				//Echoes out a div with the slot name, e.g. helmet, chest
-				echo "<div class='itemSlot arrow equipment blank' id='$slot'>";
+				echo "<div class='itemSlot equipment blank' id='$slot'>";
 				drawBlankItem($slot, $slot);
 				echo "</div>";
 			}
