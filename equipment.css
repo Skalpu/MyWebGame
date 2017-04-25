@@ -1,3 +1,4 @@
+/*Container*/
 .itemHover
 {
 	display: none;
@@ -9,6 +10,9 @@
 	box-shadow: inset 0 0 5px black;
 	background: linear-gradient(beige,burlywood);
 }
+
+
+/*Item name*/
 .itemName
 {
 	font-weight: bold;
@@ -31,6 +35,8 @@
 	color: DarkMagenta;
 }
 
+
+/*Item stats*/
 .divider
 {
 	height: 1px;
@@ -138,7 +144,7 @@
 }
 
 
-
+/*Comparison classes*/
 .greenArrow
 {
 	color: green; 
@@ -156,7 +162,7 @@
 }
 
 
-
+/*Rarity backgrounds*/
 .normal
 {
 background: #ffffff; /* Old browsers */
@@ -232,7 +238,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 }
 
 
-
+/*Equipment/backpack/shop slots*/
 .itemSlot
 {
 	width: 12vh;
@@ -297,7 +303,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 {
 	clear: left;
 }
-#bp0, #bp3, #bp6, #bp9, #bp12
+#slot0, #slot3, #slot6, #slot9, #slot12
 {
 	clear: right;
 }

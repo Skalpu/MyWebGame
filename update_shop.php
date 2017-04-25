@@ -2,279 +2,284 @@
 
     require_once('config.php');
     login_check();
-
-	updateShop();
+	
+	//Shop settings
+	$itemPriceMultiplier = 5;
+	$shopUpdateFrequency = 14400;
+	
+	if($_POST){
+		processItemMoves();
+	}
+	
+	updateShop($_SESSION['player']);
 	drawBackpack($_SESSION['player']);
 	drawShop($_SESSION['player']);
-	
-	if($_POST)
+				
+	function processItemMoves()
 	{
-		//BP ->
-		if(strpos($_POST['poczatek'], 'bp') !== false)
+		//Setting ID of drag
+		$startSlot = $_POST['start'];
+		preg_match('/(\d+)/', $startSlot, $matches);
+		$startID = $matches[1];
+		
+		//Setting ID of drop
+		$endSlot = $_POST['end'];
+		if(strpos($endSlot, 'shop') !== false or strpos($endSlot, 'slot') !== false)
 		{
-			
-			
-			//------------------
-			//BP -> BP
-			//------------------
-			if(strpos($_POST['koniec'], 'bp') !== false)
-			{
-				preg_match('/(\d+)/', $_POST['poczatek'], $matches);
-				$idPocz = $matches[1];
-				preg_match('/(\d+)/', $_POST['koniec'], $matches);
-				$idKon = $matches[1];
-
-				//Setting variables
-				$conn = connectDB();
-				$id = $_SESSION['player']->id;
-				$slotPocz = "slot" . $idPocz;
-				$slotKon = "slot" . $idKon;
-				
-				//Updating locally
-				$holder = $_SESSION['player']->backpack[$idKon];
-				$_SESSION['player']->backpack[$idKon] = $_SESSION['player']->backpack[$idPocz];
-				$_SESSION['player']->backpack[$idPocz] = $holder;
-				
-				//Updating to DB
-				if($_SESSION['player']->backpack[$idPocz] == ""){
-					$valPocz = "NULL";
-				}
-				else{
-					$valPocz = $_SESSION['player']->backpack[$idPocz]->id;
-				}
-				
-				if($_SESSION['player']->backpack[$idKon] == ""){
-					$valKon = "NULL";
-				}
-				else{
-					$valKon = $_SESSION['player']->backpack[$idKon]->id;
-				}
-				$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon where ID=$id");
-				$conn->close();
-				
-				//Unsetting variables
-				unset($holder);
-				unset($idPocz);
-				unset($idKon);
-				unset($conn);
-				unset($slotPocz);
-				unset($slotKon);
-				unset($valPocz);
-				unset($valKon);
-			}
-			
-			
-			//------------------
-			//BP -> sell or BP -> shop
-			//------------------
-			else if($_POST['koniec'] == 'sell' or strpos($_POST['koniec'], 'shop') !== false)
-			{
-				preg_match('/(\d+)/', $_POST['poczatek'], $matches);
-				$idPocz = $matches[1];
-				
-				//Selling the item
-				$_SESSION['player']->sellFromSlot($idPocz);
-				
-				unset($idPocz);
-			}
-			
-			
+			preg_match('/(\d+)/', $endSlot, $matches);
+			$endID = $matches[1];
 		}
-		//Shop -> 
-		else if(strpos($_POST['poczatek'], 'shop') !== false)
+		else
 		{
-			
-			//------------------
-			//Shop -> BP
-			//------------------
-			if(strpos($_POST['koniec'], 'bp') !== false)
-			{
-				preg_match('/(\d+)/', $_POST['poczatek'], $matches);
-				$idPocz = $matches[1];
-				preg_match('/(\d+)/', $_POST['koniec'], $matches);
-				$idKon = $matches[1];
+			$endID = 'sell';
+		}
+		
+		//Processing item movement
+		//Shop -> shop
+		if(strpos($startSlot, 'shop') !== false and strpos($endSlot, 'shop') !== false){
+			swapItems($startSlot, $startID, $endSlot, $endID, "shop");
+		}
+		//Shop -> backpack
+		else if(strpos($startSlot, 'shop') !== false and strpos($endSlot, 'slot') !== false){
+			buyItem($startSlot, $startID, $endSlot, $endID);
+		}
+		//Backpack -> backpack
+		else if(strpos($startSlot, 'slot') !== false and strpos($endSlot, 'slot') !== false){
+			swapItems($startSlot, $startID, $endSlot, $endID, "backpack");
+		}
+		//Backpack -> shop
+		else if(strpos($startSlot, 'slot') !== false and strpos($endSlot, 'shop') !== false){
+			sellItem($startSlot, $startID, $endSlot, $endID);
+		}
+		//Backpack -> sellSlot
+		else if(strpos($startSlot, 'slot') !== false and strpos($endSlot, 'sell') !== false){
+			sellItem($startSlot, $startID, $endSlot, $endID);
+		}
+	}	
 				
-				//BP slot is empty
-				if($_SESSION['player']->backpack[$idKon] == "")
-				{
-					//Player has enough gold
-					if($_SESSION['player']->zloto >= $_SESSION['player']->shop[$idPocz]->price)
-					{
-						//Setting variables
-						$conn = connectDB();
-						$id = $_SESSION['player']->id;
-						$zloto = $_SESSION['player']->zloto - $_SESSION['player']->shop[$idPocz]->price;
-						$price = $_SESSION['player']->shop[$idPocz]->price / 5;
-						$itemID = $_SESSION['player']->shop[$idPocz]->id;
-						
-						//Updating locally
-						$_SESSION['player']->zloto = $zloto;
-						$_SESSION['player']->shop[$idPocz]->price = $price;
-						$_SESSION['player']->backpack[$idKon] = $_SESSION['player']->shop[$idPocz];
-						$_SESSION['player']->shop[$idPocz] = "";
-						
-						//Updating to DB
-						$slotPocz = "shop" . $idPocz;
-						$slotKon = "slot" . $idKon;
-						$valPocz = "NULL";
-						$valKon = $_SESSION['player']->backpack[$idKon]->id;
-						$conn->query("UPDATE users SET zloto=$zloto WHERE id=$id");
-						$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon WHERE id=$id");
-						$conn->query("UPDATE items SET price=$price WHERE id=$itemID");
-						$conn->close();
-						
-						//Unsetting variables
-						unset($conn);
-						unset($id);
-						unset($itemID);
-						unset($price);
-						unset($zloto);
-						unset($slotPocz);
-						unset($slotKon);
-						unset($valPocz);
-						unset($valKon);
-					}
-					//Player doesn't have enough gold
-					else
-					{
-						//TODO: show error?
-					}
-				}
-				//That BP slot is not empty
-				else
-				{
-					for($i = 0; $i < count($_SESSION['player']->backpack); $i++)
-					{
-						//Found an empty slot
-						if($_SESSION['player']->backpack[$i] == "")
-						{
-							//Player has enough gold
-							if($_SESSION['player']->zloto >= $_SESSION['player']->shop[$idPocz]->price)
-							{
-								//Setting variables
-								$conn = connectDB();
-								$id = $_SESSION['player']->id;
-								$zloto = $_SESSION['player']->zloto - $_SESSION['player']->shop[$idPocz]->price;
-								$price = $_SESSION['player']->shop[$idPocz]->price / 5;
-								$itemID = $_SESSION['player']->shop[$idPocz]->id;
-								
-								//Updating locally
-								$_SESSION['player']->zloto = $zloto;
-								$_SESSION['player']->shop[$idPocz]->price = $price;
-								$_SESSION['player']->backpack[$i] = $_SESSION['player']->shop[$idPocz];
-								$_SESSION['player']->shop[$idPocz] = "";
-								
-								//Updating to DB
-								$slotPocz = "shop" . $idPocz;
-								$slotKon = "slot" . $i;
-								$valPocz = "NULL";
-								$valKon = $_SESSION['player']->backpack[$i]->id;
-								$conn->query("UPDATE users SET zloto=$zloto WHERE id=$id");
-								$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon WHERE id=$id");
-								$conn->query("UPDATE items SET price=$price WHERE id=$itemID");
-								$conn->close();
-						
-								//Unsetting variables
-								unset($conn);
-								unset($id);
-								unset($itemID);
-								unset($price);
-								unset($zloto);
-								unset($slotPocz);
-								unset($slotKon);
-								unset($valPocz);
-								unset($valKon);
-							}
-							//Player doesn't have enough gold
-							else
-							{
-								//TODO: show error?
-							}
-							
-							break;
-						}
-					}
-				}
+	function swapItems($startDB, $startLocal, $endDB, $endLocal, $location)
+	{
+		//Local updates
+		$holder = $_SESSION['player']->{$location}[$startLocal];
+		$_SESSION['player']->{$location}[$startLocal] = $_SESSION['player']->{$location}[$endLocal];
+		$_SESSION['player']->{$location}[$endLocal] = $holder;
+		
+		//Setting variables
+		$startVal = $_SESSION['player']->{$location}[$startLocal]->id;
+		$endVal = $_SESSION['player']->{$location}[$endLocal]->id;
+		
+		//Database updateShop
+		$id = $_SESSION['player']->id;
+		$conn = connectDB();
+		$conn->query("UPDATE equipment SET $startDB=$startVal, $endDB=$endVal WHERE id=$id");
+		$conn->close();
+		
+		//Unsetting variables
+		unset($holder);
+		unset($startVal);
+		unset($endVal);
+		unset($id);
+		unset($conn);
+	}
+	
+	function sellItem($startDB, $startLocal, $endDB, $endLocal)
+	{
+		//Item was moved to sellSlot, we check if there is free space in shop
+		if($endLocal == "sell")
+		{
+			$freeSlot = findFreeSlot("shop");
+			
+			if($freeSlot == null){
+				sellAndDelete($startDB, $startLocal);
 			}
-			
-			//------------------
-			//Shop -> Shop
-			//------------------
-			else if(strpos($_POST['koniec'], 'shop') !== false)
+			else{
+				sellAndSave($startDB, $startLocal, $freeSlot);
+			}
+		}
+		//Item was moved to a shop slot
+		else
+		{
+			//Checking if manual placement is available
+			if($_SESSION['player']->backpack[$endLocal] == ""){
+				sellAndSave($startDB, $startLocal, $endLocal);
+			}
+			//Checking if there's free slots elsewhere
+			else
 			{
-				preg_match('/(\d+)/', $_POST['poczatek'], $matches);
-				$idPocz = $matches[1];
-				preg_match('/(\d+)/', $_POST['koniec'], $matches);
-				$idKon = $matches[1];
+				$freeSlot = findFreeSlot("shop");
 				
-				//Setting variables
-				$conn = connectDB();
-				$id = $_SESSION['player']->id;
-				
-				//Updating locally
-				$holder = $_SESSION['player']->shop[$idPocz];
-				$_SESSION['player']->shop[$idPocz] = $_SESSION['player']->shop[$idKon];
-				$_SESSION['player']->shop[$idKon] = $holder;
-				
-				//Updating to DB
-				$slotPocz = "shop" . $idPocz;
-				$slotKon = "shop" . $idKon;
-				if($_SESSION['player']->shop[$idPocz] == ""){
-					$valPocz = "NULL";
+				if($freeSlot == null){
+					sellAndDelete($startDB, $startLocal);
 				}
 				else{
-					$valPocz = $_SESSION['player']->shop[$idPocz]->id;
+					sellAndSave($startDB, $startLocal, $freeSlot);
 				}
-				
-				if($_SESSION['player']->shop[$idKon] == ""){
-					$valKon = "NULL";
-				}
-				else{
-					$valKon = $_SESSION['player']->shop[$idKon]->id;
-				}
-				$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon WHERE id=$id");
-				
-				//Unsetting variables
-				unset($conn);
-				unset($id);
-				unset($holder);
-				unset($slotPocz);
-				unset($slotKon);
-				unset($valPocz);
-				unset($valKon);
 			}
 		}
 	}
-	function updateShop()
+	
+	function findFreeSlot($location)
+	{
+		$foundSlot = false;
+		
+		for($i = 0; $i < count($_SESSION['player']->{$location}); $i++)
+		{
+			if($_SESSION['player']->{$location}[$i] == "")
+			{
+				$foundSlot = true;
+				break;
+			}
+		}
+		
+		if($foundSlot == true){
+			return $i;
+		}
+		else{
+			return null;
+		}
+	}
+	
+	function sellAndDelete($startDB, $startLocal)
+	{
+		//Setting variables
+		$itemID = $_SESSION['player']->backpack[$startLocal]->id;
+		$newGold = $_SESSION['player']->zloto + $_SESSION['player']->backpack[$startLocal]->price;
+		
+		//Local updates
+		$_SESSION['player']->zloto = $newGold;
+		$_SESSION['player']->backpack[$startLocal] = "";
+		
+		//DB updates
+		$id = $_SESSION['player']->id;
+		$conn = connectDB();
+		$conn->query("UPDATE users SET zloto=$newGold WHERE id=$id");
+		$conn->query("UPDATE equipment SET $startDB=NULL WHERE id=$id");
+		$conn->query("DELETE FROM items WHERE id=$itemID");
+		$conn->close();
+		
+		//Unsetting variables
+		unset($newGold);
+		unset($itemID);
+		unset($id);
+		unset($conn);
+	}
+	
+	function sellAndSave($startDB, $startLocal, $endLocal)
+	{
+		//Setting variables
+		$endDB = "shop" . $endLocal;
+		$newGold = $_SESSION['player']->zloto + $_SESSION['player']->backpack[$startLocal]->price;
+		$newPrice = $_SESSION['player']->backpack[$startLocal]->price * $GLOBALS['itemPriceMultiplier'];
+		$itemID = $_SESSION['player']->backpack[$startLocal]->id;
+		
+		//Updating locally
+		$_SESSION['player']->zloto = $newGold;
+		$_SESSION['player']->backpack[$startLocal]->price = $newPrice;
+		$_SESSION['player']->shop[$endLocal] = $_SESSION['player']->backpack[$startLocal];
+		$_SESSION['player']->backpack[$startLocal] = "";
+		
+		//Updating to DB
+		$id = $_SESSION['player']->id;
+		$conn = connectDB();
+		$conn->query("UPDATE equipment SET $startDB=NULL, $endDB=$itemID WHERE id=$id");
+		$conn->query("UPDATE items SET price=$newPrice WHERE id=$itemID");
+		$conn->query("UPDATE users SET zloto=$newGold WHERE id=$id");
+		$conn->close();
+		
+		//Unsetting variables
+		unset($endDB);
+		unset($newPrice);
+		unset($itemID);
+		unset($id);
+		unset($conn);
+	}
+	
+	function buyItem($startDB, $startLocal, $endDB, $endLocal)
+	{
+		//Checking if player has enough gold
+		if($_SESSION['player']->zloto >= $_SESSION['player']->shop[$startLocal]->price)
+		{
+			//Checking if manual placement is available
+			if($_SESSION['player']->backpack[$endLocal] == "")
+			{
+				//Setting variables
+				$newGold = $_SESSION['player']->zloto - $_SESSION['player']->shop[$startLocal]->price;
+				$newPrice = $_SESSION['player']->shop[$startLocal]->price / $GLOBALS['itemPriceMultiplier'];
+				$itemID = $_SESSION['player']->shop[$startLocal]->id;
+			
+				//Local updates
+				$_SESSION['player']->zloto = $newGold;
+				$_SESSION['player']->shop[$startLocal]->price = $newPrice;
+				$_SESSION['player']->backpack[$endLocal] = $_SESSION['player']->shop[$startLocal];
+				$_SESSION['player']->shop[$startLocal] = "";
+				
+				//DB updates
+				$id = $_SESSION['player']->id;
+				$conn = connectDB();
+				$conn->query("UPDATE items SET price=$newPrice WHERE id=$itemID");
+				$conn->query("UPDATE users SET zloto=$newGold WHERE id=$id");
+				$conn->query("UPDATE equipment SET $startDB=NULL, $endDB=$itemID WHERE id=$id");
+				$conn->close();
+				
+				//Unsetting variables
+				unset($newGold);
+				unset($newPrice);
+				unset($itemID);
+				unset($id);
+				unset($conn);
+			}
+			//Checking if there's free slots elsewhere
+			else
+			{
+				$freeSlot = findFreeSlot("backpack");
+				
+				if($freeSlot == null){
+					//TODO error: not enough space
+				}
+				else{
+					//Call recurrence with changed parameters, will then use "manual placement is available"
+					$freeLocal = $freeSlot;
+					$freeDB = "slot" . $freeSlot;
+					buyItem($startDB, $startLocal, $freeLocal, $freeDB);
+				}
+			}
+		}
+		else
+		{
+			//TODO error: not enough gold
+		}
+	}
+	
+	function updateShop(Player $player)
 	{
 		$now = time();
 		
 		//Last update was saved locally, in number format
-		if(is_numeric($_SESSION['player']->last_shop_update)){
-			$last = $_SESSION['player']->last_shop_update;
+		if(is_numeric($player->last_shop_update)){
+			$lastUpdate = $player->last_shop_update;
 		}
-		//Last update was downloaded from DB, in time format
+		//Last update was downloaded from DB, in time format, need to convert it
 		else{
-			$last = strtotime($_SESSION['player']->last_shop_update);
-			$_SESSION['player']->last_shop_update = $last;
+			$lastUpdate = strtotime($player->last_shop_update);
 		}
 		
-		$seconds = $now-$last;
-		if($seconds > 14400) //4 hours
+		$elapsed = $now - $lastUpdate;
+		if($elapsed > $GLOBALS['shopUpdateFrequency']) 
 		{
 			//Updating locally
-			$_SESSION['player']->last_shop_update = $now;
-			$_SESSION['player']->generateShop();
+			$player->last_shop_update = $now;
+			$player->generateShop();
 			//Updating in DB
+			$id = $player->id;
 			$conn = connectDB();
-			$id = $_SESSION['player']->id;
 			$conn->query("UPDATE users SET last_shop_update=NOW() WHERE id=$id");
-			//Unsetting variables
 			$conn->close();
+			//Unsetting variables
 			unset($conn);
 			unset($id);
 		}
 	}
+	
 	function drawShop(Player $player)
 	{
 		//Draws sell slot
@@ -326,3 +331,82 @@
 	}
 	
 ?>
+
+<script>
+
+	$("#divPlayerBars").load('update_player_bars.php');
+
+	rescaleImages();
+	initializeHover();
+	initializeDragDrop();
+	initializeShopUpdateCountdown();
+	
+	function initializeHover()
+	{
+		$(".fotoContainer2").hover(
+			function(){
+				$(this).parent().find('.itemHover').show();
+			},
+			function(){
+				$(this).parent().find('.itemHover').hide();
+			}
+		);
+		
+		$(".fotoContainer2").bind('mousemove', function(e){
+			var top = e.pageY + 15;
+			var left = e.pageX + 8;
+			$(this).parent().find('.itemHover').css({'top': top, 'left': left});
+		});
+	}
+	function rescaleImages()
+	{
+		$(".fotoContainer2").each(function() {
+			var currObj = $(this);
+			var img = new Image;
+			img.src = currObj.css('background-image').replace(/url\(|\)$/ig, "").replace(/"/g, "").replace(/'/g, "");
+			img.onload = function() {
+				if(img.width < currObj.width() && img.height < currObj.height())
+				{
+					currObj.css('background-size', 'auto auto');
+				}
+			}
+		});
+	}
+	function initializeDragDrop()
+	{
+		$(".fotoContainer2").draggable({
+			start: function(event, ui)
+			{
+				//Set startSlot & hide hover
+				startSlot = $(this).parent().attr('id');
+				$(this).parent().find('.itemHover').hide();
+			},
+			revert: true,
+			revertDuration: 0,
+			opacity: 0.5,
+			zIndex: 100,
+			cancel: "#sell, .blank"
+		});
+	
+		$(".itemSlot").droppable({
+			accept: ".fotoContainer2",
+			tolerance: "intersect",
+		
+			drop: function(event, ui)
+			{
+				//Set endSlot & move item
+				endSlot = $(this).attr('id');
+				moveItem(startSlot, endSlot);
+			}
+		});
+	}
+	function initializeShopUpdateCountdown()
+	{
+		//alert('todo');
+	}
+	function moveItem(poczatkowySlot, koncowySlot)
+	{
+		$("#divMainOkno").load('update_shop.php', {start: startSlot, end: endSlot});
+	}
+	
+</script>

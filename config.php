@@ -518,7 +518,7 @@
 			$attackspeed = $conn->real_escape_string($this->attackspeed);
 			$critchance = $conn->real_escape_string($this->critchance);			
 			$armor = $conn->real_escape_string($this->armor);
-			$magicdefense = $conn->real_escape_string($this->magicdfense);
+			$magicdefense = $conn->real_escape_string($this->magicdefense);
 			$dmgogien = $conn->real_escape_string($this->dmgogien);
 			$dmgwoda = $conn->real_escape_string($this->dmgwoda);
 			$dmgpowietrze = $conn->real_escape_string($this->dmgpowietrze);
@@ -761,75 +761,6 @@
 			if($this->equipment[$slot] != "")
 			{
 				$this->unequipItem($this->equipment[$slot]);
-			}
-		}
-		public function sellFromSlot($slot)
-		{
-			if($this->backpack[$slot] != "")
-			{
-				//Setting variables
-				$id = $this->id;
-				$itemID = $this->backpack[$slot]->id;
-				$newZloto = $this->zloto + $this->backpack[$slot]->price;
-				$newPrice = $this->backpack[$slot]->price * 5;
-				
-				//Local updates
-				$this->zloto = $newZloto;
-				$this->backpack[$slot]->price = $newPrice;
-				
-				//Updating in DB
-				$conn = connectDB();
-				$conn->query("UPDATE items SET price=$newPrice WHERE id=$itemID");
-				$conn->query("UPDATE users SET zloto=$newZloto WHERE id=$id");
-				
-				$movedToShop = false;
-				
-				for($i = 0; $i < 15; $i++)
-				{
-					//Checking if there is space to place this item in shop
-					if($this->shop[$i] == "")
-					{
-						//Updating locally
-						$this->shop[$i] = $this->backpack[$slot];
-						$this->backpack[$slot] = "";
-						
-						//Setting variables
-						$slotPocz = "slot" . $slot;
-						$slotKon = "shop" . $i;
-						$valPocz = "NULL";
-						$valKon = $this->shop[$i]->id;
-						
-						//Updating in DB
-						$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon WHERE id=$id");
-						
-						//Ending loop
-						$movedToShop = true;
-						break;
-					}
-				}
-				
-				//There was no space for this item
-				if($movedToShop == false)
-				{
-					//Updating locally
-					$this->backpack[$slot] = "";
-					
-					//Setting variables
-					$slotPocz = "slot" . $slot;
-					$valPocz = "NULL";
-					
-					//Updating in DB
-					$conn->query("UPDATE equipment SET $slotPocz=$valPocz WHERE id=$id");
-					$conn->query("DELETE FROM items WHERE id=$itemID");
-				}
-				
-				//Unsetting helper variables
-				$conn->close();
-				unset($conn);
-				unset($id);
-				unset($itemID);
-				unset($newPrice);
-				unset($newZloto);
 			}
 		}
 		public function generateShop()
@@ -1099,6 +1030,16 @@
 			echo "<div class='fotoContainer' id='" .$this->id. "Foto' style='background-image: " . $fotoPath . ";'></div>";
 			
 			unset($fotoPath);
+		}
+		public function drawJourney()
+		{
+			if($this->journey != null)
+			{
+				echo "<div id='journeyContainer'>";
+					echo "<img style='height: 70%' src='/gfx/journey.png'>";
+					echo "<div id='journeyTekst'></div>";
+				echo "</div>";
+			}
 		}
 		public function drawMail()
 		{
@@ -1442,8 +1383,6 @@
         }
         return "rgb(" . $red . ", " . $green . ", 00)";
     }
-	
-	
 	function generateItem($tier)
 	{
 		$item = new Item();
@@ -1828,29 +1767,29 @@
 			//There is no item at that backpack slot, we draw a blank image
 			if($item == "")
 			{
-				//Echoes out a div with that slot name (EMPTY), e.g. bp1, bp2
-				echo "<div class='itemSlot arrow backpack blank' id='bp$slot'>";
+				//Echoes out a div with that slot name (EMPTY), e.g. slot1, slot2
+				echo "<div class='itemSlot arrow backpack blank' id='slot$slot'>";
 				drawBlankItem("backpack", $slot);
 				echo "</div>";
 			}
 			//We draw the item depending on rarity
 			else 
 			{
-				//Echoes out a div with that slot name WITH AN ITEM INSIDE, e.g. bp1, bp2
+				//Echoes out a div with that slot name WITH AN ITEM INSIDE, e.g. slot1, slot2
 				$rarity = $item->rarity;
-				echo "<div class='itemSlot arrow $rarity backpack' id='bp$slot'>";
-				$item->drawFoto($slot);
-				//Drawing hover with comparison to equipped item
-				if($player->equipment[$item->slot] != "")
-				{
-					$item->drawHoverCompare($player->equipment[$item->slot]);
-				}
-				//Drawing normal hover
-				else
-				{
-					$item->drawHover();
-				}
+				
+				echo "<div class='itemSlot arrow $rarity backpack' id='slot$slot'>";
+					$item->drawFoto($slot);
+					//Drawing hover with comparison to equipped item
+					if($player->equipment[$item->slot] != ""){
+						$item->drawHoverCompare($player->equipment[$item->slot]);
+					}
+					//Drawing normal hover
+					else{
+						$item->drawHover();
+					}
 				echo "</div>";
+				
 				unset($rarity);
 			}
 		}

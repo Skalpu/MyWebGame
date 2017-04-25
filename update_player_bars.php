@@ -4,6 +4,7 @@
     login_check();
 	
 	$_SESSION['player']->updateLocally();
+	$_SESSION['player']->drawJourney();
 	$_SESSION['player']->drawMail();
 	$_SESSION['player']->drawGold();
 	$_SESSION['player']->drawCrystals();
@@ -21,11 +22,31 @@
 	{
 		$last = strtotime($_SESSION['player']->last_update);
 	}
-
+	
 ?>
 
 <script>
 	
-	//TODO: update barów na żywo tutaj
+	journeyCountdown();
+	
+	function journeyCountdown()
+	{
+		var journey = <?php echo json_encode($_SESSION['player']->journey); ?>;
+		
+		if(journey != null)
+		{
+			var journey_until = <?php echo json_encode(date("Y-m-d H:i:s", $_SESSION['player']->journey_until)); ?>;
+			var journey_started_seconds = <?php echo json_encode($_SESSION['player']->journey_started); ?>;
+			var journey_until_seconds = <?php echo json_encode($_SESSION['player']->journey_until); ?>;
+			var journeyFoto = "#" + journey + "Foto";
+		
+			$("#journeyTekst").countdown(journey_until, function(event) {
+				$(this).html(event.strftime('%H:%M:%S'))
+			}).on('finish.countdown', function(event) {
+				//TODO Load combat when countdown finishes
+				//$("#divMainOkno").load('walka.php');
+			});
+		}
+	}
 	
 </script>

@@ -94,7 +94,7 @@ body
 	height: 9%;
 	text-align: center;
 }
-#zlotoTekst
+#zlotoTekst, #krysztalyTekst, #mailTekst, #journeyTekst
 {
 	color: white;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -109,12 +109,6 @@ body
 	height: 9%;
 	text-align: center;
 }
-#krysztalyTekst
-{
-	color: white;
-	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;	
-	font-size: 1.8vh;
-}
 #mailContainer
 {
 	position: fixed;
@@ -124,10 +118,14 @@ body
 	height: 9%;
 	text-align: center;
 }
-#mailTekst
+#journeyContainer
 {
-	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;	
-	font-size: 1.8vh;
+	position: fixed;
+	right: 30%;
+	top: 3%;
+	width: 5%;
+	height: 9%;
+	text-align: center;
 }
 
 

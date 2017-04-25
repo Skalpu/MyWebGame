@@ -43,15 +43,16 @@
 	
 	<?php  
 	
-	//echo '<pre>';
-	//var_dump($_SESSION['player']);
-	//echo '</pre>';
-	
+	echo '<pre>';
+	var_dump($_SESSION['player']);
+	echo '</pre>';
+
 	?>
 		<!-- TODO:
 		
-		- FIX SHOP UPDATES
-		- FIX SHOP AND EQUIPMENT NOT LOADING AFTER BUY AND RELOG
+		- ADD SHOP UPDATE COUNTDOWN
+		- FIX "TEARING" ON rescaleImages() in shop
+		- CHANGE EQUIPMENT LIKE SHOP
 		- CHANGE HOW PLAYER IS CREATED: PUT HIM INTO DB AND THEN USE LOGIN
 		- ADD EVENT CHANCE ON JOURNEY
 		- ADD LOOT TIERS TO MONSTERS

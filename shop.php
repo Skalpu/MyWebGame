@@ -3,7 +3,7 @@
     require_once('config.php');
     login_check();
 	
-	//Last update was saved locally, in number format
+	/*//Last update was saved locally, in number format
 	if(is_numeric($_SESSION['player']->last_shop_update)){
 		$last = $_SESSION['player']->last_shop_update;
 	}
@@ -15,7 +15,7 @@
 	$next = $last + 14400; //4 hours
 	$next = date("Y-m-d H:i:s", $next);
 	$level = $_SESSION['player']->village['trader'];
-	
+	*/
 ?>
 
 
@@ -80,7 +80,8 @@
 	document.addEventListener('DOMContentLoaded',function()
     {
         $("#divPlayerBars").load('update_player_bars.php');
-		
+		$("#divMainOkno").load('update_shop.php');
+		/*
 		//Initialize countdown
 		startCountdown();
 		
@@ -92,12 +93,12 @@
 		});
 		
 		var poczatkowySlot = "";
-		var koncowySlot = "";
+		var koncowySlot = "";*/
     });
 	
 	
 	
-	function startCountdown()
+	/*function startCountdown()
 	{
 		var level = <?php echo json_encode($level); ?>;
 		
@@ -118,75 +119,8 @@
 				});
 			});
 		}
-	}
+	}*/
 
-	function moveItem(poczatkowySlot, koncowySlot)
-	{
-		$("#divMainOkno").load('update_shop.php', {poczatek: poczatkowySlot, koniec: koncowySlot}, function() {
-			rescaleImages();
-			initializeDragDrop();
-			initializeHover();
-		});
-	}
 	
-	function initializeDragDrop()
-	{
-		$(".fotoContainer2").draggable({
-			start: function(event, ui)
-			{
-				poczatkowySlot = $(this).parent().attr('id');
-				$(this).parent().find('.itemHover').hide();
-			},
-			revert: true,
-			revertDuration: 0,
-			opacity: 0.5,
-			zIndex: 100,
-			cancel: "#sell, .blank"
-		});
-	
-		$(".itemSlot").droppable({
-			accept: ".fotoContainer2",
-			tolerance: "intersect",
-		
-			drop: function(event, ui)
-			{
-				koncowySlot = $(this).attr('id');
-				moveItem(poczatkowySlot, koncowySlot);
-			}
-		});
-	}
-	
-	function initializeHover()
-	{
-		$(".fotoContainer2").hover(
-			function(){
-				$(this).parent().find('.itemHover').show();
-			},
-			function(){
-				$(this).parent().find('.itemHover').hide();
-			}
-		);
-		
-		$(".fotoContainer2").bind('mousemove', function(e){
-			var top = e.pageY + 15;
-			var left = e.pageX + 8;
-			$(this).parent().find('.itemHover').css({'top': top, 'left': left});
-		});
-	}
-	
-	function rescaleImages()
-	{
-		$(".fotoContainer2").each(function() {
-			var currObj = $(this);
-			var img = new Image;
-			img.src = currObj.css('background-image').replace(/url\(|\)$/ig, "").replace(/"/g, "").replace(/'/g, "");
-			img.onload = function() {
-				if(img.width < currObj.width() && img.height < currObj.height())
-				{
-					currObj.css('background-size', 'auto auto');
-				}
-			}
-		});
-	}
 	
 </script>
