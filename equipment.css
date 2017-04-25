@@ -238,17 +238,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 
 /*Equipment/backpack/shop slots*/
-.inventoryLabel
-{
-	text-align: center;
-	width: 36.5vh;
-	max-width: 18.3vw;
-	padding-top: 0.5vh;
-	padding-bottom: 0.5vh;
-	font-size: 3vh;
-	background: linear-gradient(beige,burlywood);
-	border: 1px solid black;
-}
 .itemSlot
 {
 	width: 12vh;
