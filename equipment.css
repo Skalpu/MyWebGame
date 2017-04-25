@@ -186,7 +186,6 @@ background: -moz-radial-gradient(center, ellipse cover, #b7deed 0%, #71ceef 50%,
 background: -webkit-radial-gradient(center, ellipse cover, #b7deed 0%,#71ceef 50%,#21b4e2 51%,#b7deed 100%); /* Chrome10-25,Safari5.1-6 */
 background: radial-gradient(ellipse at center, #b7deed 0%,#71ceef 50%,#21b4e2 51%,#b7deed 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b7deed', endColorstr='#b7deed',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
 }
 .magic:hover
 {
@@ -239,11 +238,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 
 /*Equipment/backpack/shop slots*/
+.inventoryLabel
+{
+	text-align: center;
+	width: 36.5vh;
+	max-width: 18.3vw;
+	padding-top: 0.5vh;
+	padding-bottom: 0.5vh;
+	font-size: 3vh;
+	background: linear-gradient(beige,burlywood);
+	border: 1px solid black;
+}
 .itemSlot
 {
 	width: 12vh;
 	height: 12vh;
-	margin: 0.1vh;
+	max-width: 6vw;
+	max-height: 6vw;
 }
 #equipmentOuter, #shopOuter
 {
@@ -253,19 +264,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 {
 	right: 3vh;
 }
-#sellOuter
-{
-	top: 24.9vh;
-	right: 45.0vh;
-}
-#equipmentOuter, #backpackOuter, #sellOuter, #shopOuter
+#equipmentOuter, #backpackOuter, #shopOuter
 {
 	display: table;
     position: absolute;
     height: 100%;
-	width: 50%;
+	width: 45%;
 }
-#equipmentInner, #backpackInner, #sellInner, #shopInner
+#equipmentInner, #backpackInner, #shopInner
 {
 	display: table-cell; 
 	vertical-align: middle;
@@ -273,9 +279,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 }
 .sell
 {
-	float: right;
 	box-shadow: inset 0 0 10px black;
 	border: 1px solid black;
+	float: left;
+	margin-left: 0.5vw;
 	
 	background: #ffffff; /* Old browsers */
 	background: -moz-linear-gradient(-45deg, #ffffff 0%, #f1f1f1 50%, #e1e1e1 51%, #f6f6f6 100%); /* FF3.6-15 */
@@ -307,21 +314,20 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 {
 	clear: right;
 }
-#divRemainingTime
+#divCountdown
 {
-	top: 23.5%;
+	margin-top: 4%;
 	text-align: center;
-	font-size: 4vh;
 	color: white;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
-#divRemainingTimeLabel
+#countdownLabel
 {
-	top: 22%;
-	text-align: center;
-	font-size: 3vhh;
-	color: white;
-	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	font-size: 2.0vh;
+}
+#countdown
+{
+	font-size: 3.0vh;
 }
 
 .fotoContainer2

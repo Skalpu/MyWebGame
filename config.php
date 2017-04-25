@@ -449,7 +449,7 @@
 		public function drawFoto($divID)
 		{
 			$fotoPath = "url(gfx/itemy/" . $this->foto . ".png)";
-			echo "<div class='fotoContainer2' id='" .$divID. "' style='background-image: " . $fotoPath . ";'></div>";
+			echo "<div class='fotoContainer2 arrow' id='" .$divID. "' style='background-image: " . $fotoPath . ";'></div>";
 			unset($fotoPath);
 		}
 		public static function withID($id)
@@ -1711,14 +1711,14 @@
 	}
 	function drawBlankItem($slot, $divID)
 	{
-		//"Normal" blanks
+		//Blanks with pre-filled image (for equipment)
 		if($slot != "backpack" or $slot != "shop")
 		{
 			$fotoPath = "url(gfx/eq_slots/" . $slot . "_slot_000000.png)";
 			echo "<div class='fotoContainer2 blank' id='" .$divID. "' style='background-image: " . $fotoPath . ";'></div>";
 			unset($fotoPath); 
 		}
-		//Blanks with pre-filled image (for equipment)
+		//"Normal" blanks
 		else
 		{
 			echo "<div class='fotoContainer2' id='" .$divID. "'></div>";
@@ -1768,7 +1768,7 @@
 			if($item == "")
 			{
 				//Echoes out a div with that slot name (EMPTY), e.g. slot1, slot2
-				echo "<div class='itemSlot arrow backpack blank' id='slot$slot'>";
+				echo "<div class='itemSlot backpack blank' id='slot$slot'>";
 				drawBlankItem("backpack", $slot);
 				echo "</div>";
 			}

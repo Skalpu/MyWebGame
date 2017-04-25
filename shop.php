@@ -3,19 +3,6 @@
     require_once('config.php');
     login_check();
 	
-	/*//Last update was saved locally, in number format
-	if(is_numeric($_SESSION['player']->last_shop_update)){
-		$last = $_SESSION['player']->last_shop_update;
-	}
-	//Last update was downloaded from DB, in time format
-	else{
-		$last = strtotime($_SESSION['player']->last_shop_update);
-		$_SESSION['player']->last_shop_update = $last;
-	}
-	$next = $last + 14400; //4 hours
-	$next = date("Y-m-d H:i:s", $next);
-	$level = $_SESSION['player']->village['trader'];
-	*/
 ?>
 
 
@@ -54,8 +41,6 @@
 
 	<div id="divPlayerBars"></div>
     <div id="divMainOkno"></div>
-	<div id="divRemainingTimeLabel" class="center noselect"></div>
-	<div id="divRemainingTime" class="center noselect"></div>
 
 	<nav><ul>
 		<li><a href = "main.php"><div class='menuContainer' id='mainMenu'></div></a></li>
@@ -81,46 +66,6 @@
     {
         $("#divPlayerBars").load('update_player_bars.php');
 		$("#divMainOkno").load('update_shop.php');
-		/*
-		//Initialize countdown
-		startCountdown();
-		
-		//Initialize the shop
-		$("#divMainOkno").load('update_shop.php', function() {
-			rescaleImages();
-			initializeDragDrop();
-			initializeHover();
-		});
-		
-		var poczatkowySlot = "";
-		var koncowySlot = "";*/
     });
-	
-	
-	
-	/*function startCountdown()
-	{
-		var level = <?php echo json_encode($level); ?>;
-		
-		if(level != 0)
-		{
-			$("#divRemainingTimeLabel").html("NASTĘPNA DOSTAWA ZA");
-			var nextUpdate = <?php echo json_encode($next); ?>;
-		
-			$("#divRemainingTime").countdown(nextUpdate, function(event) {
-				$(this).html(event.strftime('%H:%M:%S'))
-			}).on('finish.countdown', function(event) {
-				//Reload shop when countdown hits 0
-				$("#divMainOkno").load('update_shop.php', function() {
-					rescaleImages();
-					initializeDragDrop();
-					initializeHover();
-					startCountdown();
-				});
-			});
-		}
-	}*/
-
-	
 	
 </script>

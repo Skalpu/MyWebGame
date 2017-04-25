@@ -42,15 +42,15 @@
     <div id="divMainOkno" style="overflow-Y: scroll;">
 	
 	<?php  
-	
-	echo '<pre>';
-	var_dump($_SESSION['player']);
-	echo '</pre>';
+
+	//echo '<pre>';
+	//var_dump($_SESSION['player']);
+	//echo '</pre>';
 
 	?>
 		<!-- TODO:
 		
-		- ADD SHOP UPDATE COUNTDOWN
+		- FIX SHOP CSS
 		- FIX "TEARING" ON rescaleImages() in shop
 		- CHANGE EQUIPMENT LIKE SHOP
 		- CHANGE HOW PLAYER IS CREATED: PUT HIM INTO DB AND THEN USE LOGIN

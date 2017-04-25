@@ -14,6 +14,7 @@
 	updateShop($_SESSION['player']);
 	drawBackpack($_SESSION['player']);
 	drawShop($_SESSION['player']);
+	drawCountdown();
 				
 	function processItemMoves()
 	{
@@ -65,8 +66,20 @@
 		$_SESSION['player']->{$location}[$endLocal] = $holder;
 		
 		//Setting variables
-		$startVal = $_SESSION['player']->{$location}[$startLocal]->id;
-		$endVal = $_SESSION['player']->{$location}[$endLocal]->id;
+		if($_SESSION['player']->{$location}[$startLocal] != ""){
+			$startVal = $_SESSION['player']->{$location}[$startLocal]->id;
+		}
+		else{
+			$startVal = "NULL";
+		}
+		
+		if($_SESSION['player']->{$location}[$endLocal] != ""){
+			$endVal = $_SESSION['player']->{$location}[$endLocal]->id;
+		}
+		else{
+			$endVal = "NULL";
+		}
+		
 		
 		//Database updateShop
 		$id = $_SESSION['player']->id;
@@ -282,26 +295,19 @@
 	
 	function drawShop(Player $player)
 	{
-		//Draws sell slot
-		echo "<div id='sellOuter'><div id='sellInner'>";
-			echo "<div class='itemSlot arrow sell' id='sell'>";
-				echo "<div class='fotoContainer2' style='background-image: url(gfx/eq_slots/sell.png)'></div>";
-			echo "</div>";
-		echo "</div></div>";
-		
-		
-		//Draws shop
+		//Checks if player has the required trader level
 		if($player->village['trader'] != 0)
 		{
-			
+			//Draws shop
 			echo "<div id='shopOuter'><div id='shopInner'>";
+
 			//Iterates through all the player shop slots
 			foreach($player->shop as $slot => $item)
 			{
 				//There is no item at that shop slot, we draw a blank image
 				if($item == "")
 				{
-					echo "<div class='itemSlot arrow shop blank' id='shop$slot'>";
+					echo "<div class='itemSlot shop blank' id='shop$slot'>";
 					drawBlankItem("shop", $slot);
 					echo "</div>";
 				}
@@ -309,8 +315,9 @@
 				else 
 				{
 					$rarity = $item->rarity;
-					echo "<div class='itemSlot arrow $rarity shop' id='shop$slot'>";
+					echo "<div class='itemSlot $rarity shop' id='shop$slot'>";
 					$item->drawFoto($slot);
+					
 					//Drawing hover with comparison to equipped item
 					if($player->equipment[$item->slot] != "")
 					{
@@ -325,9 +332,38 @@
 					unset($rarity);
 				}
 			}
-			echo "</div></div>";
 			
+			drawSellSlot();
+			
+			echo "</div></div>";
 		}
+	}
+	
+	function drawSellSlot()
+	{
+		//Draws sell slot
+		echo "<div class='itemSlot sell' id='sell'>";
+			echo "<div class='fotoContainer2' style='background-image: url(gfx/eq_slots/sell.png)'></div>";
+		echo "</div>";
+	}
+	
+	function drawCountdown()
+	{
+		if(is_numeric($_SESSION['player']->last_shop_update)){
+			$last = $_SESSION['player']->last_shop_update;
+		}
+		else{
+			$last = strtotime($_SESSION['player']->last_shop_update);
+		}
+			
+		$next = $last + $GLOBALS['shopUpdateFrequency'];
+		$next = date("Y-m-d H:i:s", $next);
+		
+		
+		echo "<div id='divCountdown'>";
+			echo "<div id='countdownLabel'>NASTĘPNA DOSTAWA ZA</div>";
+			echo "<div id='countdown'>$next</div>";
+		echo "</div>";
 	}
 	
 ?>
@@ -341,6 +377,20 @@
 	initializeDragDrop();
 	initializeShopUpdateCountdown();
 	
+	function rescaleImages()
+	{
+		$(".fotoContainer2").each(function() {
+			var currObj = $(this);
+			var img = new Image;
+			img.src = currObj.css('background-image').replace(/url\(|\)$/ig, "").replace(/"/g, "").replace(/'/g, "");
+			img.onload = function() {
+				if(img.width < currObj.width() && img.height < currObj.height())
+				{
+					currObj.css('background-size', 'auto auto');
+				}
+			}
+		});
+	}
 	function initializeHover()
 	{
 		$(".fotoContainer2").hover(
@@ -356,20 +406,6 @@
 			var top = e.pageY + 15;
 			var left = e.pageX + 8;
 			$(this).parent().find('.itemHover').css({'top': top, 'left': left});
-		});
-	}
-	function rescaleImages()
-	{
-		$(".fotoContainer2").each(function() {
-			var currObj = $(this);
-			var img = new Image;
-			img.src = currObj.css('background-image').replace(/url\(|\)$/ig, "").replace(/"/g, "").replace(/'/g, "");
-			img.onload = function() {
-				if(img.width < currObj.width() && img.height < currObj.height())
-				{
-					currObj.css('background-size', 'auto auto');
-				}
-			}
 		});
 	}
 	function initializeDragDrop()
@@ -402,7 +438,12 @@
 	}
 	function initializeShopUpdateCountdown()
 	{
-		//alert('todo');
+		var until = $("#countdown").html();
+		$("#countdown").countdown(until, function(event) {
+			$(this).html(event.strftime('%H:%M:%S'))
+		}).on('finish.countdown', function(event) {
+			$("#divMainOkno").load('update_shop.php');
+		});
 	}
 	function moveItem(poczatkowySlot, koncowySlot)
 	{
