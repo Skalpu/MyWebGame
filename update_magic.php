@@ -17,6 +17,9 @@
 		
 		//Drawing main container
 		echo "<div id='divPreparation'>";
+		//Drawing title
+		echo "<div id='preparationTitle' class='noselect'>MAGIA PRZYGOTOWAWCZA</div>";
+			
 		
 		//Drawing dropdowns
 		for($i = 0; $i < $preparationAmount; $i++)
@@ -26,15 +29,16 @@
 				$buttonText = $player->preparationMagic[$i]->name;
 			}
 			else{
-				$buttonText = "Czar przygotowawczy " . ($i+1);
+				$buttonText = "Czar przygotowawczy #" . ($i+1);
 			}
 			
 			//Drawing dropdown
 			echo "<div class='dropdown'>";
+			
 				//Drawing dropdown button
-				echo "<button onclick='showDropdown()' class='dropdownButton orange arrow'>$buttonText</button>";
-				//Drawing dropdown content
-				echo "<div id='preparationDropdown$i' class='dropdownContent'>";
+				echo "<div class='dropdownButton orange arrow noselect'>$buttonText</div>";
+					//Drawing dropdown content
+					echo "<div id='preparationContent$i' class='dropdownContent'>";
 					foreach ($GLOBALS['preparationSpells'] as $key => $spell)
 					{
 						if($magicLevel >= $spell->level)
@@ -46,11 +50,13 @@
 								$class = "";
 							}
 							
-							echo "<div class='dropdownOption $class whiteGradient arrow'>" . $spell->name . "</div>";
+							$element = $spell->element;
+							
+							echo "<div class='dropdownOption $class whiteGradient arrow noselect'><div class='icon $element'></div><div class='spellName'>" . $spell->name . "</div></div>";
 						}
 					}
-				//End of dropdown content
-				echo "</div>";
+					//End of dropdown content
+					echo "</div>";
 			//End of dropdown
 			echo "</div>";
 		}

@@ -31,18 +31,14 @@
 		}
 	}
 	
-	$preparationSpells = [];
-	$combatSpells = [];
+	$preparationSpells = [
+		0 => new Spell("Kamienna skóra", 1, "preparation", "buff", "armor", 1, "earth", 3, 5, 10),
+		1 => new Spell("Odbicie magii", 1, "preparation", "buff", "magicdefense", 1, "air", 3, 5, 10),
+		2 => new Spell("Tarcza płomieni", 1, "preparation", "buff", "reflect", 1, "fire", 2, 3, 15),
+		3 => new Spell("Śliskoskórność", 1, "preparation", "buff", "dodge", 1, "water", 3, 5, 15),
+	];
+	$combatSpells = [
+		0 => new Spell("Magiczny płomień", 1, "combat", "damage", "hp", 1, "fire", 5, 6, 10),
+	];
 
-	/* PREPARATION SPELLS */
-	$magicznaTarcza = new Spell("Magiczna tarcza", 1, "preparation", "buff", "armor", 1, "earth", 3, 5, 10);
-	array_push($preparationSpells, $magicznaTarcza);
-	$antymagicznaTarcza = new Spell("Tarcza antymagiczna", 1, "preparation", "buff", "magicdefense", 1, "water", 3, 5, 10);
-	array_push($preparationSpells, $antymagicznaTarcza);
-	
-	/* COMBAT SPELLS */
-	$plomyk = new Spell("Magiczny płomyk", 1, "combat", "damage", "hp", 1, "fire", 5, 6, 10);
-	array_push($combatSpells, $plomyk);
-	
-	
 ?>

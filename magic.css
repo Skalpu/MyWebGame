@@ -7,17 +7,20 @@
 }
 .dropdownButton
 {
-	width: 15vw;
 	padding: 5px;
+	width: 100%;
+	text-align: center;
 	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+	font-size: 0.9em;
 }
 .dropdownContent
 {
 	display: none;
 	position: absolute;
-	min-width: 10%;
 	z-index: 1;
-	width: 15vw;
+	width: 100%;
+	max-height: 40vh;
+	overflow-y: auto;
 	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
 	
 	border: 1px solid black;
@@ -26,7 +29,6 @@
 {
 	border-bottom: 1px solid black;
 	padding: 5px;
-	font-size: 0.8em;
 	text-align: center;
 }
 .dropdownLast
@@ -36,9 +38,44 @@
 
 #divPreparation
 {
-	position: absolute;
+	position: relative;
 	top: 0.7vw;
 	left: 1vw;
 	width: 45%;
 	height: 95%;
+}
+#preparationTitle
+{
+	color: white;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	font-size: 1.2em;
+}
+
+.icon
+{
+	margin-left: 3px;
+	height: 0.7em; 
+	width: auto;  
+	display: inline-block;
+	
+    filter: drop-shadow(1px 1px 0 black) 
+			drop-shadow(-1px -1px 0 black);
+}
+.earth{
+	content: url(gfx/earth3.png);
+}
+.air{
+	content: url(gfx/air.png);
+}
+.fire{
+	content: url(gfx/fire1.png);
+}
+.water{
+	content: url(gfx/water.png);
+}
+.spellName
+{
+	margin-left: 3px;
+	display: inline-block;
+	font-size: 0.9em;
 }
