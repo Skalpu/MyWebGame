@@ -1,0 +1,44 @@
+.dropdown
+{
+	position: relative;
+	float: left;
+	clear: left;
+	margin-top: 5px;
+}
+.dropdownButton
+{
+	width: 15vw;
+	padding: 5px;
+	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+}
+.dropdownContent
+{
+	display: none;
+	position: absolute;
+	min-width: 10%;
+	z-index: 1;
+	width: 15vw;
+	box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box;
+	
+	border: 1px solid black;
+}
+.dropdownOption
+{
+	border-bottom: 1px solid black;
+	padding: 5px;
+	font-size: 0.8em;
+	text-align: center;
+}
+.dropdownLast
+{
+	border-bottom: 0px solid black;
+}
+
+#divPreparation
+{
+	position: absolute;
+	top: 0.7vw;
+	left: 1vw;
+	width: 45%;
+	height: 95%;
+}

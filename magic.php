@@ -2,8 +2,9 @@
 
     require_once('config.php');
     login_check();
-
+	
 ?>
+
 
 
 <HTML>
@@ -12,7 +13,7 @@
     
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="main.css">
-	<link rel="stylesheet" type="text/css" href="journey.css">
+	<link rel="stylesheet" type="text/css" href="magic.css">
 	<script src="jquery-ui-1.12.1/jquery-3.1.1.js"></script>
 	<script src="jquery-ui-1.12.1/jquery-ui.js"></script>
 	<script src="jquery-ui-1.12.1/jquery.countdown.js"></script>
@@ -48,8 +49,8 @@
         <li><a href = "equipment.php"><div class='menuContainer' id='equipmentMenu'></div></a></li>
 		<li><a href = "wioska.php"><div class='menuContainer' id='wioskaMenu'></div></a></li>
 		<li><a href = "shop.php"><div class='menuContainer' id='shopMenu'></div></a></li>
-		<li><a href = "magic.php"><div class='menuContainer' id='magiaMenu'></div></a></li>
-        <li><a href = "journey.php" class="active"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
+		<li><a href = "magic.php" class="active"><div class='menuContainer' id='magiaMenu'></div></a></li>
+        <li><a href = "journey.php"><div class='menuContainer' id='wyprawaMenu'></div></a></li>
 		<li><a href = "arena.php"><div class='menuContainer' id='arenaMenu'></div></a></li>
         <li><a href = "logout.php"><div class='menuContainer' id='logoutMenu'></div></a></li>
     </ul></nav>
@@ -65,7 +66,7 @@
 	document.addEventListener('DOMContentLoaded',function()
     {
         $("#divPlayerBars").load('update_player_bars.php');
-		$("#divMainOkno").load('update_journey.php');
+		$("#divMainOkno").load('update_magic.php');
     });
-
+	
 </script>

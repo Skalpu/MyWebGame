@@ -608,7 +608,6 @@
 		public $journey_started;
 		public $journey_until;
 		
-		
 		//Combat settings
 		public $side;
 		public $did_move;
@@ -623,6 +622,12 @@
 		public $armor = 0;
 		public $magicdefense = 0;
 		public $movepenalty = 0;
+		
+		//Magic
+		public $earthMagic = 0;
+		public $airMagic = 0;
+		public $fireMagic = 0;
+		public $waterMagic = 0;
 		
 		//Inventory
 		public $backpack = [
@@ -677,6 +682,20 @@
 			'magetower' => 0,
 			'healing' => 0,
 			'manahealing' => 0,
+		];
+		public $preparationMagic = [
+			0 => "",
+			1 => "",
+			2 => "",
+			3 => "",
+			4 => ""
+		];
+		public $combatMagic = [
+			0 => "",
+			1 => "",
+			2 => "",
+			3 => "",
+			4 => ""
 		];
 		
 		
@@ -1218,10 +1237,10 @@
 			$this->movepenalty = $row['movepenalty'];
 			
 			if($downloadItems == true){
-				$this->loadItems($id);
+				$this->downloadItems($id);
 			}
 			if($downloadVillage == true){
-				$this->loadVillage($id);
+				$this->downloadVillage($id);
 			}
 		}
 		protected function loadItems($id)
