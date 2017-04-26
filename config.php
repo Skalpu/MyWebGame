@@ -623,12 +623,6 @@
 		public $magicdefense = 0;
 		public $movepenalty = 0;
 		
-		//Magic
-		public $earthMagic = 0;
-		public $airMagic = 0;
-		public $fireMagic = 0;
-		public $waterMagic = 0;
-		
 		//Inventory
 		public $backpack = [
 			0 => "",

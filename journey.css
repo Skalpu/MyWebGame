@@ -216,6 +216,9 @@
 	height: 0.8em; 
 	width: auto;  
 	display: inline-block;
+
+	filter: drop-shadow(1px 1px 0 black) 
+			drop-shadow(-1px -1px 0 black);	
 }
 .statText
 {

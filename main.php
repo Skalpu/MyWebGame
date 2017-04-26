@@ -43,9 +43,9 @@
 	
 	<?php  
 
-	//echo '<pre>';
-	//var_dump($_SESSION['player']);
-	//echo '</pre>';
+	echo '<pre>';
+	var_dump($_SESSION['player']);
+	echo '</pre>';
 
 	?>
 		<!-- TODO:

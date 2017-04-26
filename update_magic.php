@@ -11,16 +11,11 @@
 	{
 		$preparationAmount = calculatePreparationAmount();
 		$combatAmount = calculateCombatAmount();
-		//TODO wpływ rasy, klasy na poziom magii
-		$magicLevel = $player->village['magetower'];
-		
 		
 		//Drawing main container
 		echo "<div id='divPreparation'>";
 		//Drawing title
 		echo "<div id='preparationTitle' class='noselect'>MAGIA PRZYGOTOWAWCZA</div>";
-			
-		
 		//Drawing dropdowns
 		for($i = 0; $i < $preparationAmount; $i++)
 		{
@@ -37,22 +32,29 @@
 			
 				//Drawing dropdown button
 				echo "<div class='dropdownButton orange arrow noselect'>$buttonText</div>";
+				unset($buttonText);
+				
 					//Drawing dropdown content
-					echo "<div id='preparationContent$i' class='dropdownContent'>";
+					echo "<div id='preparationContent$i' class='dropdownContent'>";					
+					//Drawing spells
 					foreach ($GLOBALS['preparationSpells'] as $key => $spell)
 					{
-						if($magicLevel >= $spell->level)
+						//Checking if player has access to the spell
+						if($player->village['magetower'] >= $spell->level)
 						{
+							//Checking if this isn't the last dropdown
 							if($key == (count($GLOBALS['preparationSpells']) - 1)){
 								$class = "dropdownLast";
 							}
 							else{
 								$class = "";
 							}
-							
+							//Checking the element of the spell
 							$element = $spell->element;
 							
 							echo "<div class='dropdownOption $class whiteGradient arrow noselect'><div class='icon $element'></div><div class='spellName'>" . $spell->name . "</div></div>";
+							unset($class);
+							unset($element);
 						}
 					}
 					//End of dropdown content
@@ -73,14 +75,14 @@
 	function calculatePreparationAmount()
 	{
 		//TODO wpływ rasy i klasy na ilość
-		$amount = $_SESSION['player']->village['magetower'];
+		$amount = 5; //$_SESSION['player']->village['magetower'];
 		return $amount;
 	}
 	
 	function calculateCombatAmount()
 	{
 		//TODO wpływ rasy i klasy na ilość
-		$amount = $_SESSION['player']->village['magetower'];
+		$amount = 5; //$_SESSION['player']->village['magetower'];
 		return $amount;
 	}
 
@@ -93,29 +95,35 @@
 	
 	function initializeDropdowns()
 	{
-		//Show dropdown on button click
-		$(".dropdownButton").click(function() {
+		//Button was clicked
+		$(".dropdownButton").click(function(e){
+			//Checking if dropdown is currently shown or hidden
 			var current = $(this).parent().find(".dropdownContent").css("display");
-			
+		
+			//Show or hide accordingly
 			if(current == "none"){
 				var next = "block";
+				$(".dropdownContent").css("display", "none");
 			}
 			else{
 				var next = "none";
 			}
 			
 			$(this).parent().find(".dropdownContent").css("display", next);
-		});
 		
-		//Hide dropdown on click outside
-		$(document).mouseup(function (e){
-			var container = $(".dropdownContent");
-			
-			if(!container.is(e.target) && container.has(e.target).length === 0){
-				container.hide();
-			}
+			e.stopPropagation();
+		});
+
+		//Option was selected
+		$(".dropdownOption").click(function(e){
+			$(this).parent().hide();
+			e.stopPropagation();
+		});
+
+		//Someone clicked outside
+		$(document).click(function(){
+			$(".dropdownContent").hide();
 		});
 	}
-	
 
 </script>
