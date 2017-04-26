@@ -94,6 +94,27 @@
 		unset($id);
 		unset($conn);
 	}
+		
+	function findFreeSlot($location)
+	{
+		$foundSlot = false;
+		
+		for($i = 0; $i < count($_SESSION['player']->{$location}); $i++)
+		{
+			if($_SESSION['player']->{$location}[$i] == "")
+			{
+				$foundSlot = true;
+				break;
+			}
+		}
+		
+		if($foundSlot == true){
+			return $i;
+		}
+		else{
+			return null;
+		}
+	}
 	
 	function sellItem($startDB, $startLocal, $endDB, $endLocal)
 	{
@@ -130,28 +151,7 @@
 			}
 		}
 	}
-	
-	function findFreeSlot($location)
-	{
-		$foundSlot = false;
-		
-		for($i = 0; $i < count($_SESSION['player']->{$location}); $i++)
-		{
-			if($_SESSION['player']->{$location}[$i] == "")
-			{
-				$foundSlot = true;
-				break;
-			}
-		}
-		
-		if($foundSlot == true){
-			return $i;
-		}
-		else{
-			return null;
-		}
-	}
-	
+
 	function sellAndDelete($startDB, $startLocal)
 	{
 		//Setting variables

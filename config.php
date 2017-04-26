@@ -693,30 +693,6 @@
 		];
 		
 		
-		public function addToBackpack(Item $item)
-		{
-			for($i = 0; $i < count($this->backpack); $i++)
-			{
-				if($this->backpack[$i] == "")
-				{
-					$this->backpack[$i] = $item;
-					//Saving item itself to database
-					$item->saveToDB();
-					//Saving player backpack to database
-					$conn = connectDB();
-					$id = $this->id;
-					$itemID = $item->id;
-					$slot = "slot" . $i;
-					$conn->query("UPDATE equipment SET $slot=$itemID WHERE id=$id");
-					$conn->close();
-					unset($conn);
-					unset($id);
-					unset($itemID);
-					unset($slot);
-					break;
-				}
-			}
-		}
 		public function equipItem(Item $item)
 		{
 			$this->sila += $item->sila;
@@ -735,11 +711,8 @@
 			$this->armor += $item->armor;
 			$this->magicdefense += $item->magicdefense;
 			$this->movepenalty += $item->movepenalty;
-			
 			$this->updateHP();
 			$this->updateMana();
-			
-			$this->equipment[$item->slot] = $item;
 		}
 		public function equipFromSlot($slot)
 		{
@@ -766,8 +739,6 @@
 			
 			$this->updateHP();
 			$this->updateMana();
-			
-			$this->equipment[$item->slot] = "";
 		}
 		public function unequipFromSlot($slot)
 		{
@@ -775,6 +746,55 @@
 			{
 				$this->unequipItem($this->equipment[$slot]);
 			}
+		}
+		public function updateAfterEquipmentChange()
+		{
+			$stats = [
+				'sila' => $this->sila,
+				'zwinnosc' => $this->zwinnosc,
+				'celnosc' => $this->celnosc,
+				'kondycja' => $this->kondycja,
+				'inteligencja' => $this->inteligencja,
+				'wiedza' => $this->wiedza,
+				'charyzma' => $this->charyzma,
+				'szczescie' => $this->szczescie,
+				'dmgmin' => $this->dmgmin,
+				'dmgmax' => $this->dmgmax,
+				'attackspeed' => $this->attackspeed,
+				'critchance' => $this->critchance,
+				'armor' => $this->armor,
+				'magicdefense' => $this->magicdefense,
+				'movepenalty' => $this->movepenalty,
+				'hp' => $this->hp,
+				'maxhp' => $this->maxhp,
+				'mana' => $this->mana,
+				'maxmana' => $this->maxmana,
+			];
+			
+			$id = $this->id;
+			$conn = connectDB();
+			$sql = "UPDATE users SET ";
+			
+			$keys = array_keys($stats);
+			foreach($stats as $key => $stat)
+			{
+				if($key == $keys[count($keys)-1]){
+					$sql = $sql . $key . "='" . $stat . "'";
+				}
+				else{
+					$sql = $sql . $key . "='" . $stat . "', ";
+				}
+			}
+			
+			$sql = $sql . " WHERE id=$id";
+			$conn->query($sql);
+			$conn->close();
+			
+			unset($id);
+			unset($conn);
+			unset($sql);
+			unset($stats);
+			unset($keys);
 		}
 		public function generateShop()
 		{
