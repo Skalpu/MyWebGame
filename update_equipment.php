@@ -204,6 +204,10 @@
 					//Calling the function as a recurrence
 					unequipItem($startDB, $startLocal, $freeDB, $freeLocal, $player);
 				}
+				else
+				{
+					//No way to unequip, sorry
+				}
 			}
 		}
 	}
