@@ -65,9 +65,10 @@
 	document.addEventListener('DOMContentLoaded',function()
     {
         $("#divPlayerBars").load('update_player_bars.php');
+		$("#divMainOkno").load('update_equipment.php');
     });
 
-	var poczatkowySlot = "";
+	/*var poczatkowySlot = "";
 	var koncowySlot = "";
 	
 	$("#divMainOkno").load('update_equipment.php', function() {
@@ -143,5 +144,5 @@
 			initializeDragDrop();
 			initializeHover();
 		});
-	}
+	}*/
 </script>

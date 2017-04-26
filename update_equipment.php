@@ -3,7 +3,15 @@
     require_once('config.php');
     login_check();
 
-	if($_POST)
+	if($_POST){
+		processItemMoves();
+	}
+	
+	drawEquipment($_SESSION['player']);
+	drawBackpack($_SESSION['player']);
+	
+	
+	/*if($_POST)
 	{
 		//BP ->
 		if(strpos($_POST['poczatek'], 'bp') !== false)
@@ -227,6 +235,80 @@
 	}
 	
 	drawEquipment($_SESSION['player']); 
-	drawBackpack($_SESSION['player']);
+	drawBackpack($_SESSION['player']);*/
 	
 ?>
+
+<script>
+
+	$("#divPlayerBars").load('update_player_bars.php');
+
+	rescaleImages();
+	initializeHover();
+	initializeDragDrop();
+	
+	function rescaleImages()
+	{
+		$(".fotoContainer2").each(function() {
+			var currObj = $(this);
+			var img = new Image;
+			img.src = currObj.css('background-image').replace(/url\(|\)$/ig, "").replace(/"/g, "").replace(/'/g, "");
+			img.onload = function() {
+				if(img.width < currObj.width() && img.height < currObj.height())
+				{
+					currObj.css('background-size', 'auto auto');
+				}
+			}
+		});
+	}
+	function initializeHover()
+	{
+		$(".fotoContainer2").hover(
+			function(){
+				$(this).parent().find('.itemHover').show();
+			},
+			function(){
+				$(this).parent().find('.itemHover').hide();
+			}
+		);
+		
+		$(".fotoContainer2").bind('mousemove', function(e){
+			var top = e.pageY + 15;
+			var left = e.pageX + 8;
+			$(this).parent().find('.itemHover').css({'top': top, 'left': left});
+		});
+	}
+	function initializeDragDrop()
+	{
+		$(".fotoContainer2").draggable({
+			start: function(event, ui)
+			{
+				//Set startSlot & hide hover
+				startSlot = $(this).parent().attr('id');
+				$(this).parent().find('.itemHover').hide();
+			},
+			revert: true,
+			revertDuration: 0,
+			opacity: 0.5,
+			zIndex: 100,
+			cancel: ".blank"
+		});
+	
+		$(".itemSlot").droppable({
+			accept: ".fotoContainer2",
+			tolerance: "intersect",
+		
+			drop: function(event, ui)
+			{
+				//Set endSlot & move item
+				endSlot = $(this).attr('id');
+				moveItem(startSlot, endSlot);
+			}
+		});
+	}
+	function moveItem(poczatkowySlot, koncowySlot)
+	{
+		$("#divMainOkno").load('update_shop.php', {start: startSlot, end: endSlot});
+	}
+	
+</script>

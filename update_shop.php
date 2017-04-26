@@ -12,8 +12,8 @@
 	}
 	
 	updateShop($_SESSION['player']);
-	drawBackpack($_SESSION['player']);
 	drawShop($_SESSION['player']);
+	drawBackpack($_SESSION['player']);
 	drawCountdown();
 				
 	function processItemMoves()
