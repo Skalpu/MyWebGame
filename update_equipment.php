@@ -10,232 +10,224 @@
 	drawEquipment($_SESSION['player']);
 	drawBackpack($_SESSION['player']);
 	
-	
-	/*if($_POST)
+	function processItemMoves()
 	{
-		//BP ->
-		if(strpos($_POST['poczatek'], 'bp') !== false)
+		//Setting ID of drag
+		$startSlot = $_POST['start'];
+		if(strpos($startSlot, 'slot') !== false)
 		{
-			
-			//BP -> BP
-			if(strpos($_POST['koniec'], 'bp') !== false)
-			{
-				preg_match('/(\d+)/', $_POST['poczatek'], $matches);
-				$idPocz = $matches[1];
-				preg_match('/(\d+)/', $_POST['koniec'], $matches);
-				$idKon = $matches[1];
-
-				//Swapping
-				$holder = $_SESSION['player']->backpack[$idKon];
-				$_SESSION['player']->backpack[$idKon] = $_SESSION['player']->backpack[$idPocz];
-				$_SESSION['player']->backpack[$idPocz] = $holder;
-				
-				//Saving to DB
-				$conn = connectDB();
-				$id = $_SESSION['player']->id;
-				$slotPocz = "slot" . $idPocz;
-				$slotKon = "slot" . $idKon;
-				if($_SESSION['player']->backpack[$idPocz] == "")
-				{
-					$valPocz = "NULL";
-				}
-				else
-				{
-					$valPocz = $_SESSION['player']->backpack[$idPocz]->id;
-				}
-				
-				if($_SESSION['player']->backpack[$idKon] == "")
-				{
-					$valKon = "NULL";
-				}
-				else
-				{
-					$valKon = $_SESSION['player']->backpack[$idKon]->id;
-				}
-				$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon where ID=$id");
-				$conn->close();
-				
-				unset($holder);
-				unset($idPocz);
-				unset($idKon);
-				unset($conn);
-				unset($slotPocz);
-				unset($slotKon);
-				unset($valPocz);
-				unset($valKon);
-			}
-			
-			//BP -> EQ
-			else
-			{
-				preg_match('/(\d+)/', $_POST['poczatek'], $matches);
-				$idPocz = $matches[1];
-				$idKon = $_POST['koniec'];
-				
-				//Checking if item types matches
-				if($_SESSION['player']->backpack[$idPocz]->slot == $idKon)
-				{
-					//There is no item at this slot
-					if($_SESSION['player']->equipment[$idKon] == "")
-					{
-						$_SESSION['player']->equipFromSlot($idPocz);
-						$_SESSION['player']->backpack[$idPocz] = "";
-						
-						//Saving to DB
-						$conn = connectDB();
-						$id = $_SESSION['player']->id;
-						$slotPocz = "slot" . $idPocz;
-						$slotKon = $idKon;
-						$valPocz = "NULL";
-						$valKon = $_SESSION['player']->equipment[$idKon]->id;
-						$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon WHERE id=$id");
-						$conn->close();
-						$_SESSION['player']->updateStatsGlobally();
-						unset($conn);
-						unset($id);
-						unset($slotPocz);
-						unset($slotKon);
-						unset($valPocz);
-						unset($valKon);
-					}
-					//There is an item at this slot, swapping
-					else
-					{
-						$holder = $_SESSION['player']->equipment[$idKon];
-						$_SESSION['player']->unequipFromSlot($idKon);
-						$_SESSION['player']->equipFromSlot($idPocz);
-						$_SESSION['player']->backpack[$idPocz] = $holder;
-						unset($holder);
-						
-						//Saving to DB
-						$conn = connectDB();
-						$id = $_SESSION['player']->id;
-						$slotPocz = "slot" . $idPocz;
-						$slotKon = $idKon;
-						$valPocz = $_SESSION['player']->backpack[$idPocz]->id;
-						$valKon = $_SESSION['player']->equipment[$idKon]->id;
-						$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon WHERE id=$id");
-						$conn->close();
-						$_SESSION['player']->updateStatsGlobally();
-						unset($conn);
-						unset($id);
-						unset($slotPocz);
-						unset($slotKon);
-						unset($valPocz);
-						unset($valKon);
-					}
-				}
-				
-				unset($idPocz);
-				unset($idKon);
-			}
+			preg_match('/(\d+)/', $startSlot, $matches);
+			$startID = $matches[1];
 		}
-		
-		//EQ ->
 		else
 		{
-			//EQ -> BP
-			if(strpos($_POST['koniec'], 'bp') !== false)
+			$startID = $startSlot;
+		}
+		
+		//Setting ID of drop
+		$endSlot = $_POST['end'];
+		if(strpos($endSlot, 'slot') !== false)
+		{
+			preg_match('/(\d+)/', $endSlot, $matches);
+			$endID = $matches[1];
+		}
+		else
+		{
+			$endID = $endSlot;
+		}
+		
+		//Processing item movement
+		//Backpack -> backpack
+		if(strpos($startSlot, 'slot') !== false and strpos($endSlot, 'slot') !== false){
+			swapItems($startSlot, $startID, $endSlot, $endID, "backpack");
+		}
+		//Backpack -> equipment
+		else if(strpos($startSlot, 'slot') !== false){
+			equipItem($startSlot, $startID, $endSlot, $endID, $_SESSION['player']);
+		}
+		//Equipment->backpack
+		else if(strpos($endSlot, 'slot') !== false){
+			unequipItem($startSlot, $startID, $endSlot, $endID, $_SESSION['player']);
+		}
+	}
+	function swapItems($startDB, $startLocal, $endDB, $endLocal, $location)
+	{
+		//Local updates
+		$holder = $_SESSION['player']->{$location}[$startLocal];
+		$_SESSION['player']->{$location}[$startLocal] = $_SESSION['player']->{$location}[$endLocal];
+		$_SESSION['player']->{$location}[$endLocal] = $holder;
+		
+		//Setting variables
+		if($_SESSION['player']->{$location}[$startLocal] != ""){
+			$startVal = $_SESSION['player']->{$location}[$startLocal]->id;
+		}
+		else{
+			$startVal = "NULL";
+		}
+		
+		if($_SESSION['player']->{$location}[$endLocal] != ""){
+			$endVal = $_SESSION['player']->{$location}[$endLocal]->id;
+		}
+		else{
+			$endVal = "NULL";
+		}
+		
+		
+		//Database updateShop
+		$id = $_SESSION['player']->id;
+		$conn = connectDB();
+		$conn->query("UPDATE equipment SET $startDB=$startVal, $endDB=$endVal WHERE id=$id");
+		$conn->close();
+		
+		//Unsetting variables
+		unset($holder);
+		unset($startVal);
+		unset($endVal);
+		unset($id);
+		unset($conn);
+	}
+	function equipItem($startDB, $startLocal, $endDB, $endLocal, Player $player)
+	{
+		//Checking if types match
+		if($endLocal == $player->backpack[$startLocal]->slot)
+		{
+			//There was an item equipped
+			if($player->equipment[$endLocal] != ""){
+				//Unequipping it (removing stats)
+				$player->unequipFromSlot($endLocal);
+			}
+			//Equipping the new one (adding stats)
+			$player->equipFromSlot($startLocal);
+			
+			//Updating locally
+			$holder = $player->equipment[$endLocal];
+			$player->equipment[$endLocal] = $player->backpack[$startLocal];
+			$player->backpack[$startLocal] = $holder;
+			
+			//Setting variables
+			if($player->backpack[$startLocal] == ""){
+				$startVal = "NULL";
+			}
+			else{
+				$startVal = $player->backpack[$startLocal]->id;
+			}
+			
+			$endVal = $player->equipment[$endLocal]->id;
+			
+			//Updating in DB
+			$id = $player->id;
+			$conn = connectDB();
+			$conn->query("UPDATE equipment SET $startDB=$startVal, $endDB=$endVal WHERE id=$id");
+			$conn->close();
+			$player->updateAfterEquipmentChange();
+			
+			//Unsetting variables
+			unset($holder);
+			unset($startVal);
+			unset($endVal);
+			unset($id);
+			unset($conn);
+		}
+	}
+	function unequipItem($startDB, $startLocal, $endDB, $endLocal, Player $player)
+	{
+		//Checking if manual placement is available
+		if($player->backpack[$endLocal] == "")
+		{
+			//Unequipping old item (removing stats)
+			$player->unequipFromSlot($startLocal);
+			
+			//Updating locally
+			$player->backpack[$endLocal] = $player->equipment[$startLocal];
+			$player->equipment[$startLocal] = "";
+			
+			//Setting variables
+			$startVal = "NULL";
+			$endVal = $player->backpack[$endLocal]->id;
+			
+			//Updating in DB
+			$id = $player->id;
+			$conn = connectDB();
+			$conn->query("UPDATE equipment SET $startDB=$startVal, $endDB=$endVal WHERE id=$id");
+			$conn->close();
+			$player->updateAfterEquipmentChange();
+			
+			//Unsetting variables
+			unset($startVal);
+			unset($endVal);
+			unset($id);
+			unset($conn);
+		}
+		//There was no space at selected slot
+		else
+		{	
+			//We check if types match for swapping
+			if($startLocal == $player->backpack[$endLocal]->slot)
 			{
-				preg_match('/(\d+)/', $_POST['koniec'], $matches);
-				$idKon = $matches[1];
-				$idPocz = $_POST['poczatek'];
+				//Unequipping old one (removing stats)
+				$player->unequipFromSlot($startLocal);
+				//Equipping new one (adding stats)
+				$player->equipFromSlot($endLocal);
 				
-				//BP is empty, moving
-				if($_SESSION['player']->backpack[$idKon] == "")
-				{
-					$_SESSION['player']->backpack[$idKon] = $_SESSION['player']->equipment[$idPocz];
-					$_SESSION['player']->unequipFromSlot($idPocz);
-					
-					//Saving to DB
-					$conn = connectDB();
-					$id = $_SESSION['player']->id;
-					$slotPocz = $idPocz;
-					$slotKon = "slot" . $idKon;
-					$valPocz = "NULL";
-					$valKon = $_SESSION['player']->backpack[$idKon]->id;
-					$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon WHERE id=$id");
-					$conn->close();
-					$_SESSION['player']->updateStatsGlobally();
-					unset($conn);
-					unset($id);
-					unset($slotPocz);
-					unset($slotKon);
-					unset($valPocz);
-					unset($valKon);
-				}
-				//BP is not empty
-				else
-				{
-					//Check types, see if we can swap
-					if($_SESSION['player']->equipment[$idPocz]->slot == $_SESSION['player']->backpack[$idKon]->slot)
-					{
-						//Swapping
-						$holder = $_SESSION['player']->equipment[$idPocz];
-						$_SESSION['player']->unequipFromSlot($idPocz);
-						$_SESSION['player']->equipFromSlot($idKon);
-						$_SESSION['player']->backpack[$idKon] = $holder;
-						unset($holder);
-						
-						//Saving to DB
-						$conn = connectDB();
-						$id = $_SESSION['player']->id;
-						$slotPocz = $idPocz;
-						$slotKon = "slot" . $idKon;
-						$valPocz = $_SESSION['player']->backpack[$idPocz]->id;
-						$valKon = $_SESSION['player']->equipment[$idKon]->id;
-						$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon WHERE id=$id");
-						$conn->close();
-						$_SESSION['player']->updateStatsGlobally();
-						unset($conn);
-						unset($id);
-						unset($slotPocz);
-						unset($slotKon);
-						unset($valPocz);
-						unset($valKon);
-					}
-					//Types not equal, check if other slots are empty
-					else
-					{
-						for($i = 0; $i < count($_SESSION['player']->backpack); $i++)
-						{
-							if($_SESSION['player']->backpack[$i] == "")
-							{
-								//Found empty slot, moving
-								$_SESSION['player']->backpack[$i] = $_SESSION['player']->equipment[$idPocz];
-								$_SESSION['player']->unequipFromSlot($idPocz);
-								
-								//Saving to DB
-								$conn = connectDB();
-								$id = $_SESSION['player']->id;
-								$slotPocz = $idPocz;
-								$slotKon = "slot" . $i;
-								$valPocz = "NULL";
-								$valKon = $_SESSION['player']->backpack[$i]->id;
-								$conn->query("UPDATE equipment SET $slotPocz=$valPocz, $slotKon=$valKon WHERE id=$id");
-								$conn->close();
-								$_SESSION['player']->updateStatsGlobally();
-								unset($conn);
-								unset($id);
-								unset($slotPocz);
-								unset($slotKon);
-								unset($valPocz);
-								unset($valKon);
-								
-								break;
-							}
-						}
-					}
-				}
+				//Updating locally
+				$holder = $player->backpack[$endLocal];
+				$player->backpack[$endLocal] = $player->equipment[$startLocal];
+				$player->equipment[$startLocal] = $holder;
 				
-				unset($idKon);
-				unset($idPocz);
+				//Setting variables
+				$startVal = $player->equipment[$startLocal]->id;
+				$endVal = $player->backpack[$endLocal]->id;
+				
+				//Updating in DB
+				$id = $player->id;
+				$conn = connectDB();
+				$conn->query("UPDATE equipment SET $startDB=$startVal, $endDB=$endVal WHERE id=$id");
+				$conn->close();
+				$player->updateAfterEquipmentChange();
+			
+				//Unsetting variables
+				unset($holder);
+				unset($startVal);
+				unset($endVal);
+				unset($id);
+				unset($conn);
+			}
+			//We try to find a free slot
+			else
+			{
+				$freeSlot = findFreeSlot("backpack");
+				//Found a free slot
+				if($freeSlot != null)
+				{
+					$freeLocal = $freeSlot;
+					$freeDB = "slot" . $freeSlot;
+					//Calling the function as a recurrence
+					unequipItem($startDB, $startLocal, $freeDB, $freeLocal, $player);
+				}
 			}
 		}
 	}
+	function findFreeSlot($location)
+	{
+		$foundSlot = false;
+		
+		for($i = 0; $i < count($_SESSION['player']->{$location}); $i++)
+		{
+			if($_SESSION['player']->{$location}[$i] == "")
+			{
+				$foundSlot = true;
+				break;
+			}
+		}
+		
+		if($foundSlot == true){
+			return $i;
+		}
+		else{
+			return null;
+		}
+	}
 	
-	drawEquipment($_SESSION['player']); 
-	drawBackpack($_SESSION['player']);*/
 	
 ?>
 
@@ -308,7 +300,7 @@
 	}
 	function moveItem(poczatkowySlot, koncowySlot)
 	{
-		$("#divMainOkno").load('update_shop.php', {start: startSlot, end: endSlot});
+		$("#divMainOkno").load('update_equipment.php', {start: startSlot, end: endSlot});
 	}
 	
 </script>
