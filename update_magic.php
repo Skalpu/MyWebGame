@@ -101,7 +101,9 @@
 		{
 			//Preparing button text
 			if($player->combatSpells[$i] != ""){
-				$buttonText = "#" . ($i+1) . $player->combatSpells[$i];
+				$element = $GLOBALS['combatSpells'][$player->combatSpells[$i]]->element;
+				$spellName = $GLOBALS['combatSpells'][$player->combatSpells[$i]]->name;
+				$buttonText = "<div class='icon $element'></div><div class='spellName'>$spellName</div> #" . ($i+1);
 			}
 			else{
 				$buttonText = "Czar bitewny #" . ($i+1);
@@ -129,6 +131,7 @@
 							echo "<div class='spellName'>" . $spell->name . "</div>";
 							echo "<div class='spellFlavor' style='display:none'>" .$spell->flavor. "</div>";
 							echo "<div class='spellDescription' style='display:none'>" .$spell->description. "</div>";
+							echo "<div class='spellID' style='display:none'>" .$key. "</div>";	
 						echo "</div>";
 						unset($element);
 					}
@@ -202,46 +205,80 @@
 <script>
 
 	$("#divPlayerBars").load('update_player_bars.php');
-	initializeDropdowns();
+	
+	var preparationH = $("#preparationContent0").css("height");
+	var combatH = $("#combatContent0").css("height");
+	$(".dropdownContent").css("height", "0px");
+	
+	initializeDropdowns(preparationH, combatH);
 	initializeHover();
 	
-	function initializeDropdowns()
+	function initializeDropdowns(preparationH, combatH)
 	{
 		//Button was clicked
 		$(".dropdownButton").click(function(e){
 			//Checking if dropdown is currently shown or hidden
-			var current = $(this).parent().find(".dropdownContent").css("display");
-
+			var current = $(this).parent().find(".dropdownContent").css("height");
+			var type = $(this).parent().find(".dropdownContent").attr("id");
+			
 			//Show or hide accordingly
-			if(current == "none"){
-				var next = "inline-block";
-				$(".dropdownContent").css("display", "none");
+			if(current	== "0px"){
+				$(".dropdownContent").animate({
+					height: "0px",
+				}, 150);
+				//$(".dropdownContent").each(function() {
+				//	$(this).animate({
+				//		height: "0px",
+				//	}, 300);
+				//});
+				
+				if(~type.indexOf("preparation")){
+					var next = preparationH;
+				}
+				else if(~type.indexOf("combat")){
+					var next = combatH;
+				}
 			}
 			else{
-				var next = "none";
+				var next = "0px"; 
 			}
+		
+			$(this).parent().find(".dropdownContent").animate({
+				height: next,
+			}, 300);
 
-			$(this).parent().find(".dropdownContent").css("display", next);
 			e.stopPropagation();
 		});
 
 		//Option was selected
 		$(".dropdownOption").click(function(e){
-			//Making spell name display on the button
-			$(this).parent().parent().find('.dropdownButton').html($(this).html());
-			//Sending update to php
+			//Updating locally
+			var type = $(this).parent().attr("id");
+			var id = type.match(/\d+/);
+			id = parseInt(id);
+			id += 1;
+			var spellName = $(this).html();
+			var newName = spellName + " #" + id;
+			$(this).parent().parent().find('.dropdownButton').html(newName);
+			
+			//Updating to PHP
 			var category = $(this).parent().attr('id');
 			var slotID = $(this).parent().attr('id');
 			var spellID = $(this).find('.spellID').html();
 			$.post('update_magic.php', {category: category, slotID: slotID, spellID: spellID});
+			
 			//Hiding the dropdown
-			$(this).parent().hide();
+			$(this).parent().animate({
+				height: "0px",
+			}, 300);
 			e.stopPropagation();
 		});
 
 		//Someone clicked outside
 		$(document).click(function(){
-			$(".dropdownContent").hide();
+			$(".dropdownContent").animate({
+				height: "0px",
+			}, 300);
 		});
 	}
 	function initializeHover()
