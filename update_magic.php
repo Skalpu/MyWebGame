@@ -226,12 +226,7 @@
 				$(".dropdownContent").animate({
 					height: "0px",
 				}, 150);
-				//$(".dropdownContent").each(function() {
-				//	$(this).animate({
-				//		height: "0px",
-				//	}, 300);
-				//});
-				
+
 				if(~type.indexOf("preparation")){
 					var next = preparationH;
 				}
@@ -245,7 +240,7 @@
 		
 			$(this).parent().find(".dropdownContent").animate({
 				height: next,
-			}, 300);
+			}, 200);
 
 			e.stopPropagation();
 		});
@@ -270,7 +265,7 @@
 			//Hiding the dropdown
 			$(this).parent().animate({
 				height: "0px",
-			}, 300);
+			}, 200);
 			e.stopPropagation();
 		});
 
@@ -278,7 +273,7 @@
 		$(document).click(function(){
 			$(".dropdownContent").animate({
 				height: "0px",
-			}, 300);
+			}, 200);
 		});
 	}
 	function initializeHover()
