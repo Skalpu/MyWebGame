@@ -43,9 +43,9 @@
 	
 	<?php  
 
-	//echo '<pre>';
-	//var_dump($_SESSION['player']);
-	//echo '</pre>';
+	echo '<pre>';
+	var_dump($_SESSION['player']);
+	echo '</pre>';
 
 	?>
 		TODO:<br>
@@ -53,6 +53,7 @@
 		<br>/* TODO FIRST */<br>
 		<div class='bold'>- CHANGE NAVIGATION FROM LOADING SITES TO LOADING INTO DIVMAINOKNO<br>
 		- FIX CSS ACROSS SITE (USE VIEWPORTCHANGER WHILE DOING IT)</div>
+		- CHANGE HOW SPELLS ARE DISPLAYED IN MAGIC
 		- CHANGE HOW PLAYER IS CREATED: PUT HIM INTO DB AND THEN USE LOGIN<br>
 		- DIVIDE BUILDING DESCRIPTION CONTENT INTO TITLE AND CONTENT (THAT SCROLLS)<br>
 		- ADD SMOOTH SCROLLING<br>

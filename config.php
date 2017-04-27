@@ -677,14 +677,14 @@
 			'healing' => 0,
 			'manahealing' => 0,
 		];
-		public $preparationMagic = [
+		public $preparationSpells = [
 			0 => "",
 			1 => "",
 			2 => "",
 			3 => "",
 			4 => ""
 		];
-		public $combatMagic = [
+		public $combatSpells = [
 			0 => "",
 			1 => "",
 			2 => "",

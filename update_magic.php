@@ -7,6 +7,11 @@
 	drawDropdowns($_SESSION['player']);
 	drawSpellDisplay();
 	
+	if($_POST)
+	{
+		updateMagic($_POST['category'], $_POST['slotID'], $_POST['spellID'], $_SESSION['player']);
+	}
+	
 	function drawDropdowns(Player $player)
 	{
 		$preparationAmount = calculatePreparationAmount();
@@ -40,8 +45,10 @@
 		for($i = 0; $i < $amount; $i++)
 		{
 			//Preparing button text
-			if($player->preparationMagic[$i] != ""){
-				$buttonText = $player->preparationMagic[$i]->name;
+			if($player->preparationSpells[$i] != ""){
+				$element = $GLOBALS['preparationSpells'][$player->preparationSpells[$i]]->element;
+				$spellName = $GLOBALS['preparationSpells'][$player->preparationSpells[$i]]->name;
+				$buttonText = "<div class='icon $element'></div><div class='spellName'>$spellName</div> #" . ($i+1);
 			}
 			else{
 				$buttonText = "Czar przygotowawczy #" . ($i+1);
@@ -69,6 +76,7 @@
 							echo "<div class='spellName'>" . $spell->name . "</div>";
 							echo "<div class='spellFlavor' style='display:none'>" .$spell->flavor. "</div>";
 							echo "<div class='spellDescription' style='display:none'>" .$spell->description. "</div>";
+							echo "<div class='spellID' style='display:none'>" .$key. "</div>";
 						echo "</div>";
 						unset($element);
 					}
@@ -92,8 +100,8 @@
 		for($i = 0; $i < $amount; $i++)
 		{
 			//Preparing button text
-			if($player->combatMagic[$i] != ""){
-				$buttonText = "#" . ($i+1) . $player->combatMagic[$i]->name;
+			if($player->combatSpells[$i] != ""){
+				$buttonText = "#" . ($i+1) . $player->combatSpells[$i];
 			}
 			else{
 				$buttonText = "Czar bitewny #" . ($i+1);
@@ -156,7 +164,20 @@
 		echo "</div>";
 	}
 	
-	
+	function updateMagic($category, $slotID, $spellID, Player $player)
+	{
+		if(strpos($category, "preparation") !== false){
+			$list = "preparationSpells";
+		}
+		else{
+			$list = "combatSpells";
+		}
+		
+		preg_match('/(\d+)/', $slotID, $matches);
+		$id = $matches[1];
+		
+		$player->{$list}[$id] = $spellID;
+	}
 
 ?>
 
@@ -165,7 +186,6 @@
 	$("#divPlayerBars").load('update_player_bars.php');
 	initializeDropdowns();
 	initializeHover();
-
 	
 	function initializeDropdowns()
 	{
@@ -189,6 +209,14 @@
 
 		//Option was selected
 		$(".dropdownOption").click(function(e){
+			//Making spell name display on the button
+			$(this).parent().parent().find('.dropdownButton').html($(this).html());
+			//Sending update to php
+			var category = $(this).parent().attr('id');
+			var slotID = $(this).parent().attr('id');
+			var spellID = $(this).find('.spellID').html();
+			$.post('update_magic.php', {category: category, slotID: slotID, spellID: spellID});
+			//Hiding the dropdown
 			$(this).parent().hide();
 			e.stopPropagation();
 		});
@@ -198,13 +226,11 @@
 			$(".dropdownContent").hide();
 		});
 	}
-	
 	function initializeHover()
 	{
 		$(".dropdownOption").hover(
 			function(){
 				//Getting required variables
-				var type = $(this).parent().attr('id');
 				var spellName = $(this).find('.spellName').html();
 				var spellFlavor = $(this).find('.spellFlavor').html();
 				var spellDescription = $(this).find('.spellDescription').html();
