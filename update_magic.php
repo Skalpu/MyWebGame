@@ -166,17 +166,35 @@
 	
 	function updateMagic($category, $slotID, $spellID, Player $player)
 	{
+		//Setting variables
 		if(strpos($category, "preparation") !== false){
 			$list = "preparationSpells";
+			$dbField = "preparation";
 		}
 		else{
 			$list = "combatSpells";
+			$dbField = "combat";
 		}
 		
 		preg_match('/(\d+)/', $slotID, $matches);
 		$id = $matches[1];
+		$dbField = $dbField . $id;
+		$playerID = $player->id;
 		
+		//Local updates
 		$player->{$list}[$id] = $spellID;
+		
+		//DB updates
+		$conn = connectDB();
+		$conn->query("UPDATE spellbooks SET $dbField=$spellID WHERE id=$playerID");
+		$conn->close();
+		
+		//Unsetting variables
+		unset($list);
+		unset($dbField);
+		unset($id);
+		unset($playerID);
+		unset($conn);
 	}
 
 ?>
