@@ -28,12 +28,7 @@
 		return $amount;
 	}
 	
-	function calculateCombatAmount()
-	{
-		//TODO wpływ rasy i klasy na ilość
-		$amount = 5;
-		return $amount;
-	}
+	
 	
 	function drawPreparationDropdowns($amount, Player $player)
 	{
